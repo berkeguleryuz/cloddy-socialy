@@ -1,26 +1,159 @@
 @import "tailwindcss";
 
+@theme {
+  /* Exact Cloddy Colors */
+  --color-background: #161b28;
+  --color-surface: #1d2333;
+  --color-primary: #7750f8;
+  --color-secondary: #40d04f;
+  --color-accent-blue: #23d2e2;
+  --color-accent-orange: #f9515c;
+  --color-border: #2f3749;
+  --color-text-muted: #616a82;
+  --color-text-main: #ffffff;
+
+  --shadow-main: 3px 0 10px 0 rgba(0, 0, 0, 0.1);
+  --shadow-widget: 0 0 40px 0 rgba(0, 0, 0, 0.22);
+
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+
+  --transition-sidebar: transform 0.35s ease-in-out;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #161b28;
+  --foreground: #ffffff;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-text-main);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #161b28;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2f3749;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary);
+}
+
+/* Hexagon Mask Utility */
+.hexagon-mask {
+  mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="50 0, 93.3 25, 93.3 75, 50 100, 6.7 75, 6.7 25" fill="white" /></svg>');
+  mask-repeat: no-repeat;
+  mask-size: 100% 100%;
+  mask-position: center;
+  -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="50 0, 93.3 25, 93.3 75, 50 100, 6.7 75, 6.7 25" fill="white" /></svg>');
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  -webkit-mask-position: center;
+}
+
+/* Shield/Diamond Mask for Level Badges */
+.shield-mask {
+  mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="50 0, 100 50, 50 100, 0 50" fill="white" /></svg>');
+  mask-repeat: no-repeat;
+  mask-size: 100% 100%;
+  mask-position: center;
+  -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="50 0, 100 50, 50 100, 0 50" fill="white" /></svg>');
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  -webkit-mask-position: center;
+}
+
+.widget-box {
+  background-color: var(--color-surface);
+  border-radius: 12px;
+  padding: 32px 28px;
+  box-shadow: var(--shadow-widget);
+}
+
+/* Sidebar Specifics */
+.sidebar-small {
+  width: 80px;
+  transition: var(--transition-sidebar);
+}
+
+.sidebar-large {
+  width: 300px;
+  transition: var(--transition-sidebar);
+}
+
+.sidebar-hidden {
+  transform: translateX(-300px);
+}
+
+.sidebar-visible {
+  transform: translateX(0);
+}
+
+/* Floaty Bar (Mobile) */
+.floaty-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background-color: var(--color-surface);
+  display: none; /* Desktop hidden */
+  z-index: 1000;
+  box-shadow: 0 -3px 10px 0 rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 1024px) {
+  .floaty-bar {
+    display: flex;
+  }
+}
+
+/* Content Grid - Truly centered layout */
+/* Sidebars are position: fixed with high z-index and overlay content */
+/* Content has padding to prevent overlap with collapsed sidebars */
+.content-grid {
+  /* max-width and margin: auto handle centering */
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+/* On larger screens, add clearance for collapsed sidebars */
+@media (min-width: 1024px) {
+  .content-grid {
+    /* Left sidebar is 80px collapsed */
+    padding-left: max(16px, calc((100vw - 1184px) / 2 - 80px + 16px));
+    padding-left: 16px; /* Reset - true centering */
+  }
+}
+
+@media (min-width: 1280px) {
+  .content-grid {
+    /* Both sidebars are 80px collapsed */
+    /* Content is truly centered, sidebars overlay if needed */
+  }
+}
+
+/* Hide scrollbar but allow scrolling */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
