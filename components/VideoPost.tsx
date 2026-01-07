@@ -2,7 +2,7 @@
 
 import HexagonAvatar from "./HexagonAvatar";
 
-interface PostCardProps {
+interface VideoPostProps {
   author: {
     name: string;
     avatar: string;
@@ -10,20 +10,26 @@ interface PostCardProps {
     time: string;
   };
   content: string;
-  image?: string;
+  videoThumbnail: string;
+  videoTitle: string;
+  videoDuration: string;
+  videoViews: string;
   likes: number;
   comments: number;
   shares: number;
 }
 
-export default function PostCard({
+export default function VideoPost({
   author,
   content,
-  image,
+  videoThumbnail,
+  videoTitle,
+  videoDuration,
+  videoViews,
   likes,
   comments,
   shares,
-}: PostCardProps) {
+}: VideoPostProps) {
   return (
     <div className="widget-box flex flex-col gap-4 animate-in fade-in duration-500">
       {/* Header */}
@@ -49,16 +55,47 @@ export default function PostCard({
       {/* Content */}
       <p className="text-sm leading-relaxed text-gray-200">{content}</p>
 
-      {/* Image */}
-      {image && (
-        <div className="rounded-xl overflow-hidden mt-2">
-          <img
-            src={image}
-            alt="Post content"
-            className="w-full h-auto hover:scale-105 transition-transform duration-700"
-          />
+      {/* Video Player */}
+      <div className="relative rounded-xl overflow-hidden group cursor-pointer">
+        <img
+          src={videoThumbnail}
+          alt={videoTitle}
+          className="w-full h-auto aspect-video object-cover group-hover:scale-105 transition-transform duration-700"
+        />
+        <div className="absolute inset-0 bg-black/30 flex items-center justify-center group-hover:bg-black/50 transition-colors">
+          <div className="w-20 h-20 rounded-full bg-primary/90 flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg shadow-primary/30">
+            <svg
+              className="w-8 h-8 text-white ml-1"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
+            </svg>
+          </div>
         </div>
-      )}
+        <div className="absolute bottom-3 right-3 bg-black/80 px-2 py-1 rounded text-xs font-bold text-white">
+          {videoDuration}
+        </div>
+      </div>
+
+      {/* Video Info */}
+      <div className="flex items-center gap-3">
+        <div className="w-10 h-10 rounded-lg bg-secondary/20 flex items-center justify-center">
+          <svg
+            className="w-5 h-5 text-secondary"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z" />
+          </svg>
+        </div>
+        <div className="flex-1">
+          <h4 className="text-sm font-bold text-white hover:text-primary cursor-pointer transition-colors">
+            {videoTitle}
+          </h4>
+          <span className="text-xs text-text-muted">{videoViews} views</span>
+        </div>
+      </div>
 
       {/* Actions - Icon only */}
       <div className="flex items-center justify-between pt-4 border-t border-border">
