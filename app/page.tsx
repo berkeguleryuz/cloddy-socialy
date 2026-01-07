@@ -2,25 +2,94 @@
 
 import { useState } from "react";
 import PostCard from "@/components/PostCard";
+import VideoPost from "@/components/VideoPost";
+import PollPost from "@/components/PollPost";
+import GalleryPost from "@/components/GalleryPost";
 import HexagonAvatar from "@/components/HexagonAvatar";
+import MembersWidget from "@/components/MembersWidget";
+import QuestsWidget from "@/components/QuestsWidget";
+import PromoWidget from "@/components/PromoWidget";
+import EventsWidget from "@/components/EventsWidget";
+import ActivityWidget from "@/components/ActivityWidget";
+import GroupsWidget from "@/components/GroupsWidget";
 
-const posts = [
+const textPosts = [
   {
     id: 1,
     author: {
-      name: "Neko Bebop",
-      avatar: "/images/avatars/avatar_03.png",
-      level: 16,
-      time: "2 minutes ago",
+      name: "Marina Valentine",
+      avatar: "/images/avatars/avatar_01.png",
+      level: 24,
+      time: "15 minutes ago",
     },
     content:
-      "Hi everyone! Check out my latest video of the sandbox expansion for Cosmo Slime! G.I. is really excited, because my last video had almost 50,000 views.",
-    video: true,
-    likes: 15,
-    comments: 4,
-    shares: 2,
+      "Just finished my new gaming setup! 🎮 The RGB lighting is absolutely insane. Can't wait to stream tonight and show it off to everyone!",
+    image: "/images/posts/gaming_setup.jpg",
+    likes: 87,
+    comments: 23,
+    shares: 5,
   },
 ];
+
+const videoPost = {
+  author: {
+    name: "Neko Bebop",
+    avatar: "/images/avatars/avatar_03.png",
+    level: 16,
+    time: "2 hours ago",
+  },
+  content:
+    "Check out my latest video of the sandbox expansion for Cosmo Slime! G.I. is really excited, because my last video had almost 50,000 views. Don't forget to like and subscribe! 🚀",
+  videoThumbnail: "/images/posts/video_thumbnail.jpg",
+  videoTitle: "Cosmo Slime - Sandbox Expansion Full Gameplay",
+  videoDuration: "12:45",
+  videoViews: "48.2K",
+  likes: 342,
+  comments: 89,
+  shares: 24,
+};
+
+const pollPost = {
+  author: {
+    name: "Sarah Diamond",
+    avatar: "/images/avatars/avatar_08.png",
+    level: 19,
+    time: "4 hours ago",
+  },
+  question: "Which game should I stream this weekend?",
+  options: [
+    { id: 1, text: "Elden Ring - New DLC", votes: 156 },
+    { id: 2, text: "Cyberpunk 2077 - Phantom Liberty", votes: 98 },
+    { id: 3, text: "Baldur's Gate 3", votes: 234 },
+    { id: 4, text: "Starfield", votes: 67 },
+  ],
+  totalVotes: 555,
+  likes: 45,
+  comments: 32,
+  shares: 8,
+};
+
+const galleryPost = {
+  author: {
+    name: "Destroy Dex",
+    avatar: "/images/avatars/avatar_07.png",
+    level: 32,
+    time: "6 hours ago",
+  },
+  content:
+    "Screenshots from today's epic gaming session! We finally beat the raid boss after 47 attempts 🎉",
+  images: [
+    "/images/posts/gallery_1.jpg",
+    "/images/posts/gallery_2.jpg",
+    "/images/posts/gallery_3.jpg",
+    "/images/posts/gallery_4.jpg",
+    "/images/posts/gallery_5.jpg",
+    "/images/posts/gallery_6.jpg",
+  ],
+  likes: 156,
+  comments: 41,
+  shares: 12,
+};
 
 export default function Home() {
   const [activeFilter, setActiveFilter] = useState("All Updates");
@@ -42,6 +111,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col gap-8 animate-in slide-in-from-bottom-4 duration-700">
+      {/* Header Banner */}
       <div className="relative w-full h-[100px] rounded-xl overflow-hidden bg-linear-to-r from-[#615dfa] via-accent-blue to-[#21e19f]">
         <div className="absolute inset-0 opacity-30">
           <svg
@@ -90,8 +160,11 @@ export default function Home() {
         </div>
       </div>
 
+      {/* Main Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr_280px] gap-6">
+        {/* Left Sidebar */}
         <div className="hidden lg:flex flex-col gap-6 order-1">
+          {/* Profile Completion */}
           <div className="widget-box text-center">
             <div className="relative w-28 h-28 mx-auto mb-4">
               <svg className="w-full h-full transform -rotate-90">
@@ -192,36 +265,14 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="widget-box">
-            <h3 className="text-xs font-black uppercase tracking-widest text-text-muted mb-6">
-              Featured Badges
-            </h3>
-            <div className="flex flex-col items-center">
-              <div className="relative mb-4">
-                <div className="w-20 h-20 hexagon-mask bg-linear-to-br from-primary to-accent-blue flex items-center justify-center">
-                  <svg
-                    className="w-10 h-10 text-white"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path d="M10 2L3 7v10l7 3 7-3V7l-7-5z" />
-                  </svg>
-                </div>
-                <div className="absolute -top-1 -right-1 bg-surface border border-border rounded-full px-2 py-0.5 text-[9px] font-black text-primary">
-                  +40 EXP
-                </div>
-              </div>
-              <h4 className="text-sm font-black text-white mb-1">
-                Universe Explorer
-              </h4>
-              <p className="text-[10px] text-text-muted text-center">
-                Joined and interacted in 20 different groups
-              </p>
-            </div>
-          </div>
+          <MembersWidget />
+          <QuestsWidget />
+          <PromoWidget />
         </div>
 
+        {/* Main Content */}
         <div className="flex flex-col gap-6 order-2">
+          {/* Post Creation Box */}
           <div className="widget-box p-0 overflow-hidden">
             <div className="flex border-b border-border">
               {tabs.map((tab) => (
@@ -308,10 +359,14 @@ export default function Home() {
                     ></path>
                   </svg>
                 </button>
+                <button className="px-4 py-2 bg-primary text-white text-xs font-bold rounded-lg hover:bg-primary/80 transition-colors">
+                  Post
+                </button>
               </div>
             </div>
           </div>
 
+          {/* Filters */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-6 text-[11px] font-black uppercase tracking-wider overflow-x-auto no-scrollbar pb-1">
               {filters.map((filter) => (
@@ -330,14 +385,20 @@ export default function Home() {
             </div>
           </div>
 
+          {/* Posts Feed */}
           <div className="flex flex-col gap-6">
-            {posts.map((post) => (
+            <VideoPost {...videoPost} />
+            <PollPost {...pollPost} />
+            <GalleryPost {...galleryPost} />
+            {textPosts.map((post) => (
               <PostCard key={post.id} {...post} />
             ))}
           </div>
         </div>
 
+        {/* Right Sidebar */}
         <div className="hidden lg:flex flex-col gap-6 order-3">
+          {/* Stats Box */}
           <div
             className="rounded-xl p-5 relative overflow-hidden"
             style={{
@@ -425,99 +486,14 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="widget-box">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xs font-black uppercase tracking-widest text-text-muted">
-                Reactions Received
-              </h3>
-              <div className="flex items-center gap-2">
-                <button className="text-text-muted hover:text-white">
-                  <svg
-                    className="w-3 h-3"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </button>
-                <button className="text-text-muted hover:text-white">
-                  <svg
-                    className="w-3 h-3"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </button>
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-6">
-              <div className="flex flex-col items-center gap-2">
-                <img
-                  src="/images/reactions/like.png"
-                  alt="Like"
-                  className="w-14 h-14 rounded-full"
-                />
-                <div className="text-center">
-                  <p className="text-xl font-black text-white">12.642</p>
-                  <p className="text-[9px] font-bold uppercase text-text-muted">
-                    Likes
-                  </p>
-                </div>
-              </div>
-              <div className="flex flex-col items-center gap-2">
-                <img
-                  src="/images/reactions/love.png"
-                  alt="Love"
-                  className="w-14 h-14 rounded-full"
-                />
-                <div className="text-center">
-                  <p className="text-xl font-black text-white">8.913</p>
-                  <p className="text-[9px] font-bold uppercase text-text-muted">
-                    Loves
-                  </p>
-                </div>
-              </div>
-              <div className="flex flex-col items-center gap-2">
-                <img
-                  src="/images/reactions/dislike.png"
-                  alt="Dislike"
-                  className="w-14 h-14 rounded-full"
-                />
-                <div className="text-center">
-                  <p className="text-xl font-black text-white">945</p>
-                  <p className="text-[9px] font-bold uppercase text-text-muted">
-                    Dislikes
-                  </p>
-                </div>
-              </div>
-              <div className="flex flex-col items-center gap-2">
-                <img
-                  src="/images/reactions/happy.png"
-                  alt="Happy"
-                  className="w-14 h-14 rounded-full"
-                />
-                <div className="text-center">
-                  <p className="text-xl font-black text-white">7.034</p>
-                  <p className="text-[9px] font-bold uppercase text-text-muted">
-                    Happy
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
+          <EventsWidget />
+          <ActivityWidget />
+          <GroupsWidget />
 
+          {/* Calendar */}
           <div className="widget-box">
             <h3 className="text-xs font-black uppercase tracking-widest text-text-muted mb-4">
-              August 2019
+              January 2026
             </h3>
             <div className="grid grid-cols-7 gap-1 text-center text-[10px]">
               {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
@@ -526,16 +502,16 @@ export default function Home() {
                 </div>
               ))}
               {[
-                28, 29, 30, 31, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
-                15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
-                31,
+                29, 30, 31, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+                16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
+                1,
               ].map((day, i) => (
                 <div
                   key={i}
                   className={`py-1 rounded ${
-                    i < 4
+                    i < 3 || i > 33
                       ? "text-text-muted/50"
-                      : day === 12
+                      : day === 5
                       ? "bg-primary text-white"
                       : "text-white hover:bg-background cursor-pointer"
                   }`}
