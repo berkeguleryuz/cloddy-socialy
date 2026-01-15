@@ -183,7 +183,7 @@ export default function MessagesDropdown() {
         <div className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-accent-blue rounded-full border-2 border-surface" />
       </button>
 
-      {isOpen && (
+      {isOpen ? (
         <>
           <div
             className="fixed inset-0 z-40"
@@ -250,9 +250,9 @@ export default function MessagesDropdown() {
                       level={selectedConversation.user.level}
                       size="md"
                     />
-                    {selectedConversation.user.online && (
+                    {selectedConversation.user.online ? (
                       <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-secondary rounded-full border-2 border-surface" />
-                    )}
+                    ) : null}
                   </div>
                   <div>
                     <h3 className="text-sm font-bold">
@@ -279,12 +279,12 @@ export default function MessagesDropdown() {
                       }`}
                     >
                       <div className="flex items-end gap-2 max-w-[80%]">
-                        {!message.sent && (
+                        {!message.sent ? (
                           <HexagonAvatar
                             src={selectedConversation.user.avatar}
                             size="sm"
                           />
-                        )}
+                        ) : null}
                         <div>
                           <div
                             className={`px-4 py-3 rounded-2xl text-xs font-medium ${
@@ -357,9 +357,9 @@ export default function MessagesDropdown() {
                           level={conversation.user.level}
                           size="md"
                         />
-                        {conversation.user.online && (
+                        {conversation.user.online ? (
                           <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-secondary rounded-full border-2 border-surface" />
-                        )}
+                        ) : null}
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between mb-0.5">
@@ -374,9 +374,9 @@ export default function MessagesDropdown() {
                           {conversation.lastMessage}
                         </p>
                       </div>
-                      {conversation.unread && (
+                      {conversation.unread ? (
                         <div className="w-2.5 h-2.5 bg-primary rounded-full shrink-0" />
-                      )}
+                      ) : null}
                     </button>
                   ))}
                 </div>
@@ -409,7 +409,7 @@ export default function MessagesDropdown() {
             )}
           </div>
         </>
-      )}
+      ) : null}
     </div>
   );
 }

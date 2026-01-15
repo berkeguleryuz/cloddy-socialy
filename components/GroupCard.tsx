@@ -86,7 +86,7 @@ export default function GroupCard({
           Last activity {lastActivity}
         </p>
 
-        {memberAvatars.length > 0 && (
+        {memberAvatars.length > 0 ? (
           <div className="flex items-center gap-2 mb-4">
             <div className="flex -space-x-2">
               {memberAvatars.slice(0, 4).map((avatar, i) => (
@@ -102,13 +102,13 @@ export default function GroupCard({
                 </div>
               ))}
             </div>
-            {memberAvatars.length > 4 && (
+            {memberAvatars.length > 4 ? (
               <span className="text-[10px] text-text-muted font-bold">
                 +{memberAvatars.length - 4} more
               </span>
-            )}
+            ) : null}
           </div>
-        )}
+        ) : null}
 
         <div className="flex justify-center gap-8 w-full mb-6">
           <div className="flex flex-col items-center">

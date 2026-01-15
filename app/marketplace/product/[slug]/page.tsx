@@ -228,15 +228,15 @@ export default function ProductPage() {
                   }`}
                 >
                   {tab.label}
-                  {activeTab === tab.id && (
+                  {activeTab === tab.id ? (
                     <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-t-full" />
-                  )}
+                  ) : null}
                 </button>
               ))}
             </div>
 
             <div className="p-6">
-              {activeTab === "description" && (
+              {activeTab === "description" ? (
                 <div className="space-y-4">
                   <h3 className="text-sm font-bold">
                     The Best eSports and Gaming Magazine Template!
@@ -269,9 +269,9 @@ export default function ProductPage() {
                     ))}
                   </ul>
                 </div>
-              )}
+              ) : null}
 
-              {activeTab === "comments" && (
+              {activeTab === "comments" ? (
                 <div className="space-y-4">
                   {comments.map((comment) => (
                     <div
@@ -288,11 +288,11 @@ export default function ProductPage() {
                           <span className="text-sm font-bold">
                             {comment.user.name}
                           </span>
-                          {comment.reaction && (
+                          {comment.reaction ? (
                             <span className="px-2 py-0.5 bg-accent-yellow/20 text-accent-yellow text-[9px] font-bold rounded">
                               {comment.reaction}
                             </span>
-                          )}
+                          ) : null}
                         </div>
                         <p className="text-xs text-text-muted mb-2">
                           {comment.text}
@@ -322,9 +322,9 @@ export default function ProductPage() {
                     />
                   </div>
                 </div>
-              )}
+              ) : null}
 
-              {activeTab === "reviews" && (
+              {activeTab === "reviews" ? (
                 <div className="space-y-4">
                   {reviews.map((review) => (
                     <div
@@ -372,7 +372,7 @@ export default function ProductPage() {
                     </div>
                   ))}
                 </div>
-              )}
+              ) : null}
             </div>
           </div>
         </div>

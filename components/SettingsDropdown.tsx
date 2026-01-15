@@ -97,7 +97,7 @@ export default function SettingsDropdown() {
         </svg>
       </button>
 
-      {isOpen && (
+      {isOpen ? (
         <div className="absolute right-0 top-full mt-4 w-[300px] bg-surface rounded-xl shadow-main border border-border overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200">
           <div className="p-6 border-b border-border">
             <div className="flex items-center gap-4">
@@ -133,11 +133,11 @@ export default function SettingsDropdown() {
                       className="flex items-center justify-between px-6 py-2.5 text-sm text-white/80 hover:text-white hover:bg-background/50 transition-all"
                     >
                       <span>{item.label}</span>
-                      {item.badge && (
+                      {item.badge ? (
                         <span className="text-secondary font-bold text-xs">
                           {item.badge}
                         </span>
-                      )}
+                      ) : null}
                     </Link>
                   ))}
                 </div>
@@ -151,7 +151,7 @@ export default function SettingsDropdown() {
             </button>
           </div>
         </div>
-      )}
+      ) : null}
     </div>
   );
 }

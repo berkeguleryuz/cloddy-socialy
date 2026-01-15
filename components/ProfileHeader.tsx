@@ -145,9 +145,9 @@ export default function ProfileHeader({
               }`}
             >
               {tab}
-              {activeTab === tab && (
+              {activeTab === tab ? (
                 <div className="absolute -bottom-5 left-0 right-0 h-0.5 bg-linear-to-r from-primary to-secondary"></div>
-              )}
+              ) : null}
             </button>
           ))}
         </div>

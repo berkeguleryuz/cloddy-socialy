@@ -1,5 +1,6 @@
 "use client";
 
+import { ReactNode } from "react";
 import HexagonAvatar from "./HexagonAvatar";
 
 const activities = [
@@ -45,7 +46,7 @@ const activities = [
   },
 ];
 
-const iconMap: Record<string, JSX.Element> = {
+const iconMap: Record<string, ReactNode> = {
   heart: (
     <div className="w-5 h-5 rounded-full bg-secondary flex items-center justify-center">
       <svg

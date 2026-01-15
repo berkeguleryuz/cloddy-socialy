@@ -43,7 +43,7 @@ export default function HexagonAvatar({
         </div>
       </div>
 
-      {level !== undefined && (
+      {level !== undefined ? (
         <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-6 h-7 z-20 flex items-center justify-center">
           <div className="absolute inset-0 shield-mask bg-background p-[2px]">
             <div className="w-full h-full shield-mask bg-primary"></div>
@@ -52,7 +52,7 @@ export default function HexagonAvatar({
             {level}
           </span>
         </div>
-      )}
+      ) : null}
     </div>
   );
 }

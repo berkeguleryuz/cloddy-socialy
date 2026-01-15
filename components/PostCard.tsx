@@ -50,7 +50,7 @@ export default function PostCard({
       <p className="text-sm leading-relaxed text-gray-200">{content}</p>
 
       {/* Image */}
-      {image && (
+      {image ? (
         <div className="rounded-xl overflow-hidden mt-2">
           <img
             src={image}
@@ -58,7 +58,7 @@ export default function PostCard({
             className="w-full h-auto hover:scale-105 transition-transform duration-700"
           />
         </div>
-      )}
+      ) : null}
 
       {/* Actions - Icon only */}
       <div className="flex items-center justify-between pt-4 border-t border-border">

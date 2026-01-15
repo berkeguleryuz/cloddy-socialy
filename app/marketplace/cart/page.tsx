@@ -198,12 +198,12 @@ export default function CartPage() {
                 <span className="text-text-muted">Cart ({items.length})</span>
                 <span className="font-bold">$ {subtotal.toFixed(2)}</span>
               </div>
-              {discount > 0 && (
+              {discount > 0 ? (
                 <div className="flex justify-between text-accent-green">
                   <span>Code</span>
                   <span className="font-bold">-$ {discount.toFixed(2)}</span>
                 </div>
-              )}
+              ) : null}
               <div className="flex justify-between pt-3 border-t border-border text-lg">
                 <span className="font-bold">Total</span>
                 <span className="font-black text-primary">

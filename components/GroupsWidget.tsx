@@ -119,7 +119,7 @@ export default function GroupsWidget() {
             className="flex items-center gap-3 p-2 rounded-lg hover:bg-background/50 transition-colors cursor-pointer group"
           >
             <div
-              className={`w-10 h-10 rounded-xl bg-gradient-to-br ${group.color} flex items-center justify-center text-lg shrink-0`}
+              className={`w-10 h-10 rounded-xl bg-linear-to-br ${group.color} flex items-center justify-center text-lg shrink-0`}
             >
               {group.icon}
             </div>

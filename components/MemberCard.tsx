@@ -41,14 +41,14 @@ export default function MemberCard({
         <div className="shrink-0 flex flex-col items-center">
           <div className="relative">
             <HexagonAvatar src={avatar} level={level} size="lg" />
-            {badges > 0 && (
+            {badges > 0 ? (
               <Link
                 href="/profile"
                 className="absolute -right-1 -bottom-1 bg-primary text-white text-[9px] font-bold px-1.5 py-0.5 rounded-md hover:bg-secondary transition-colors"
               >
                 +{badges}
               </Link>
-            )}
+            ) : null}
           </div>
         </div>
 

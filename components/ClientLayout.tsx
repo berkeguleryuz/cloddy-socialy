@@ -1,26 +1,38 @@
 "use client";
 
 import { ReactNode } from "react";
+import dynamic from "next/dynamic";
 import { AuthProvider, useAuth } from "@/components/AuthContext";
 import { DataProvider } from "@/components/DataContext";
+
+// Lazy load components for better code splitting
+const LandingPage = dynamic(() => import("@/components/LandingPage"), {
+  ssr: false,
+});
+const Navbar = dynamic(() => import("@/components/Navbar"), { ssr: false });
+const SidebarLeft = dynamic(() => import("@/components/SidebarLeft"), {
+  ssr: false,
+});
+const SidebarRight = dynamic(() => import("@/components/SidebarRight"), {
+  ssr: false,
+});
+const SidebarContext = dynamic(
+  () =>
+    import("@/components/SidebarContext").then((mod) => ({
+      default: mod.SidebarProvider,
+    })),
+  { ssr: false }
+);
 
 function AppLayout({ children }: { children: ReactNode }) {
   const { isAuthenticated } = useAuth();
 
   if (!isAuthenticated) {
-    // Dynamically import LandingPage to avoid SSR issues
-    const LandingPage = require("@/components/LandingPage").default;
     return <LandingPage />;
   }
 
-  // Import main app components dynamically
-  const Navbar = require("@/components/Navbar").default;
-  const SidebarLeft = require("@/components/SidebarLeft").default;
-  const SidebarRight = require("@/components/SidebarRight").default;
-  const { SidebarProvider } = require("@/components/SidebarContext");
-
   return (
-    <SidebarProvider>
+    <SidebarContext>
       <DataProvider>
         <Navbar />
         <SidebarLeft />
@@ -106,7 +118,7 @@ function AppLayout({ children }: { children: ReactNode }) {
           </div>
         </div>
       </DataProvider>
-    </SidebarProvider>
+    </SidebarContext>
   );
 }
 

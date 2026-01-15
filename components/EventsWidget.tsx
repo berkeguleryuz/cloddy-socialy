@@ -58,7 +58,7 @@ export default function EventsWidget() {
             className="flex items-center gap-3 p-2 rounded-lg hover:bg-background/50 transition-colors cursor-pointer group"
           >
             <div
-              className={`w-12 h-12 rounded-xl bg-gradient-to-br ${event.color} flex items-center justify-center shrink-0 overflow-hidden`}
+              className={`w-12 h-12 rounded-xl bg-linear-to-br ${event.color} flex items-center justify-center shrink-0 overflow-hidden`}
             >
               <img
                 src={event.image}

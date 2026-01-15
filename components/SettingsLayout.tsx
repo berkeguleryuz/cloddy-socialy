@@ -82,9 +82,9 @@ export default function SettingsLayout({
             <h1 className="text-2xl font-black text-white tracking-wide uppercase">
               {title}
             </h1>
-            {description && (
+            {description ? (
               <p className="text-white/80 text-sm font-medium">{description}</p>
-            )}
+            ) : null}
           </div>
         </div>
       </div>

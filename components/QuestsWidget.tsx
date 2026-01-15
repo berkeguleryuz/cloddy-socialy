@@ -44,7 +44,7 @@ export default function QuestsWidget() {
             className="p-3 rounded-xl bg-background/50 hover:bg-background transition-colors cursor-pointer group"
           >
             <div className="flex items-start gap-3">
-              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center text-lg shrink-0">
+              <div className="w-10 h-10 rounded-lg bg-linear-to-br from-primary/20 to-secondary/20 flex items-center justify-center text-lg shrink-0">
                 {quest.icon}
               </div>
               <div className="flex-1 min-w-0">
@@ -61,7 +61,7 @@ export default function QuestsWidget() {
                 </p>
                 <div className="mt-2 h-1.5 bg-background rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-gradient-to-r from-primary to-secondary transition-all duration-500"
+                    className="h-full bg-linear-to-r from-primary to-secondary transition-all duration-500"
                     style={{ width: `${quest.progress}%` }}
                   />
                 </div>

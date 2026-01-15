@@ -115,7 +115,7 @@ const months = [
 ];
 
 export default function EventsPage() {
-  const [currentDate, setCurrentDate] = useState(new Date(2026, 0, 1));
+  const [currentDate, setCurrentDate] = useState(() => new Date(2026, 0, 1));
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedEvent, setSelectedEvent] = useState<(typeof events)[0] | null>(
     null
@@ -273,7 +273,7 @@ export default function EventsPage() {
                   >
                     {day}
                   </span>
-                  {hasEvents && (
+                  {hasEvents ? (
                     <div className="flex gap-0.5 mt-1">
                       {dayEvents.slice(0, 3).map((_, idx) => (
                         <div
@@ -282,7 +282,7 @@ export default function EventsPage() {
                         ></div>
                       ))}
                     </div>
-                  )}
+                  ) : null}
                 </button>
               );
             })}
@@ -360,7 +360,7 @@ export default function EventsPage() {
         </div>
       </div>
 
-      {selectedEvent && (
+      {selectedEvent ? (
         <div
           className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4"
           onClick={() => setSelectedEvent(null)}
@@ -505,11 +505,11 @@ export default function EventsPage() {
                       </div>
                     ))}
                   </div>
-                  {selectedEvent.totalParticipants > 4 && (
+                  {selectedEvent.totalParticipants > 4 ? (
                     <span className="ml-2 text-xs font-bold text-text-muted">
                       +{selectedEvent.totalParticipants - 4} more
                     </span>
-                  )}
+                  ) : null}
                 </div>
               </div>
 
@@ -524,7 +524,7 @@ export default function EventsPage() {
             </div>
           </div>
         </div>
-      )}
+      ) : null}
     </div>
   );
 }
