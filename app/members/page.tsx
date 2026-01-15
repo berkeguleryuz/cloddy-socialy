@@ -141,9 +141,9 @@ export default function MembersPage() {
               }`}
             >
               {tab.label}
-              {activeFilter === tab.id && (
+              {activeFilter === tab.id ? (
                 <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-t-full" />
-              )}
+              ) : null}
             </button>
           ))}
         </div>

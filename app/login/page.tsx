@@ -91,7 +91,7 @@ export default function LoginPage() {
                 />
               </div>
 
-              {activeTab === "register" && (
+              {activeTab === "register" ? (
                 <div className="relative">
                   <input
                     type="password"
@@ -99,7 +99,7 @@ export default function LoginPage() {
                     className="w-full bg-background border-2 border-border rounded-xl py-4 px-6 text-sm font-bold text-white placeholder-text-muted outline-none focus:border-primary transition-colors"
                   />
                 </div>
-              )}
+              ) : null}
 
               <div className="flex items-center justify-between">
                 <label className="flex items-center gap-3 cursor-pointer group">

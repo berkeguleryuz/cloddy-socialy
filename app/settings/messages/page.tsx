@@ -115,9 +115,9 @@ export default function MessagesPage() {
                   {conv.lastMessage}
                 </p>
               </div>
-              {conv.unread && (
+              {conv.unread ? (
                 <div className="w-2.5 h-2.5 bg-primary rounded-full"></div>
-              )}
+              ) : null}
             </div>
           ))}
         </div>

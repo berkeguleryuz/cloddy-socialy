@@ -21,11 +21,11 @@ export default function BadgeCard({
         !unlocked ? "opacity-50" : "hover:translate-y-[-4px]"
       }`}
     >
-      {hasNextTier && (
+      {hasNextTier ? (
         <div className="absolute top-3 left-3 text-[9px] font-bold text-text-muted uppercase tracking-wider">
           Next Tier:
         </div>
-      )}
+      ) : null}
 
       <div className="absolute top-3 right-3 bg-primary/20 text-primary text-[10px] font-bold px-2 py-1 rounded-md">
         {exp} EXP
@@ -36,9 +36,9 @@ export default function BadgeCard({
           !unlocked ? "grayscale" : ""
         }`}
       >
-        {unlocked && (
+        {unlocked ? (
           <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full scale-125 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-        )}
+        ) : null}
         <img
           src={image}
           alt={name}
@@ -52,7 +52,7 @@ export default function BadgeCard({
         {description}
       </p>
 
-      {!unlocked && (
+      {!unlocked ? (
         <div className="absolute inset-0 flex items-center justify-center bg-background/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl">
           <div className="w-8 h-8 bg-surface rounded-full flex items-center justify-center">
             <svg
@@ -68,7 +68,7 @@ export default function BadgeCard({
             </svg>
           </div>
         </div>
-      )}
+      ) : null}
     </div>
   );
 }

@@ -124,21 +124,21 @@ export default function LandingPage() {
           className="object-cover opacity-25 animate-pulse-glow"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-br from-[#0d0f13]/80 via-[#0d0f13]/50 to-[#0d0f13]/80" />
+        <div className="absolute inset-0 bg-linear-to-br from-[#0d0f13]/80 via-[#0d0f13]/50 to-[#0d0f13]/80" />
       </div>
 
       {/* Floating Animated Orbs */}
-      <div className="animate-float-1 absolute top-20 left-20 w-64 h-64 bg-primary/30 rounded-full blur-[100px] z-[1]" />
-      <div className="animate-float-2 absolute bottom-20 right-20 w-80 h-80 bg-secondary/25 rounded-full blur-[120px] z-[1]" />
-      <div className="animate-float-3 absolute top-1/2 left-1/3 w-48 h-48 bg-[#21e19f]/20 rounded-full blur-[80px] z-[1]" />
-      <div className="animate-float-4 absolute top-1/4 right-1/4 w-32 h-32 bg-primary/20 rounded-full blur-[60px] z-[1]" />
+      <div className="animate-float-1 absolute top-20 left-20 w-64 h-64 bg-primary/30 rounded-full blur-[100px] z-1" />
+      <div className="animate-float-2 absolute bottom-20 right-20 w-80 h-80 bg-secondary/25 rounded-full blur-[120px] z-1" />
+      <div className="animate-float-3 absolute top-1/2 left-1/3 w-48 h-48 bg-[#21e19f]/20 rounded-full blur-[80px] z-1" />
+      <div className="animate-float-4 absolute top-1/4 right-1/4 w-32 h-32 bg-primary/20 rounded-full blur-[60px] z-1" />
 
       {/* Small floating particles */}
-      <div className="animate-float-2 absolute top-[15%] left-[10%] w-2 h-2 bg-primary rounded-full z-[2]" />
-      <div className="animate-float-1 absolute top-[25%] left-[25%] w-1 h-1 bg-secondary rounded-full z-[2]" />
-      <div className="animate-float-3 absolute top-[60%] left-[15%] w-1.5 h-1.5 bg-[#21e19f] rounded-full z-[2]" />
-      <div className="animate-float-4 absolute top-[40%] left-[40%] w-1 h-1 bg-white/50 rounded-full z-[2]" />
-      <div className="animate-float-1 absolute top-[70%] left-[30%] w-2 h-2 bg-primary/70 rounded-full z-[2]" />
+      <div className="animate-float-2 absolute top-[15%] left-[10%] w-2 h-2 bg-primary rounded-full z-2" />
+      <div className="animate-float-1 absolute top-[25%] left-[25%] w-1 h-1 bg-secondary rounded-full z-2" />
+      <div className="animate-float-3 absolute top-[60%] left-[15%] w-1.5 h-1.5 bg-[#21e19f] rounded-full z-2" />
+      <div className="animate-float-4 absolute top-[40%] left-[40%] w-1 h-1 bg-white/50 rounded-full z-2" />
+      <div className="animate-float-1 absolute top-[70%] left-[30%] w-2 h-2 bg-primary/70 rounded-full z-2" />
 
       {/* Content */}
       <div className="relative z-10 flex min-h-screen">
@@ -147,9 +147,9 @@ export default function LandingPage() {
           <div className="max-w-lg text-center">
             {/* Logo */}
             <div className="mb-8 animate-slide-up">
-              <div className="inline-flex items-center justify-center w-24 h-24 rounded-2xl bg-gradient-to-br from-primary via-secondary to-primary p-[2px] mb-6 animate-gradient">
+              <div className="inline-flex items-center justify-center w-24 h-24 rounded-2xl bg-linear-to-br from-primary via-secondary to-primary p-[2px] mb-6 animate-gradient">
                 <div className="w-full h-full rounded-2xl bg-[#0d0f13]/90 backdrop-blur-sm flex items-center justify-center">
-                  <span className="text-4xl font-black bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                  <span className="text-4xl font-black bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent">
                     C
                   </span>
                 </div>
@@ -160,7 +160,7 @@ export default function LandingPage() {
               <h1 className="text-6xl font-black text-white mb-4 tracking-tight">
                 CLODDY
               </h1>
-              <div className="h-1 w-20 mx-auto bg-gradient-to-r from-primary to-secondary rounded-full" />
+              <div className="h-1 w-20 mx-auto bg-linear-to-r from-primary to-secondary rounded-full" />
             </div>
 
             <p className="text-lg text-gray-300 leading-relaxed mb-8 animate-slide-up-delay-1">
@@ -231,7 +231,7 @@ export default function LandingPage() {
             <div className="animate-slide-up-delay-3">
               <button
                 onClick={enterDemoMode}
-                className="group inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-gradient-to-r from-secondary to-[#21e19f] text-white font-bold text-sm hover:scale-105 transition-all duration-300 shadow-lg shadow-secondary/30"
+                className="group inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-linear-to-r from-secondary to-[#21e19f] text-white font-bold text-sm hover:scale-105 transition-all duration-300 shadow-lg shadow-secondary/30"
               >
                 <svg
                   className="w-5 h-5"
@@ -347,7 +347,7 @@ export default function LandingPage() {
 
                     <button
                       type="submit"
-                      className="w-full py-4 bg-gradient-to-r from-primary to-[#8b5cf6] text-white font-bold rounded-xl hover:opacity-90 transition-opacity shadow-lg shadow-primary/30"
+                      className="w-full py-4 bg-linear-to-r from-primary to-[#8b5cf6] text-white font-bold rounded-xl hover:opacity-90 transition-opacity shadow-lg shadow-primary/30"
                     >
                       Login to your Account
                     </button>
@@ -455,7 +455,7 @@ export default function LandingPage() {
 
                     <button
                       type="submit"
-                      className="w-full py-4 bg-gradient-to-r from-secondary to-[#21e19f] text-white font-bold rounded-xl hover:opacity-90 transition-opacity shadow-lg shadow-secondary/30"
+                      className="w-full py-4 bg-linear-to-r from-secondary to-[#21e19f] text-white font-bold rounded-xl hover:opacity-90 transition-opacity shadow-lg shadow-secondary/30"
                     >
                       Create Account
                     </button>
@@ -516,7 +516,7 @@ export default function LandingPage() {
                 <div className="lg:hidden mt-6 pt-6 border-t border-white/10">
                   <button
                     onClick={enterDemoMode}
-                    className="w-full py-3 bg-gradient-to-r from-secondary to-[#21e19f] text-white font-bold rounded-xl flex items-center justify-center gap-2"
+                    className="w-full py-3 bg-linear-to-r from-secondary to-[#21e19f] text-white font-bold rounded-xl flex items-center justify-center gap-2"
                   >
                     <svg
                       className="w-5 h-5"

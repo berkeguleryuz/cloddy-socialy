@@ -210,11 +210,11 @@ export default function ForumsPage() {
                   />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      {topic.isPinned && (
+                      {topic.isPinned ? (
                         <span className="text-[10px] font-black uppercase px-2 py-0.5 bg-primary/20 text-primary rounded">
                           Pinned
                         </span>
-                      )}
+                      ) : null}
                       <span
                         className="text-[10px] font-black uppercase px-2 py-0.5 rounded"
                         style={{
@@ -258,7 +258,7 @@ export default function ForumsPage() {
         </div>
       </div>
 
-      {showCreateModal && (
+      {showCreateModal ? (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
           <div className="widget-box w-full max-w-lg p-6 animate-in zoom-in-95 duration-200">
             <div className="flex items-center justify-between mb-6">
@@ -335,7 +335,7 @@ export default function ForumsPage() {
             </div>
           </div>
         </div>
-      )}
+      ) : null}
     </div>
   );
 }

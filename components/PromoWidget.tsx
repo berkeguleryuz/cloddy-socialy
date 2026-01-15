@@ -1,6 +1,6 @@
 export default function PromoWidget() {
   return (
-    <div className="rounded-xl p-5 relative overflow-hidden bg-gradient-to-br from-secondary via-[#1cd19e] to-accent-blue">
+    <div className="rounded-xl p-5 relative overflow-hidden bg-linear-to-br from-secondary via-[#1cd19e] to-accent-blue">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-20">
         <svg

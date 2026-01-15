@@ -74,7 +74,7 @@ export default function StreamCard({
           </div>
         )}
 
-        {isLive && viewers > 0 && (
+        {isLive && viewers > 0 ? (
           <div className="absolute top-3 right-3 flex items-center gap-1.5 px-2 py-1 bg-black/60 backdrop-blur-sm rounded-lg">
             <svg
               className="w-3 h-3 text-accent-red"
@@ -92,13 +92,13 @@ export default function StreamCard({
               {viewers.toLocaleString()}
             </span>
           </div>
-        )}
+        ) : null}
 
-        {!isLive && duration && (
+        {!isLive && duration ? (
           <div className="absolute bottom-3 right-3 px-2 py-1 bg-black/60 backdrop-blur-sm rounded-lg">
             <span className="text-[10px] font-bold text-white">{duration}</span>
           </div>
-        )}
+        ) : null}
 
         <div
           className={`absolute bottom-3 left-3 p-2 bg-black/60 backdrop-blur-sm rounded-lg ${platformColors[platform]}`}
@@ -143,9 +143,9 @@ export default function StreamCard({
                 className="w-full h-full object-cover"
               />
             </div>
-            {isLive && (
+            {isLive ? (
               <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-accent-green border-2 border-surface rounded-full" />
-            )}
+            ) : null}
           </div>
           <div>
             <Link href="/profile">

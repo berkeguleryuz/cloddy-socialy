@@ -285,7 +285,7 @@ export default function Home() {
                       : "border-b-4 border-transparent text-text-muted hover:bg-background/10 hover:text-white"
                   }`}
                 >
-                  {tab.icon === "edit" && (
+                  {tab.icon === "edit" ? (
                     <svg
                       className="w-4 h-4"
                       fill="currentColor"
@@ -293,8 +293,8 @@ export default function Home() {
                     >
                       <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"></path>
                     </svg>
-                  )}
-                  {tab.icon === "file" && (
+                  ) : null}
+                  {tab.icon === "file" ? (
                     <svg
                       className="w-4 h-4"
                       fill="currentColor"
@@ -302,8 +302,8 @@ export default function Home() {
                     >
                       <path d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"></path>
                     </svg>
-                  )}
-                  {tab.icon === "poll" && (
+                  ) : null}
+                  {tab.icon === "poll" ? (
                     <svg
                       className="w-4 h-4"
                       fill="currentColor"
@@ -311,7 +311,7 @@ export default function Home() {
                     >
                       <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"></path>
                     </svg>
-                  )}
+                  ) : null}
                   <span className="text-[11px] font-black uppercase">
                     {tab.id}
                   </span>

@@ -65,9 +65,9 @@ export default function GalleryPost({
         </div>
 
         {/* Content */}
-        {content && (
+        {content ? (
           <p className="text-sm leading-relaxed text-gray-200">{content}</p>
-        )}
+        ) : null}
 
         {/* Photo Grid */}
         <div
@@ -115,13 +115,13 @@ export default function GalleryPost({
                 </svg>
               </div>
               {/* Remaining count overlay */}
-              {index === displayImages.length - 1 && remainingCount > 0 && (
+              {index === displayImages.length - 1 && remainingCount > 0 ? (
                 <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
                   <span className="text-2xl font-black text-white">
                     +{remainingCount}
                   </span>
                 </div>
-              )}
+              ) : null}
             </div>
           ))}
         </div>
@@ -222,9 +222,9 @@ export default function GalleryPost({
       </div>
 
       {/* Lightbox */}
-      {lightboxOpen && (
+      {lightboxOpen ? (
         <div
-          className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4"
+          className="fixed inset-0 z-100 bg-black/95 flex items-center justify-center p-4"
           onClick={() => setLightboxOpen(false)}
         >
           <button
@@ -305,7 +305,7 @@ export default function GalleryPost({
             {currentImage + 1} / {images.length}
           </div>
         </div>
-      )}
+      ) : null}
     </>
   );
 }

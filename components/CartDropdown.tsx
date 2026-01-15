@@ -67,14 +67,14 @@ export default function CartDropdown() {
             d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
           />
         </svg>
-        {cartItems.length > 0 && (
+        {cartItems.length > 0 ? (
           <div className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-primary text-[10px] font-bold rounded-full flex items-center justify-center text-white">
             {cartItems.length}
           </div>
-        )}
+        ) : null}
       </button>
 
-      {isOpen && (
+      {isOpen ? (
         <>
           <div
             className="fixed inset-0 z-40"
@@ -82,7 +82,7 @@ export default function CartDropdown() {
           />
           <div className="absolute right-0 top-14 w-[380px] bg-surface rounded-xl border border-border shadow-2xl z-50 overflow-hidden animate-in slide-in-from-top-2 duration-200">
             {/* Header */}
-            <div className="p-4 border-b border-border bg-gradient-to-r from-primary to-secondary">
+            <div className="p-4 border-b border-border bg-linear-to-r from-primary to-secondary">
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
                   <svg
@@ -146,7 +146,7 @@ export default function CartDropdown() {
                         : ""
                     }`}
                   >
-                    <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary/20 via-secondary/10 to-accent-blue/20 p-1 flex items-center justify-center overflow-hidden shrink-0">
+                    <div className="w-14 h-14 rounded-xl bg-linear-to-br from-primary/20 via-secondary/10 to-accent-blue/20 p-1 flex items-center justify-center overflow-hidden shrink-0">
                       <img
                         src={item.image}
                         alt={item.name}
@@ -180,7 +180,7 @@ export default function CartDropdown() {
             </div>
 
             {/* Footer */}
-            {cartItems.length > 0 && (
+            {cartItems.length > 0 ? (
               <div className="p-4 border-t border-border bg-background/50">
                 <div className="flex items-center justify-between mb-4">
                   <span className="text-sm text-text-muted">Subtotal:</span>
@@ -188,17 +188,17 @@ export default function CartDropdown() {
                     ${total.toFixed(2)}
                   </span>
                 </div>
-                <button className="w-full py-3 bg-gradient-to-r from-primary to-secondary text-white font-bold rounded-xl hover:opacity-90 transition-all hover:shadow-lg hover:shadow-primary/30">
+                <button className="w-full py-3 bg-linear-to-r from-primary to-secondary text-white font-bold rounded-xl hover:opacity-90 transition-all hover:shadow-lg hover:shadow-primary/30">
                   Proceed to Checkout
                 </button>
                 <button className="w-full py-2 mt-2 text-sm text-text-muted hover:text-white transition-colors">
                   Continue Shopping →
                 </button>
               </div>
-            )}
+            ) : null}
           </div>
         </>
-      )}
+      ) : null}
     </div>
   );
 }

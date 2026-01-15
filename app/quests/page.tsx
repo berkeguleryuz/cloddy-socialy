@@ -154,18 +154,18 @@ function FeaturedQuestCard({ quest }: { quest: Quest }) {
             <h3 className="text-sm font-bold">{quest.name}</h3>
           </div>
         </div>
-        {quest.completed && (
+        {quest.completed ? (
           <div className="px-3 py-1 bg-accent-green/20 text-accent-green text-[10px] font-bold rounded-lg uppercase">
             completed
           </div>
-        )}
+        ) : null}
       </div>
 
       <p className="text-xs text-text-muted font-medium leading-relaxed">
         {quest.description}
       </p>
 
-      {quest.friendsCompleted && (
+      {quest.friendsCompleted ? (
         <div className="flex items-center gap-3 pt-4 border-t border-border">
           <div className="flex -space-x-2">
             {[1, 2, 3].map((i) => (
@@ -188,7 +188,7 @@ function FeaturedQuestCard({ quest }: { quest: Quest }) {
             completed this quest
           </span>
         </div>
-      )}
+      ) : null}
     </div>
   );
 }

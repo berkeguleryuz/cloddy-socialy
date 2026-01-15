@@ -90,7 +90,7 @@ export default function InvitationsPage() {
           ))}
         </div>
 
-        {invitations.length === 0 && (
+        {invitations.length === 0 ? (
           <div className="text-center py-12">
             <svg
               className="w-16 h-16 text-text-muted mx-auto mb-4"
@@ -107,7 +107,7 @@ export default function InvitationsPage() {
             </svg>
             <p className="text-text-muted">No pending invitations</p>
           </div>
-        )}
+        ) : null}
       </div>
     </SettingsLayout>
   );

@@ -76,7 +76,7 @@ export default function PollPost({
       </div>
 
       {/* Poll Question */}
-      <div className="bg-gradient-to-r from-primary/20 to-secondary/20 rounded-xl p-4">
+      <div className="bg-linear-to-r from-primary/20 to-secondary/20 rounded-xl p-4">
         <div className="flex items-center gap-3 mb-4">
           <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center">
             <svg
@@ -117,7 +117,7 @@ export default function PollPost({
                             : "border-text-muted"
                         }`}
                       >
-                        {selectedOption === option.id && (
+                        {selectedOption === option.id ? (
                           <svg
                             className="w-3 h-3 text-white"
                             fill="currentColor"
@@ -129,7 +129,7 @@ export default function PollPost({
                               clipRule="evenodd"
                             />
                           </svg>
-                        )}
+                        ) : null}
                       </div>
                     ) : (
                       <span className="text-xs font-bold text-primary">
@@ -140,25 +140,25 @@ export default function PollPost({
                       {option.text}
                     </span>
                   </div>
-                  {hasVoted && (
+                  {hasVoted ? (
                     <span className="text-xs text-text-muted">
                       {option.votes} votes
                     </span>
-                  )}
+                  ) : null}
                 </div>
-                {hasVoted && (
+                {hasVoted ? (
                   <div
-                    className="absolute inset-0 bg-gradient-to-r from-primary/30 to-secondary/30"
+                    className="absolute inset-0 bg-linear-to-r from-primary/30 to-secondary/30"
                     style={{ width: `${percentage}%` }}
                   />
-                )}
+                ) : null}
               </div>
             );
           })}
         </div>
 
         {/* Vote Button */}
-        {!hasVoted && (
+        {!hasVoted ? (
           <button
             onClick={handleVote}
             disabled={selectedOption === null}
@@ -170,7 +170,7 @@ export default function PollPost({
           >
             Vote Now!
           </button>
-        )}
+        ) : null}
 
         {/* Total Votes */}
         <p className="text-center text-xs text-text-muted mt-3">

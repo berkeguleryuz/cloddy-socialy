@@ -186,7 +186,7 @@ export default function StreamsPage() {
         </div>
       </div>
 
-      {liveCount > 0 && (
+      {liveCount > 0 ? (
         <div className="flex flex-col gap-4">
           <div className="flex items-center gap-3">
             <div className="w-2 h-2 bg-accent-red rounded-full animate-pulse" />
@@ -204,7 +204,7 @@ export default function StreamsPage() {
               ))}
           </div>
         </div>
-      )}
+      ) : null}
 
       <div className="flex flex-col gap-4">
         <div className="widget-box p-0! overflow-hidden">
@@ -241,9 +241,9 @@ export default function StreamsPage() {
                 }`}
               >
                 {tab.label}
-                {activeFilter === tab.id && (
+                {activeFilter === tab.id ? (
                   <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#9146FF] rounded-t-full" />
-                )}
+                ) : null}
               </button>
             ))}
           </div>

@@ -183,9 +183,9 @@ export default function SidebarRight() {
                     size="sm"
                     level={friend.level}
                   />
-                  {friend.online && (
+                  {friend.online ? (
                     <div className="absolute top-0 right-0 w-2.5 h-2.5 bg-secondary rounded-full border-2 border-surface z-30"></div>
-                  )}
+                  ) : null}
                 </div>
 
                 <div className="flex flex-col min-w-0 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap overflow-hidden">
@@ -231,7 +231,7 @@ export default function SidebarRight() {
         </div>
       </aside>
 
-      {selectedFriend && (
+      {selectedFriend ? (
         <div className="fixed right-[80px] xl:right-[300px] top-20 bottom-0 w-[380px] bg-surface border-l border-border z-50 flex flex-col shadow-2xl animate-in slide-in-from-right duration-200">
           <div className="p-4 border-b border-border bg-primary flex items-center gap-3">
             <button
@@ -264,9 +264,9 @@ export default function SidebarRight() {
                 level={selectedFriend.level}
                 size="md"
               />
-              {selectedFriend.online && (
+              {selectedFriend.online ? (
                 <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-secondary rounded-full border-2 border-surface" />
-              )}
+              ) : null}
             </div>
             <div>
               <h3 className="text-sm font-bold">{selectedFriend.name}</h3>
@@ -289,12 +289,12 @@ export default function SidebarRight() {
                 }`}
               >
                 <div className="flex items-end gap-2 max-w-[80%]">
-                  {!message.sent && (
+                  {!message.sent ? (
                     <HexagonAvatar
                       src={`/images/avatars/avatar_${selectedFriend.avatar}`}
                       size="sm"
                     />
-                  )}
+                  ) : null}
                   <div>
                     <div
                       className={`px-4 py-3 rounded-2xl text-xs font-medium ${
@@ -349,7 +349,7 @@ export default function SidebarRight() {
             </div>
           </div>
         </div>
-      )}
+      ) : null}
     </>
   );
 }
