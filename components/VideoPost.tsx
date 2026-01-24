@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import HexagonAvatar from "./HexagonAvatar";
 
 interface VideoPostProps {
@@ -56,11 +57,13 @@ export default function VideoPost({
       <p className="text-sm leading-relaxed text-gray-200">{content}</p>
 
       {/* Video Player */}
-      <div className="relative rounded-xl overflow-hidden group cursor-pointer">
-        <img
+      <div className="relative rounded-xl overflow-hidden group cursor-pointer aspect-video">
+        <Image
           src={videoThumbnail}
           alt={videoTitle}
-          className="w-full h-auto aspect-video object-cover group-hover:scale-105 transition-transform duration-700"
+          fill
+          className="object-cover group-hover:scale-105 transition-transform duration-700"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
         />
         <div className="absolute inset-0 bg-black/30 flex items-center justify-center group-hover:bg-black/50 transition-colors">
           <div className="w-20 h-20 rounded-full bg-primary/90 flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg shadow-primary/30">

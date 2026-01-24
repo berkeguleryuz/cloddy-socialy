@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, useCallback, useMemo, ReactNode } from "react";
 
 interface User {
   id: string;
@@ -35,7 +35,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const isAuthenticated = user !== null || isDemo;
 
-  const loginWithGoogle = async () => {
+  const loginWithGoogle = useCallback(async () => {
     // TODO: Implement NextAuth Google login
     // For now, mock login
     setUser({
@@ -46,29 +46,32 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       level: 1,
     });
     setIsDemo(false);
-  };
+  }, []);
 
-  const enterDemoMode = () => {
+  const enterDemoMode = useCallback(() => {
     setUser(demoUser);
     setIsDemo(true);
-  };
+  }, []);
 
-  const logout = () => {
+  const logout = useCallback(() => {
     setUser(null);
     setIsDemo(false);
-  };
+  }, []);
+
+  const value = useMemo(
+    () => ({
+      user,
+      isDemo,
+      isAuthenticated,
+      loginWithGoogle,
+      enterDemoMode,
+      logout,
+    }),
+    [user, isDemo, isAuthenticated, loginWithGoogle, enterDemoMode, logout]
+  );
 
   return (
-    <AuthContext.Provider
-      value={{
-        user,
-        isDemo,
-        isAuthenticated,
-        loginWithGoogle,
-        enterDemoMode,
-        logout,
-      }}
-    >
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   );

@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 interface HexagonAvatarProps {
   src: string;
   size?: "sm" | "md" | "lg" | "xl";
@@ -38,8 +40,8 @@ export default function HexagonAvatar({
       </div>
 
       <div className="w-full h-full p-[8px] relative z-10">
-        <div className="w-full h-full hexagon-mask bg-background overflow-hidden">
-          <img src={src} alt="Avatar" className="w-full h-full object-cover" />
+        <div className="w-full h-full hexagon-mask bg-background overflow-hidden relative">
+          <Image src={src} alt="Avatar" fill className="object-cover" sizes="(max-width: 768px) 40px, 48px" />
         </div>
       </div>
 

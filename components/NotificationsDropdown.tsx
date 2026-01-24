@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import HexagonAvatar from "./HexagonAvatar";
 
 const notifications = [
@@ -244,11 +245,13 @@ export default function NotificationsDropdown() {
                   >
                     <div className="relative shrink-0">
                       {notification.type === "badge" ? (
-                        <div className="w-10 h-10 rounded-lg overflow-hidden">
-                          <img
+                        <div className="w-10 h-10 rounded-lg overflow-hidden relative">
+                          <Image
                             src={notification.user.avatar}
                             alt=""
-                            className="w-full h-full object-contain"
+                            fill
+                            className="object-contain"
+                            sizes="40px"
                           />
                         </div>
                       ) : (

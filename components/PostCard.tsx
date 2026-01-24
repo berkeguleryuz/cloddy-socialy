@@ -1,5 +1,7 @@
 "use client";
 
+import { memo } from "react";
+import Image from "next/image";
 import HexagonAvatar from "./HexagonAvatar";
 
 interface PostCardProps {
@@ -16,7 +18,7 @@ interface PostCardProps {
   shares: number;
 }
 
-export default function PostCard({
+const PostCard = memo(function PostCard({
   author,
   content,
   image,
@@ -51,11 +53,13 @@ export default function PostCard({
 
       {/* Image */}
       {image ? (
-        <div className="rounded-xl overflow-hidden mt-2">
-          <img
+        <div className="rounded-xl overflow-hidden mt-2 relative aspect-video">
+          <Image
             src={image}
             alt="Post content"
-            className="w-full h-auto hover:scale-105 transition-transform duration-700"
+            fill
+            className="object-cover hover:scale-105 transition-transform duration-700"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
           />
         </div>
       ) : null}
@@ -155,4 +159,6 @@ export default function PostCard({
       </div>
     </div>
   );
-}
+});
+
+export default PostCard;

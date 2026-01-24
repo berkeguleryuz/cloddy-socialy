@@ -1,9 +1,11 @@
 "use client";
 
 import { ReactNode } from "react";
+import Image from "next/image";
 import dynamic from "next/dynamic";
 import { AuthProvider, useAuth } from "@/components/AuthContext";
 import { DataProvider } from "@/components/DataContext";
+import { SidebarProvider } from "@/components/SidebarContext";
 
 // Lazy load components for better code splitting
 const LandingPage = dynamic(() => import("@/components/LandingPage"), {
@@ -16,13 +18,6 @@ const SidebarLeft = dynamic(() => import("@/components/SidebarLeft"), {
 const SidebarRight = dynamic(() => import("@/components/SidebarRight"), {
   ssr: false,
 });
-const SidebarContext = dynamic(
-  () =>
-    import("@/components/SidebarContext").then((mod) => ({
-      default: mod.SidebarProvider,
-    })),
-  { ssr: false }
-);
 
 function AppLayout({ children }: { children: ReactNode }) {
   const { isAuthenticated } = useAuth();
@@ -32,7 +27,7 @@ function AppLayout({ children }: { children: ReactNode }) {
   }
 
   return (
-    <SidebarContext>
+    <SidebarProvider>
       <DataProvider>
         <Navbar />
         <SidebarLeft />
@@ -73,11 +68,13 @@ function AppLayout({ children }: { children: ReactNode }) {
               />
             </svg>
           </div>
-          <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-primary -mt-6 bg-surface p-1">
-            <img
+          <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-primary -mt-6 bg-surface p-1 relative">
+            <Image
               src="/images/avatars/avatar_01.png"
               alt="User"
-              className="w-full h-full object-cover rounded-full"
+              fill
+              className="object-cover rounded-full"
+              sizes="48px"
             />
           </div>
           <div className="text-accent-blue">
@@ -118,7 +115,7 @@ function AppLayout({ children }: { children: ReactNode }) {
           </div>
         </div>
       </DataProvider>
-    </SidebarContext>
+    </SidebarProvider>
   );
 }
 

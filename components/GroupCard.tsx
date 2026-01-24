@@ -1,3 +1,5 @@
+import { memo } from "react";
+import Image from "next/image";
 import HexagonAvatar from "./HexagonAvatar";
 import Link from "next/link";
 
@@ -13,7 +15,7 @@ interface GroupCardProps {
   lastActivity?: string;
 }
 
-export default function GroupCard({
+const GroupCard = memo(function GroupCard({
   name,
   avatar,
   cover,
@@ -27,10 +29,12 @@ export default function GroupCard({
   return (
     <div className="widget-box overflow-hidden group transition-all duration-300 hover:translate-y-[-4px]">
       <div className="h-32 overflow-hidden relative">
-        <img
+        <Image
           src={cover}
           alt="Cover"
-          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+          fill
+          className="object-cover group-hover:scale-110 transition-transform duration-700"
+          sizes="(max-width: 768px) 100vw, 400px"
         />
         <div className="absolute inset-0 bg-linear-to-t from-surface via-surface/50 to-transparent" />
 
@@ -89,15 +93,17 @@ export default function GroupCard({
         {memberAvatars.length > 0 ? (
           <div className="flex items-center gap-2 mb-4">
             <div className="flex -space-x-2">
-              {memberAvatars.slice(0, 4).map((avatar, i) => (
+              {memberAvatars.slice(0, 4).map((memberAvatar, i) => (
                 <div
                   key={i}
-                  className="w-6 h-6 rounded-full border-2 border-surface overflow-hidden"
+                  className="w-6 h-6 rounded-full border-2 border-surface overflow-hidden relative"
                 >
-                  <img
-                    src={avatar}
+                  <Image
+                    src={memberAvatar}
                     alt="Member"
-                    className="w-full h-full object-cover"
+                    fill
+                    className="object-cover"
+                    sizes="24px"
                   />
                 </div>
               ))}
@@ -131,4 +137,6 @@ export default function GroupCard({
       </div>
     </div>
   );
-}
+});
+
+export default GroupCard;

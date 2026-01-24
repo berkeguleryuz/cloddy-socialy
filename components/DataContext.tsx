@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, ReactNode } from "react";
+import { createContext, useContext, useMemo, ReactNode } from "react";
 import { useAuth } from "./AuthContext";
 
 // Demo posts data
@@ -101,8 +101,10 @@ export function DataProvider({ children }: { children: ReactNode }) {
 
   const posts = isDemo ? demoPosts : emptyPosts;
 
+  const value = useMemo(() => ({ posts, isDemo }), [posts, isDemo]);
+
   return (
-    <DataContext.Provider value={{ posts, isDemo }}>
+    <DataContext.Provider value={value}>
       {children}
     </DataContext.Provider>
   );

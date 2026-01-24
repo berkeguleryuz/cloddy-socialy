@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import Image from "next/image";
 
 const cartItems = [
   {
@@ -146,11 +147,13 @@ export default function CartDropdown() {
                         : ""
                     }`}
                   >
-                    <div className="w-14 h-14 rounded-xl bg-linear-to-br from-primary/20 via-secondary/10 to-accent-blue/20 p-1 flex items-center justify-center overflow-hidden shrink-0">
-                      <img
+                    <div className="w-14 h-14 rounded-xl bg-linear-to-br from-primary/20 via-secondary/10 to-accent-blue/20 p-1 flex items-center justify-center overflow-hidden shrink-0 relative">
+                      <Image
                         src={item.image}
                         alt={item.name}
-                        className="w-full h-full object-contain"
+                        fill
+                        className="object-contain"
+                        sizes="56px"
                       />
                     </div>
                     <div className="flex-1 min-w-0">
