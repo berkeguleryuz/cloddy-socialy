@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useSidebar } from "./SidebarContext";
 import SettingsDropdown from "./SettingsDropdown";
@@ -81,11 +82,13 @@ export default function Navbar() {
           </div>
 
           <Link href="/profile" className="relative hidden sm:block group">
-            <div className="w-12 h-12 hexagon-mask overflow-hidden cursor-pointer group-hover:scale-110 transition-transform">
-              <img
+            <div className="w-12 h-12 hexagon-mask overflow-hidden cursor-pointer group-hover:scale-110 transition-transform relative">
+              <Image
                 src="/images/avatars/avatar_01.png"
                 alt="User"
-                className="w-full h-full object-cover"
+                fill
+                className="object-cover"
+                sizes="48px"
               />
             </div>
             <div className="absolute inset-0 hexagon-mask border-2 border-primary pointer-events-none"></div>

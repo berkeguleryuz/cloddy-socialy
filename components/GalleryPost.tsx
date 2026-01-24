@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import HexagonAvatar from "./HexagonAvatar";
 
 interface GalleryPostProps {
@@ -85,7 +86,7 @@ export default function GalleryPost({
             <div
               key={index}
               onClick={() => openLightbox(index)}
-              className={`relative rounded-xl overflow-hidden cursor-pointer group ${
+              className={`relative rounded-xl overflow-hidden cursor-pointer group aspect-square ${
                 displayImages.length === 4 && index === 0
                   ? "col-span-2 row-span-2"
                   : displayImages.length === 5 && index < 2
@@ -95,10 +96,12 @@ export default function GalleryPost({
                   : ""
               }`}
             >
-              <img
+              <Image
                 src={image}
                 alt={`Gallery photo ${index + 1}`}
-                className="w-full h-full object-cover aspect-square group-hover:scale-110 transition-transform duration-500"
+                fill
+                className="object-cover group-hover:scale-110 transition-transform duration-500"
+                sizes="(max-width: 768px) 50vw, 200px"
               />
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
                 <svg
@@ -270,12 +273,15 @@ export default function GalleryPost({
             </svg>
           </button>
 
-          <img
-            src={images[currentImage]}
-            alt={`Photo ${currentImage + 1}`}
-            className="max-w-full max-h-[90vh] object-contain rounded-xl"
-            onClick={(e) => e.stopPropagation()}
-          />
+          <div className="relative max-w-full max-h-[90vh] w-[90vw] h-[80vh]" onClick={(e) => e.stopPropagation()}>
+            <Image
+              src={images[currentImage]}
+              alt={`Photo ${currentImage + 1}`}
+              fill
+              className="object-contain rounded-xl"
+              sizes="90vw"
+            />
+          </div>
 
           <button
             className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-white/20 transition-colors"

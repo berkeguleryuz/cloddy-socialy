@@ -1,3 +1,6 @@
+import { memo } from "react";
+import Image from "next/image";
+
 interface EventCardProps {
   title: string;
   date: string;
@@ -7,7 +10,7 @@ interface EventCardProps {
   image: string;
 }
 
-export default function EventCard({
+const EventCard = memo(function EventCard({
   title,
   date,
   time,
@@ -18,9 +21,9 @@ export default function EventCard({
   return (
     <div className="card overflow-hidden flex flex-col md:flex-row border border-transparent hover:border-secondary/30 transition-all duration-300">
       <div className="w-full md:w-48 h-48 relative shrink-0">
-        <img src={image} alt={title} className="w-full h-full object-cover" />
+        <Image src={image} alt={title} fill className="object-cover" sizes="(max-width: 768px) 100vw, 192px" />
         <div className="absolute inset-0 bg-linear-to-r from-surface/20 to-surface"></div>
-        <div className="absolute top-4 left-4 w-12 h-12 bg-white rounded-xl flex flex-col items-center justify-center text-surface shadow-xl">
+        <div className="absolute top-4 left-4 w-12 h-12 bg-white rounded-xl flex flex-col items-center justify-center text-surface shadow-xl z-10">
           <span className="text-xs font-black">{date.split(" ")[0]}</span>
           <span className="text-[10px] font-bold uppercase">
             {date.split(" ")[1]}
@@ -78,14 +81,15 @@ export default function EventCard({
         <div className="flex items-center justify-between mt-6">
           <div className="flex -space-x-2 overflow-hidden">
             {[...Array(4)].map((_, i) => (
-              <img
-                key={i}
-                src={`https:///images/avatars/avatar_0${
-                  i + 1
-                }.png`}
-                className="inline-block h-6 w-6 rounded-full ring-2 ring-surface object-cover"
-                alt="user"
-              />
+              <div key={i} className="relative inline-block h-6 w-6 rounded-full ring-2 ring-surface overflow-hidden">
+                <Image
+                  src={`/images/avatars/avatar_0${i + 1}.png`}
+                  fill
+                  className="object-cover"
+                  alt="user"
+                  sizes="24px"
+                />
+              </div>
             ))}
             <div className="h-6 w-6 rounded-full ring-2 ring-surface bg-border text-[8px] font-bold flex items-center justify-center text-text-muted">
               +{participants - 4}
@@ -98,4 +102,6 @@ export default function EventCard({
       </div>
     </div>
   );
-}
+});
+
+export default EventCard;

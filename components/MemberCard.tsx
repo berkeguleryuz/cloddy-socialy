@@ -1,3 +1,5 @@
+import { memo } from "react";
+import Image from "next/image";
 import HexagonAvatar from "./HexagonAvatar";
 import Link from "next/link";
 
@@ -16,7 +18,7 @@ interface MemberCardProps {
   badges?: number;
 }
 
-export default function MemberCard({
+const MemberCard = memo(function MemberCard({
   name,
   avatar,
   cover,
@@ -29,10 +31,12 @@ export default function MemberCard({
   return (
     <div className="widget-box overflow-hidden group transition-all duration-300 hover:translate-y-[-2px]">
       <div className="h-20 overflow-hidden relative">
-        <img
+        <Image
           src={cover}
           alt="Cover"
-          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+          fill
+          className="object-cover group-hover:scale-110 transition-transform duration-700"
+          sizes="(max-width: 768px) 100vw, 400px"
         />
         <div className="absolute inset-0 bg-linear-to-t from-surface to-transparent" />
       </div>
@@ -99,4 +103,6 @@ export default function MemberCard({
       </div>
     </div>
   );
-}
+});
+
+export default MemberCard;

@@ -110,57 +110,68 @@ const menuItems = [
 
 export default function LeftSidebar() {
   const pathname = usePathname();
-  const { isSidebarOpen } = useSidebar();
+  const { isSidebarOpen, toggleSidebar } = useSidebar();
 
   return (
-    <aside
-      className={`fixed left-0 top-20 bottom-0 bg-surface border-r border-border hidden lg:flex flex-col items-center py-8 gap-2 z-50 transition-all duration-300 group/left shadow-2xl ${
-        isSidebarOpen ? "w-[300px]" : "w-20 hover:w-[300px]"
-      }`}
-    >
-      <div className="flex flex-col w-full gap-1">
-        {menuItems.map((item) => {
-          const isActive = pathname === item.path;
-          const isExpanded = isSidebarOpen;
+    <>
+      {/* Mobile backdrop */}
+      {isSidebarOpen ? (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          onClick={toggleSidebar}
+        />
+      ) : null}
+      <aside
+        className={`fixed left-0 top-20 bottom-0 bg-surface border-r border-border flex flex-col items-center py-8 gap-2 z-50 transition-all duration-300 group/left shadow-2xl ${
+          isSidebarOpen
+            ? "w-[300px] translate-x-0"
+            : "lg:w-20 lg:hover:w-[300px] -translate-x-full lg:translate-x-0"
+        }`}
+      >
+        <div className="flex flex-col w-full gap-1">
+          {menuItems.map((item) => {
+            const isActive = pathname === item.path;
+            const isExpanded = isSidebarOpen;
 
-          return (
-            <Link
-              key={item.label}
-              href={item.path}
-              className={`relative w-full px-6 py-4 flex items-center cursor-pointer transition-all border-l-4 ${
-                isActive
-                  ? "border-primary text-white bg-primary/10"
-                  : "border-transparent text-text-muted hover:text-white"
-              }`}
-            >
-              <div
-                className={`w-6 h-6 shrink-0 flex items-center justify-center transition-colors ${
+            return (
+              <Link
+                key={item.label}
+                href={item.path}
+                className={`relative w-full px-6 py-4 flex items-center cursor-pointer transition-all border-l-4 ${
                   isActive
-                    ? "text-primary shadow-[0_0_10px_rgba(119,80,248,0.5)]"
-                    : "text-text-muted group-hover/left:text-primary"
+                    ? "border-primary text-white bg-primary/10"
+                    : "border-transparent text-text-muted hover:text-white"
                 }`}
               >
-                {item.icon}
-              </div>
+                <div
+                  className={`w-6 h-6 shrink-0 flex items-center justify-center transition-colors ${
+                    isActive
+                      ? "text-primary shadow-[0_0_10px_rgba(119,80,248,0.5)]"
+                      : "text-text-muted group-hover/left:text-primary"
+                  }`}
+                >
+                  {item.icon}
+                </div>
 
-              <span
-                className={`ml-6 text-xs font-black uppercase tracking-widest whitespace-nowrap transition-all duration-300 ${
-                  isExpanded
-                    ? "opacity-100 translate-x-0"
-                    : "opacity-0 -translate-x-4 group-hover/left:opacity-100 group-hover/left:translate-x-0"
-                }`}
-              >
-                {item.label}
-              </span>
+                <span
+                  className={`ml-6 text-xs font-black uppercase tracking-widest whitespace-nowrap transition-all duration-300 ${
+                    isExpanded
+                      ? "opacity-100 translate-x-0"
+                      : "opacity-0 -translate-x-4 group-hover/left:opacity-100 group-hover/left:translate-x-0"
+                  }`}
+                >
+                  {item.label}
+                </span>
 
-              <div className="absolute left-[calc(100%+12px)] px-3 py-1.5 bg-surface border border-border rounded-lg text-xs font-bold whitespace-nowrap opacity-0 group-hover:opacity-100 group-hover/left:hidden translate-x-[-10px] group-hover:translate-x-0 transition-all pointer-events-none shadow-xl z-50">
-                {item.label}
-                <div className="absolute left-[-4px] top-1/2 -translate-y-1/2 w-2 h-2 bg-surface border-l border-b border-border rotate-45"></div>
-              </div>
-            </Link>
-          );
-        })}
-      </div>
-    </aside>
+                <div className="absolute left-[calc(100%+12px)] px-3 py-1.5 bg-surface border border-border rounded-lg text-xs font-bold whitespace-nowrap opacity-0 group-hover:opacity-100 group-hover/left:hidden translate-x-[-10px] group-hover:translate-x-0 transition-all pointer-events-none shadow-xl z-50">
+                  {item.label}
+                  <div className="absolute left-[-4px] top-1/2 -translate-y-1/2 w-2 h-2 bg-surface border-l border-b border-border rotate-45"></div>
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+      </aside>
+    </>
   );
 }

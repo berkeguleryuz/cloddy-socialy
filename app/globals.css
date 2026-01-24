@@ -15,7 +15,7 @@
   --shadow-main: 3px 0 10px 0 rgba(0, 0, 0, 0.1);
   --shadow-widget: 0 0 40px 0 rgba(0, 0, 0, 0.22);
 
-  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
 
   --transition-sidebar: transform 0.35s ease-in-out;
 }
@@ -156,4 +156,22 @@ body {
 
 .no-scrollbar::-webkit-scrollbar {
   display: none;
+}
+
+/* Content visibility optimization for long lists */
+.content-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 500px;
+}
+
+/* Card content visibility for feed items */
+.card-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 400px;
+}
+
+/* Smaller card items */
+.card-auto-sm {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 200px;
 }

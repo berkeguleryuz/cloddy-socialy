@@ -1,3 +1,6 @@
+import { memo } from "react";
+import Image from "next/image";
+
 interface ProductCardProps {
   name: string;
   category: string;
@@ -7,7 +10,7 @@ interface ProductCardProps {
   sales: number;
 }
 
-export default function ProductCard({
+const ProductCard = memo(function ProductCard({
   name,
   category,
   price,
@@ -18,12 +21,14 @@ export default function ProductCard({
   return (
     <div className="card overflow-hidden group border border-transparent hover:border-primary/30 transition-all duration-300">
       <div className="h-48 overflow-hidden relative">
-        <img
+        <Image
           src={image}
           alt={name}
-          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+          fill
+          className="object-cover group-hover:scale-110 transition-transform duration-700"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 300px"
         />
-        <div className="absolute top-4 left-4 py-1 px-3 bg-primary text-white text-[10px] font-black rounded-lg shadow-xl shadow-primary/40 uppercase">
+        <div className="absolute top-4 left-4 py-1 px-3 bg-primary text-white text-[10px] font-black rounded-lg shadow-xl shadow-primary/40 uppercase z-10">
           ${price.toFixed(2)}
         </div>
       </div>
@@ -75,4 +80,6 @@ export default function ProductCard({
       </div>
     </div>
   );
-}
+});
+
+export default ProductCard;
