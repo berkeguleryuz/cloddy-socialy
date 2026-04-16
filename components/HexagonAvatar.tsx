@@ -1,20 +1,25 @@
+import { memo } from "react";
 import Image from "next/image";
 
 interface HexagonAvatarProps {
-  src: string;
+  src?: string | null;
   size?: "sm" | "md" | "lg" | "xl";
   level?: number;
   className?: string;
   progress?: number; // 0-100 for the border progress
 }
 
-export default function HexagonAvatar({
+const DEFAULT_AVATAR = "/images/avatars/avatar_01.png";
+
+const HexagonAvatar = memo(function HexagonAvatar({
   src,
   size = "md",
   level,
   className = "",
   progress = 100,
 }: HexagonAvatarProps) {
+  // Use default avatar if src is null, undefined, or empty
+  const imageSrc = src && src.trim() !== "" ? src : DEFAULT_AVATAR;
   const sizeClasses = {
     sm: "w-10 h-10",
     md: "w-12 h-12",
@@ -41,7 +46,7 @@ export default function HexagonAvatar({
 
       <div className="w-full h-full p-[8px] relative z-10">
         <div className="w-full h-full hexagon-mask bg-background overflow-hidden relative">
-          <Image src={src} alt="Avatar" fill className="object-cover" sizes="(max-width: 768px) 40px, 48px" />
+          <Image src={imageSrc} alt="Avatar" fill className="object-cover" sizes="(max-width: 768px) 40px, 48px" />
         </div>
       </div>
 
@@ -57,4 +62,6 @@ export default function HexagonAvatar({
       ) : null}
     </div>
   );
-}
+});
+
+export default HexagonAvatar;

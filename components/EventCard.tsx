@@ -7,8 +7,10 @@ interface EventCardProps {
   time: string;
   location: string;
   participants: number;
-  image: string;
+  image?: string | null;
 }
+
+const DEFAULT_EVENT_IMAGE = "/images/covers/cover_01.png";
 
 const EventCard = memo(function EventCard({
   title,
@@ -18,10 +20,12 @@ const EventCard = memo(function EventCard({
   participants,
   image,
 }: EventCardProps) {
+  const imageSrc = image && image.trim() !== "" ? image : DEFAULT_EVENT_IMAGE;
+
   return (
     <div className="card overflow-hidden flex flex-col md:flex-row border border-transparent hover:border-secondary/30 transition-all duration-300">
       <div className="w-full md:w-48 h-48 relative shrink-0">
-        <Image src={image} alt={title} fill className="object-cover" sizes="(max-width: 768px) 100vw, 192px" />
+        <Image src={imageSrc} alt={title} fill className="object-cover" sizes="(max-width: 768px) 100vw, 192px" />
         <div className="absolute inset-0 bg-linear-to-r from-surface/20 to-surface"></div>
         <div className="absolute top-4 left-4 w-12 h-12 bg-white rounded-xl flex flex-col items-center justify-center text-surface shadow-xl z-10">
           <span className="text-xs font-black">{date.split(" ")[0]}</span>

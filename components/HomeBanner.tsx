@@ -1,6 +1,7 @@
+import { memo } from "react";
 import Link from "next/link";
 
-export default function HomeBanner() {
+const HomeBanner = memo(function HomeBanner() {
   return (
     <div className="relative w-full rounded-2xl overflow-hidden bg-surface shadow-widget animate-in fade-in zoom-in duration-700">
       <div className="absolute inset-0 opacity-20 pointer-events-none bg-linear-to-br from-primary/30 via-secondary/20 to-accent-blue/30"></div>
@@ -68,4 +69,6 @@ export default function HomeBanner() {
       </div>
     </div>
   );
-}
+});
+
+export default HomeBanner;

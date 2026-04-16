@@ -1,9 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import GroupCard from "@/components/GroupCard";
+import CreateGroupModal from "@/components/modals/CreateGroupModal";
+import { useAuth } from "@/components/AuthContext";
+import { useGroups } from "@/hooks/useGroups";
 
-const groups = [
+// Demo groups - shown when not authenticated
+const demoGroups = [
   {
     id: 1,
     name: "Cosplayers of the World",
@@ -98,8 +102,8 @@ const groups = [
     memberAvatars: [
       "/images/avatars/avatar_02.png",
       "/images/avatars/avatar_03.png",
-      "https:///images/avatars/avatar_11.png",
-      "https:///images/avatars/avatar_12.png",
+      "/images/avatars/avatar_04.png",
+      "/images/avatars/avatar_05.png",
     ],
     lastActivity: "45 mins ago",
   },
@@ -176,11 +180,37 @@ export default function GroupsPage() {
   const [activeFilter, setActiveFilter] = useState("newest");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
-  const publicCount = groups.filter((g) => !g.isPrivate).length;
-  const privateCount = groups.filter((g) => g.isPrivate).length;
+  const { isDemo, isAuthenticated } = useAuth();
+  const groupsData = useGroups();
 
-  const filteredGroups = groups.filter((group) => {
+  // Transform groups data or use demo data
+  const groups = useMemo(() => {
+    // Always show demo data if in demo mode, not authenticated, loading, error, or no data
+    if (isDemo || !isAuthenticated || groupsData.isLoading || groupsData.error || !groupsData.data?.groups || groupsData.data.groups.length === 0) {
+      return demoGroups;
+    }
+
+    // Transform real groups data
+    return groupsData.data.groups.map((group: any, index: number) => ({
+      id: group.id,
+      name: group.name,
+      avatar: group.avatar_url || `/images/avatars/avatar_0${(index % 8) + 1}.png`,
+      cover: group.cover_url || `/images/covers/cover_0${(index % 6) + 1}.png`,
+      members: group.members_count?.toString() || "0",
+      posts: group.posts_count?.toString() || "0",
+      isPrivate: group.is_private || false,
+      category: group.category || "General",
+      memberAvatars: group.member_avatars || [],
+      lastActivity: group.last_activity || "Recently",
+    }));
+  }, [isDemo, isAuthenticated, groupsData.data]);
+
+  const publicCount = groups.filter((g: any) => !g.isPrivate).length;
+  const privateCount = groups.filter((g: any) => g.isPrivate).length;
+
+  const filteredGroups = groups.filter((group: any) => {
     const matchesSearch = group.name
       .toLowerCase()
       .includes(searchQuery.toLowerCase());
@@ -222,7 +252,10 @@ export default function GroupsPage() {
                 </span>
               </div>
             </div>
-            <button className="px-6 py-3 bg-primary text-white text-sm font-bold rounded-xl shadow-lg shadow-primary/30 hover:scale-105 transition-all">
+            <button
+              onClick={() => setIsCreateModalOpen(true)}
+              className="px-6 py-3 bg-primary text-white text-sm font-bold rounded-xl shadow-lg shadow-primary/30 hover:scale-105 transition-all"
+            >
               + Create Group
             </button>
           </div>
@@ -307,6 +340,12 @@ export default function GroupsPage() {
           Load More Groups
         </button>
       </div>
+
+      {/* Create Group Modal */}
+      <CreateGroupModal
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+      />
     </div>
   );
 }

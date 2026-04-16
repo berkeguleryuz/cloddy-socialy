@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -46,7 +47,7 @@ const settingsNav = [
   },
 ];
 
-export default function SettingsLayout({
+const SettingsLayout = memo(function SettingsLayout({
   children,
   title,
   description,
@@ -124,4 +125,6 @@ export default function SettingsLayout({
       </div>
     </div>
   );
-}
+});
+
+export default SettingsLayout;

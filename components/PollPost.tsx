@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, memo } from "react";
 import HexagonAvatar from "./HexagonAvatar";
 
 interface PollOption {
@@ -24,7 +24,7 @@ interface PollPostProps {
   shares: number;
 }
 
-export default function PollPost({
+const PollPost = memo(function PollPost({
   author,
   question,
   options: initialOptions,
@@ -273,4 +273,6 @@ export default function PollPost({
       </div>
     </div>
   );
-}
+});
+
+export default PollPost;

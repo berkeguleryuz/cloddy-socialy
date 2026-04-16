@@ -1,9 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo, useCallback, memo } from "react";
 import HexagonAvatar from "./HexagonAvatar";
+import { useAuth } from "./AuthContext";
+import { useData } from "./DataContext";
 
-const friendRequests = [
+// Demo friend requests - shown when not authenticated
+const demoFriendRequests = [
   {
     id: 1,
     user: {
@@ -33,17 +36,79 @@ const friendRequests = [
   },
 ];
 
-export default function FriendsDropdown() {
+const FriendsDropdown = memo(function FriendsDropdown() {
   const [isOpen, setIsOpen] = useState(false);
-  const [requests, setRequests] = useState(friendRequests);
+  const [dismissedIds, setDismissedIds] = useState<(string | number)[]>([]);
 
-  const handleAccept = (id: number) => {
-    setRequests(requests.filter((r) => r.id !== id));
-  };
+  const { isDemo, isAuthenticated } = useAuth();
+  const { social } = useData();
 
-  const handleDecline = (id: number) => {
-    setRequests(requests.filter((r) => r.id !== id));
-  };
+  // Transform friend requests data or use demo data
+  const allRequests = useMemo(() => {
+    if (isDemo || !isAuthenticated || !social.friendRequests || social.friendRequests.length === 0) {
+      return demoFriendRequests;
+    }
+
+    // Transform real friend requests data
+    return social.friendRequests.map((req: any, index: number) => ({
+      id: req.id || index,
+      user: {
+        name: req.sender?.display_name || "User",
+        avatar: req.sender?.avatar_url || `/images/avatars/avatar_0${(index % 8) + 1}.png`,
+        level: req.sender?.level || 1,
+      },
+      mutualFriends: req.mutual_friends_count || 0,
+    }));
+  }, [isDemo, isAuthenticated, social.friendRequests]);
+
+  // Filter out dismissed requests
+  const requests = useMemo(() => {
+    return allRequests.filter((r) => !dismissedIds.includes(r.id));
+  }, [allRequests, dismissedIds]);
+
+  const handleAccept = useCallback(async (id: string | number) => {
+    // In demo mode, just dismiss the request visually
+    if (isDemo || !isAuthenticated) {
+      setDismissedIds((prev) => [...prev, id]);
+      return;
+    }
+
+    // In real mode, call the API to accept the friend request
+    try {
+      const response = await fetch("/api/friends/accept", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ requestId: id }),
+      });
+      if (response.ok) {
+        setDismissedIds((prev) => [...prev, id]);
+      }
+    } catch (error) {
+      console.error("Failed to accept friend request:", error);
+    }
+  }, [isDemo, isAuthenticated]);
+
+  const handleDecline = useCallback(async (id: string | number) => {
+    // In demo mode, just dismiss the request visually
+    if (isDemo || !isAuthenticated) {
+      setDismissedIds((prev) => [...prev, id]);
+      return;
+    }
+
+    // In real mode, call the API to decline the friend request
+    try {
+      const response = await fetch("/api/friends/decline", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ requestId: id }),
+      });
+      if (response.ok) {
+        setDismissedIds((prev) => [...prev, id]);
+      }
+    } catch (error) {
+      console.error("Failed to decline friend request:", error);
+    }
+  }, [isDemo, isAuthenticated]);
 
   return (
     <div className="relative">
@@ -172,4 +237,6 @@ export default function FriendsDropdown() {
       ) : null}
     </div>
   );
-}
+});
+
+export default FriendsDropdown;
