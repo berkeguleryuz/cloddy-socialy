@@ -1,4 +1,6 @@
-export default function PromoWidget() {
+import { memo } from "react";
+
+const PromoWidget = memo(function PromoWidget() {
   return (
     <div className="rounded-xl p-5 relative overflow-hidden bg-linear-to-br from-secondary via-[#1cd19e] to-accent-blue">
       {/* Background Pattern */}
@@ -52,4 +54,6 @@ export default function PromoWidget() {
       </div>
     </div>
   );
-}
+});
+
+export default PromoWidget;

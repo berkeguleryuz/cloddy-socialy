@@ -1,10 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo, useCallback, memo } from "react";
 import Image from "next/image";
 import HexagonAvatar from "./HexagonAvatar";
+import { useAuth } from "./AuthContext";
+import { useData } from "./DataContext";
 
-const notifications = [
+// Demo notifications - shown when not authenticated
+const demoNotifications = [
   {
     id: 1,
     type: "like",
@@ -62,15 +65,86 @@ const notifications = [
   },
 ];
 
-export default function NotificationsDropdown() {
+// Helper to format time ago
+function formatTimeAgo(dateString: string): string {
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffMins = Math.floor(diffMs / 60000);
+
+  if (diffMins < 1) return "Just now";
+  if (diffMins < 60) return `${diffMins} mins ago`;
+
+  const diffHours = Math.floor(diffMins / 60);
+  if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? "s" : ""} ago`;
+
+  const diffDays = Math.floor(diffHours / 24);
+  return `${diffDays} day${diffDays > 1 ? "s" : ""} ago`;
+}
+
+// Map notification type
+function mapNotificationType(type: string): string {
+  const typeMapping: Record<string, string> = {
+    like: "like",
+    comment: "comment",
+    friend_request: "follow",
+    badge_earned: "badge",
+    mention: "mention",
+  };
+  return typeMapping[type] || "mention";
+}
+
+const NotificationsDropdown = memo(function NotificationsDropdown() {
   const [isOpen, setIsOpen] = useState(false);
-  const [items, setItems] = useState(notifications);
+  const [localReadIds, setLocalReadIds] = useState<Set<string | number>>(new Set());
+
+  const { isDemo, isAuthenticated } = useAuth();
+  const { notifications: notificationsData } = useData();
+
+  // Transform notifications data or use demo data
+  const items = useMemo(() => {
+    if (isDemo || !isAuthenticated || !notificationsData.items || notificationsData.items.length === 0) {
+      return demoNotifications.map((n) => ({
+        ...n,
+        read: n.read || localReadIds.has(n.id),
+      }));
+    }
+
+    // Transform real notifications data
+    return notificationsData.items.map((notif: any, index: number) => ({
+      id: notif.id || index,
+      type: mapNotificationType(notif.type),
+      user: {
+        name: notif.data?.from_user?.display_name || notif.title || "System",
+        avatar: notif.data?.from_user?.avatar_url ||
+          (notif.type === "badge_earned" ? "/images/badges/badge_gold-s.png" : `/images/avatars/avatar_0${(index % 8) + 1}.png`),
+      },
+      action: notif.message || notif.title || "sent you a notification",
+      time: formatTimeAgo(notif.created_at),
+      read: notif.read || localReadIds.has(notif.id),
+    }));
+  }, [isDemo, isAuthenticated, notificationsData.items, localReadIds]);
 
   const unreadCount = items.filter((n) => !n.read).length;
 
-  const markAllRead = () => {
-    setItems(items.map((n) => ({ ...n, read: true })));
-  };
+  const markAllRead = useCallback(async () => {
+    // Mark all as read locally
+    const allIds = items.map((n) => n.id);
+    setLocalReadIds(new Set(allIds));
+
+    // If authenticated, call API to mark all as read
+    if (!isDemo && isAuthenticated) {
+      try {
+        await fetch("/api/notifications/mark-read", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ all: true }),
+        });
+      } catch (error) {
+        console.error("Failed to mark notifications as read:", error);
+      }
+    }
+  }, [items, isDemo, isAuthenticated]);
 
   const getTypeIcon = (type: string) => {
     switch (type) {
@@ -295,4 +369,6 @@ export default function NotificationsDropdown() {
       ) : null}
     </div>
   );
-}
+});
+
+export default NotificationsDropdown;

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, memo } from "react";
 import Image from "next/image";
 
 const cartItems = [
@@ -30,7 +30,7 @@ const cartItems = [
   },
 ];
 
-export default function CartDropdown() {
+const CartDropdown = memo(function CartDropdown() {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -204,4 +204,6 @@ export default function CartDropdown() {
       ) : null}
     </div>
   );
-}
+});
+
+export default CartDropdown;

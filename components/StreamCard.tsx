@@ -1,3 +1,4 @@
+import { memo } from "react";
 import Link from "next/link";
 
 interface StreamCardProps {
@@ -39,7 +40,7 @@ const platformColors = {
   facebook: "text-[#1877F2]",
 };
 
-export default function StreamCard({
+const StreamCard = memo(function StreamCard({
   title,
   streamer,
   thumbnail,
@@ -161,4 +162,6 @@ export default function StreamCard({
       </div>
     </div>
   );
-}
+});
+
+export default StreamCard;

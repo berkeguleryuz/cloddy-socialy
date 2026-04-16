@@ -1,6 +1,12 @@
-import BadgeCard from "@/components/BadgeCard";
+"use client";
 
-const badges = [
+import { useMemo } from "react";
+import BadgeCard from "@/components/BadgeCard";
+import { useAuth } from "@/components/AuthContext";
+import { useBadges } from "@/hooks/useBadges";
+
+// Demo badges - shown when not authenticated
+const demoBadges = [
   // User Tier Badges
   {
     id: 1,
@@ -315,10 +321,34 @@ const badges = [
 ];
 
 export default function BadgesPage() {
-  const unlockedCount = badges.filter((b) => b.unlocked).length;
+  const { isDemo, isAuthenticated } = useAuth();
+  const badgesData = useBadges();
+
+  // Transform badges data or use demo data
+  const badges = useMemo(() => {
+    if (isDemo || !isAuthenticated || !badgesData.data?.badges || badgesData.data.badges.length === 0) {
+      return demoBadges;
+    }
+
+    // Transform real badges data with user unlock status
+    const userBadges = badgesData.data.user_badges || [];
+    const unlockedIds = new Set(userBadges.map((ub: any) => ub.badge_id));
+
+    return badgesData.data.badges.map((badge: any) => ({
+      id: badge.id,
+      name: badge.name,
+      description: badge.description,
+      image: badge.image_url || `/images/badges/badge_bronze-s.png`,
+      unlocked: unlockedIds.has(badge.id),
+      exp: badge.experience_points || 20,
+      hasNextTier: badge.has_next_tier || false,
+    }));
+  }, [isDemo, isAuthenticated, badgesData.data]);
+
+  const unlockedCount = badges.filter((b: any) => b.unlocked).length;
   const totalExp = badges
-    .filter((b) => b.unlocked)
-    .reduce((sum, b) => sum + b.exp, 0);
+    .filter((b: any) => b.unlocked)
+    .reduce((sum: number, b: any) => sum + b.exp, 0);
 
   return (
     <div className="flex flex-col gap-8 animate-in slide-in-from-bottom-4 duration-700">

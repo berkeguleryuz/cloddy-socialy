@@ -1,9 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import MemberCard from "@/components/MemberCard";
+import { useAuth } from "@/components/AuthContext";
+import { useData } from "@/components/DataContext";
 
-const members = [
+// Demo members - shown when not authenticated
+const demoMembers = [
   {
     id: 1,
     name: "Neko Bebop",
@@ -115,7 +118,35 @@ export default function MembersPage() {
   const [activeFilter, setActiveFilter] = useState("active");
   const [currentPage, setCurrentPage] = useState(1);
   const membersPerPage = 9;
-  const totalMembers = 256;
+
+  const { isDemo, isAuthenticated } = useAuth();
+  const { social } = useData();
+
+  // Transform members data or use demo data
+  const { members, totalMembers } = useMemo(() => {
+    if (isDemo || !isAuthenticated || !social.friends || social.friends.length === 0) {
+      return { members: demoMembers, totalMembers: 256 };
+    }
+
+    // Transform real friends data to member format
+    const membersList = social.friends.map((friend: any, index: number) => ({
+      id: friend.id || index,
+      name: friend.user?.display_name || "User",
+      avatar: friend.user?.avatar_url || `/images/avatars/avatar_0${(index % 8) + 1}.png`,
+      cover: friend.user?.cover_url || `/images/covers/cover_0${(index % 6) + 1}.png`,
+      level: friend.user?.level || 1,
+      stats: {
+        posts: friend.user?.posts_count?.toString() || "0",
+        friends: friend.user?.friends_count?.toString() || "0",
+        visits: friend.user?.profile_views?.toString() || "0",
+      },
+      tagline: friend.user?.tagline || "",
+      bio: friend.user?.bio || "",
+      badges: friend.user?.badges_count || 0,
+    }));
+
+    return { members: membersList, totalMembers: membersList.length };
+  }, [isDemo, isAuthenticated, social.friends]);
 
   return (
     <div className="flex flex-col gap-8 animate-in slide-in-from-bottom-4 duration-700">

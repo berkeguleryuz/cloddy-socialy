@@ -1,50 +1,39 @@
 "use client";
 
-import { ReactNode } from "react";
+import { ReactNode, useMemo, memo } from "react";
 import HexagonAvatar from "./HexagonAvatar";
+import { useAuth } from "./AuthContext";
+import { useData } from "./DataContext";
+import { demoActivities } from "@/constants/demoData";
 
-const activities = [
-  {
-    id: 1,
-    user: { name: "Nick Grissom", avatar: "/images/avatars/avatar_02.png" },
-    action: "liked",
-    target: "Marina Valentine's status",
-    time: "2 min ago",
-    icon: "heart",
-  },
-  {
-    id: 2,
-    user: { name: "Sandra Strange", avatar: "/images/avatars/avatar_05.png" },
-    action: "commented on",
-    target: "Neko's photo",
-    time: "5 min ago",
-    icon: "comment",
-  },
-  {
-    id: 3,
-    user: { name: "Matt Parker", avatar: "/images/avatars/avatar_04.png" },
-    action: "joined",
-    target: "Gaming Warriors group",
-    time: "12 min ago",
-    icon: "group",
-  },
-  {
-    id: 4,
-    user: { name: "Destroy Dex", avatar: "/images/avatars/avatar_07.png" },
-    action: "earned",
-    target: "Gold User badge",
-    time: "28 min ago",
-    icon: "badge",
-  },
-  {
-    id: 5,
-    user: { name: "Sarah Diamond", avatar: "/images/avatars/avatar_08.png" },
-    action: "shared",
-    target: "a new video",
-    time: "45 min ago",
-    icon: "share",
-  },
-];
+// Helper to format time
+function formatTimeAgo(dateString: string): string {
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffMins = Math.floor(diffMs / 60000);
+
+  if (diffMins < 1) return "Just now";
+  if (diffMins < 60) return `${diffMins} min ago`;
+
+  const diffHours = Math.floor(diffMins / 60);
+  if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? "s" : ""} ago`;
+
+  const diffDays = Math.floor(diffHours / 24);
+  return `${diffDays} day${diffDays > 1 ? "s" : ""} ago`;
+}
+
+// Map notification type to icon
+function getActivityIcon(type: string): string {
+  const iconMapping: Record<string, string> = {
+    like: "heart",
+    comment: "comment",
+    friend_request: "group",
+    badge_earned: "badge",
+    share: "share",
+  };
+  return iconMapping[type] || "heart";
+}
 
 const iconMap: Record<string, ReactNode> = {
   heart: (
@@ -112,7 +101,30 @@ const iconMap: Record<string, ReactNode> = {
   ),
 };
 
-export default function ActivityWidget() {
+const ActivityWidget = memo(function ActivityWidget() {
+  const { isDemo, isAuthenticated } = useAuth();
+  const { notifications } = useData();
+
+  // Transform notifications to activity format or use demo data
+  const activities = useMemo(() => {
+    if (isDemo || !isAuthenticated || !notifications.items || notifications.items.length === 0) {
+      return demoActivities;
+    }
+
+    // Transform real notifications to activity format
+    return notifications.items.slice(0, 5).map((notif: any, index: number) => ({
+      id: notif.id || index,
+      user: {
+        name: notif.data?.from_user?.display_name || "Someone",
+        avatar: notif.data?.from_user?.avatar_url || `/images/avatars/avatar_0${(index % 8) + 1}.png`,
+      },
+      action: notif.message?.split(" ")[0]?.toLowerCase() || "interacted with",
+      target: notif.title || "your content",
+      time: formatTimeAgo(notif.created_at),
+      icon: getActivityIcon(notif.type),
+    }));
+  }, [isDemo, isAuthenticated, notifications.items]);
+
   return (
     <div className="widget-box">
       <div className="flex items-center justify-between mb-4">
@@ -153,4 +165,6 @@ export default function ActivityWidget() {
       </div>
     </div>
   );
-}
+});
+
+export default ActivityWidget;

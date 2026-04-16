@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, memo } from "react";
 import Link from "next/link";
 import HexagonAvatar from "./HexagonAvatar";
+import { useAuth } from "./AuthContext";
 
 interface MenuSection {
   title: string;
@@ -50,9 +51,10 @@ const menuSections: MenuSection[] = [
   },
 ];
 
-export default function SettingsDropdown() {
+const SettingsDropdown = memo(function SettingsDropdown() {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const { user, isDemo, isWeb3, logout, walletAddress } = useAuth();
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -102,13 +104,31 @@ export default function SettingsDropdown() {
           <div className="p-6 border-b border-border">
             <div className="flex items-center gap-4">
               <HexagonAvatar
-                src="/images/avatars/avatar_01.png"
-                level={24}
+                src={user?.avatar || "/images/avatars/avatar_01.png"}
+                level={user?.level || 1}
                 size="lg"
               />
               <div>
-                <h4 className="text-white font-bold text-sm">Hi Marina!</h4>
-                <p className="text-text-muted text-xs">@marinavalentine</p>
+                <h4 className="text-white font-bold text-sm">
+                  Hi {user?.name?.split(" ")[0] || "there"}!
+                </h4>
+                <p className="text-text-muted text-xs">
+                  {isWeb3 && walletAddress
+                    ? `${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}`
+                    : isDemo
+                    ? "@demo"
+                    : user?.email || "Guest"}
+                </p>
+                {isWeb3 && (
+                  <span className="inline-block mt-1 px-2 py-0.5 bg-primary/20 text-primary text-[10px] rounded-full">
+                    Web3
+                  </span>
+                )}
+                {isDemo && (
+                  <span className="inline-block mt-1 px-2 py-0.5 bg-secondary/20 text-secondary text-[10px] rounded-full">
+                    Demo Mode
+                  </span>
+                )}
               </div>
             </div>
           </div>
@@ -146,12 +166,20 @@ export default function SettingsDropdown() {
           </div>
 
           <div className="p-4 border-t border-border">
-            <button className="w-full py-3 bg-primary hover:bg-primary/90 text-white font-bold text-sm rounded-xl transition-all">
-              Logout
+            <button
+              onClick={() => {
+                logout();
+                setIsOpen(false);
+              }}
+              className="w-full py-3 bg-primary hover:bg-primary/90 text-white font-bold text-sm rounded-xl transition-all"
+            >
+              {isWeb3 ? "Disconnect Wallet" : "Logout"}
             </button>
           </div>
         </div>
       ) : null}
     </div>
   );
-}
+});
+
+export default SettingsDropdown;
