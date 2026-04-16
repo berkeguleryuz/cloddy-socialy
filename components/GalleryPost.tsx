@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, memo } from "react";
 import Image from "next/image";
 import HexagonAvatar from "./HexagonAvatar";
 
@@ -18,7 +18,7 @@ interface GalleryPostProps {
   shares: number;
 }
 
-export default function GalleryPost({
+const GalleryPost = memo(function GalleryPost({
   author,
   content,
   images,
@@ -314,4 +314,6 @@ export default function GalleryPost({
       ) : null}
     </>
   );
-}
+});
+
+export default GalleryPost;

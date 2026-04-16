@@ -174,7 +174,7 @@ function FeaturedQuestCard({ quest }: { quest: Quest }) {
                 className="w-7 h-7 rounded-full border-2 border-surface overflow-hidden"
               >
                 <img
-                  src={`https:///images/avatars/avatar_0${i}.png`}
+                  src={`/images/avatars/avatar_0${i}.png`}
                   alt="Friend"
                   className="w-full h-full object-cover"
                 />

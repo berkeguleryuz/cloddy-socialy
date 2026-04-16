@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import Image from "next/image";
 import HexagonAvatar from "./HexagonAvatar";
 
@@ -20,7 +21,7 @@ interface VideoPostProps {
   shares: number;
 }
 
-export default function VideoPost({
+const VideoPost = memo(function VideoPost({
   author,
   content,
   videoThumbnail,
@@ -195,4 +196,6 @@ export default function VideoPost({
       </div>
     </div>
   );
-}
+});
+
+export default VideoPost;

@@ -1,3 +1,5 @@
+import { memo } from "react";
+
 interface BadgeCardProps {
   name: string;
   description: string;
@@ -7,7 +9,7 @@ interface BadgeCardProps {
   hasNextTier?: boolean;
 }
 
-export default function BadgeCard({
+const BadgeCard = memo(function BadgeCard({
   name,
   description,
   image,
@@ -71,4 +73,6 @@ export default function BadgeCard({
       ) : null}
     </div>
   );
-}
+});
+
+export default BadgeCard;

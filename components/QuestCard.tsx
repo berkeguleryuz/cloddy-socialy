@@ -1,3 +1,4 @@
+import { memo } from "react";
 import HexagonAvatar from "./HexagonAvatar";
 
 interface QuestCardProps {
@@ -10,7 +11,7 @@ interface QuestCardProps {
   isFeatured?: boolean;
 }
 
-export default function QuestCard({
+const QuestCard = memo(function QuestCard({
   name,
   description,
   image,
@@ -79,4 +80,6 @@ export default function QuestCard({
       </div>
     </div>
   );
-}
+});
+
+export default QuestCard;

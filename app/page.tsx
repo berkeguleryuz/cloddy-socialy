@@ -1,19 +1,23 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import PostCard from "@/components/PostCard";
 import VideoPost from "@/components/VideoPost";
 import PollPost from "@/components/PollPost";
 import GalleryPost from "@/components/GalleryPost";
-import HexagonAvatar from "@/components/HexagonAvatar";
 import MembersWidget from "@/components/MembersWidget";
 import QuestsWidget from "@/components/QuestsWidget";
 import PromoWidget from "@/components/PromoWidget";
 import EventsWidget from "@/components/EventsWidget";
 import ActivityWidget from "@/components/ActivityWidget";
 import GroupsWidget from "@/components/GroupsWidget";
+import CreatePostForm from "@/components/CreatePostForm";
+import { useAuth } from "@/components/AuthContext";
+import { useData } from "@/components/DataContext";
+import { useQuestStats } from "@/hooks/useQuests";
 
-const textPosts = [
+// Demo data - shown when not authenticated
+const demoTextPosts = [
   {
     id: 1,
     author: {
@@ -31,7 +35,7 @@ const textPosts = [
   },
 ];
 
-const videoPost = {
+const demoVideoPost = {
   author: {
     name: "Neko Bebop",
     avatar: "/images/avatars/avatar_03.png",
@@ -49,7 +53,7 @@ const videoPost = {
   shares: 24,
 };
 
-const pollPost = {
+const demoPollPost = {
   author: {
     name: "Sarah Diamond",
     avatar: "/images/avatars/avatar_08.png",
@@ -69,7 +73,7 @@ const pollPost = {
   shares: 8,
 };
 
-const galleryPost = {
+const demoGalleryPost = {
   author: {
     name: "Destroy Dex",
     avatar: "/images/avatars/avatar_07.png",
@@ -91,9 +95,133 @@ const galleryPost = {
   shares: 12,
 };
 
+// Demo user profile stats
+const demoProfileStats = {
+  name: "Marina Valentine",
+  profileCompletion: 59,
+  questsCompleted: "11/30",
+  badgesUnlocked: "22/45",
+  postsCreated: 294,
+};
+
+// Helper function to format time
+function formatTimeAgo(dateString: string): string {
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffMins = Math.floor(diffMs / 60000);
+  const diffHours = Math.floor(diffMins / 60);
+  const diffDays = Math.floor(diffHours / 24);
+
+  if (diffMins < 1) return "Just now";
+  if (diffMins < 60) return `${diffMins} minutes ago`;
+  if (diffHours < 24) return `${diffHours} hours ago`;
+  if (diffDays === 1) return "Yesterday";
+  return `${diffDays} days ago`;
+}
+
 export default function Home() {
   const [activeFilter, setActiveFilter] = useState("All Updates");
-  const [activeTab, setActiveTab] = useState("Status");
+
+  // Get auth and data context
+  const { user: authUser, isDemo, isAuthenticated } = useAuth();
+  const { feed, gamification, posts: demoPosts } = useData();
+  const questStats = useQuestStats();
+
+  // Determine which posts to show - demo for unauthenticated, real for authenticated
+  const { textPosts, videoPost, pollPost, galleryPost, profileStats, showEmptyFeed } = useMemo(() => {
+    if (isDemo || !isAuthenticated) {
+      // Show demo data for demo mode or unauthenticated users
+      return {
+        textPosts: demoTextPosts,
+        videoPost: demoVideoPost,
+        pollPost: demoPollPost,
+        galleryPost: demoGalleryPost,
+        profileStats: demoProfileStats,
+        showEmptyFeed: false,
+      };
+    }
+
+    // For authenticated users, transform API posts to match component props
+    const apiPosts = feed.posts || [];
+    const transformedTextPosts = apiPosts
+      .filter((p: any) => p.post_type === 'text' || !p.post_type)
+      .map((post: any) => ({
+        id: post.id,
+        author: {
+          name: post.author?.display_name || authUser?.name || "User",
+          avatar: post.author?.avatar_url || "/images/avatars/avatar_01.png",
+          level: post.author?.level || 1,
+          time: formatTimeAgo(post.created_at),
+        },
+        content: post.content,
+        image: post.media?.[0]?.url,
+        likes: post.likes_count || 0,
+        comments: post.comments_count || 0,
+        shares: post.shares_count || 0,
+      }));
+
+    // Check for special post types
+    const videoPosts = apiPosts.filter((p: any) => p.post_type === 'video');
+    const pollPosts = apiPosts.filter((p: any) => p.post_type === 'poll');
+    const galleryPosts = apiPosts.filter((p: any) => p.post_type === 'gallery');
+
+    // For authenticated users, show real data or null (not demo)
+    return {
+      textPosts: transformedTextPosts,
+      videoPost: videoPosts.length > 0 ? {
+        author: {
+          name: videoPosts[0].author?.display_name || "User",
+          avatar: videoPosts[0].author?.avatar_url || "/images/avatars/avatar_03.png",
+          level: videoPosts[0].author?.level || 1,
+          time: formatTimeAgo(videoPosts[0].created_at),
+        },
+        content: videoPosts[0].content,
+        videoThumbnail: videoPosts[0].media?.[0]?.thumbnail_url || "/images/posts/video_thumbnail.jpg",
+        videoTitle: videoPosts[0].media?.[0]?.title || "Video",
+        videoDuration: videoPosts[0].media?.[0]?.duration || "0:00",
+        videoViews: "0",
+        likes: videoPosts[0].likes_count || 0,
+        comments: videoPosts[0].comments_count || 0,
+        shares: videoPosts[0].shares_count || 0,
+      } : null,
+      pollPost: pollPosts.length > 0 ? {
+        author: {
+          name: pollPosts[0].author?.display_name || "User",
+          avatar: pollPosts[0].author?.avatar_url || "/images/avatars/avatar_08.png",
+          level: pollPosts[0].author?.level || 1,
+          time: formatTimeAgo(pollPosts[0].created_at),
+        },
+        question: pollPosts[0].content,
+        options: pollPosts[0].poll_options || [],
+        totalVotes: pollPosts[0].poll_options?.reduce((sum: number, opt: any) => sum + (opt.votes || 0), 0) || 0,
+        likes: pollPosts[0].likes_count || 0,
+        comments: pollPosts[0].comments_count || 0,
+        shares: pollPosts[0].shares_count || 0,
+      } : null,
+      galleryPost: galleryPosts.length > 0 ? {
+        author: {
+          name: galleryPosts[0].author?.display_name || "User",
+          avatar: galleryPosts[0].author?.avatar_url || "/images/avatars/avatar_07.png",
+          level: galleryPosts[0].author?.level || 1,
+          time: formatTimeAgo(galleryPosts[0].created_at),
+        },
+        content: galleryPosts[0].content,
+        images: galleryPosts[0].media?.map((m: any) => m.url) || [],
+        likes: galleryPosts[0].likes_count || 0,
+        comments: galleryPosts[0].comments_count || 0,
+        shares: galleryPosts[0].shares_count || 0,
+      } : null,
+      profileStats: {
+        name: authUser?.name || "User",
+        profileCompletion: gamification.xp?.progressPercent || 0,
+        questsCompleted: `${questStats.stats.daily.completed + questStats.stats.weekly.completed + questStats.stats.achievements.completed}/${questStats.stats.daily.total + questStats.stats.weekly.total + questStats.stats.achievements.total}`,
+        badgesUnlocked: `${gamification.userBadges.length}/${gamification.badges.length || 0}`,
+        postsCreated: feed.posts?.length || 0,
+      },
+      showEmptyFeed: apiPosts.length === 0,
+    };
+  }, [isDemo, isAuthenticated, feed.posts, authUser, gamification, demoPosts]);
 
   const filters = [
     "All Updates",
@@ -103,11 +231,6 @@ export default function Home() {
     "Blog Posts",
   ];
 
-  const tabs = [
-    { id: "Status", icon: "edit" },
-    { id: "Blog Post", icon: "file" },
-    { id: "Poll", icon: "poll" },
-  ];
 
   return (
     <div className="flex flex-col gap-8 animate-in slide-in-from-bottom-4 duration-700">
@@ -184,7 +307,7 @@ export default function Home() {
                   stroke="url(#progressGradient)"
                   strokeWidth="6"
                   strokeLinecap="round"
-                  strokeDasharray={`${59 * 3.14} ${100 * 3.14}`}
+                  strokeDasharray={`${profileStats.profileCompletion * 3.14} ${100 * 3.14}`}
                 />
                 <defs>
                   <linearGradient
@@ -200,7 +323,7 @@ export default function Home() {
                 </defs>
               </svg>
               <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-2xl font-black text-white">59%</span>
+                <span className="text-2xl font-black text-white">{profileStats.profileCompletion}%</span>
               </div>
             </div>
 
@@ -208,7 +331,7 @@ export default function Home() {
               Profile Completion
             </h3>
             <p className="text-[10px] text-text-muted font-bold uppercase tracking-wider mb-4">
-              Marina Valentine
+              {profileStats.name}
             </p>
 
             <p className="text-xs text-text-muted mb-6">
@@ -218,7 +341,7 @@ export default function Home() {
 
             <div className="flex justify-center gap-8 mb-6">
               <div className="text-center">
-                <p className="text-lg font-black text-white">11/30</p>
+                <p className="text-lg font-black text-white">{profileStats.questsCompleted}</p>
                 <p className="text-[9px] font-bold uppercase text-text-muted tracking-wider">
                   Quests
                   <br />
@@ -226,7 +349,7 @@ export default function Home() {
                 </p>
               </div>
               <div className="text-center">
-                <p className="text-lg font-black text-white">22/45</p>
+                <p className="text-lg font-black text-white">{profileStats.badgesUnlocked}</p>
                 <p className="text-[9px] font-bold uppercase text-text-muted tracking-wider">
                   Badges
                   <br />
@@ -273,98 +396,7 @@ export default function Home() {
         {/* Main Content */}
         <div className="flex flex-col gap-6 order-2">
           {/* Post Creation Box */}
-          <div className="widget-box p-0 overflow-hidden">
-            <div className="flex border-b border-border">
-              {tabs.map((tab) => (
-                <div
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`flex-1 py-4 flex items-center justify-center gap-2 cursor-pointer transition-all ${
-                    activeTab === tab.id
-                      ? "border-b-4 border-primary bg-background/20 text-white"
-                      : "border-b-4 border-transparent text-text-muted hover:bg-background/10 hover:text-white"
-                  }`}
-                >
-                  {tab.icon === "edit" ? (
-                    <svg
-                      className="w-4 h-4"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"></path>
-                    </svg>
-                  ) : null}
-                  {tab.icon === "file" ? (
-                    <svg
-                      className="w-4 h-4"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"></path>
-                    </svg>
-                  ) : null}
-                  {tab.icon === "poll" ? (
-                    <svg
-                      className="w-4 h-4"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"></path>
-                    </svg>
-                  ) : null}
-                  <span className="text-[11px] font-black uppercase">
-                    {tab.id}
-                  </span>
-                </div>
-              ))}
-            </div>
-
-            <div className="p-6 flex items-center gap-4">
-              <HexagonAvatar
-                src="/images/avatars/avatar_01.png"
-                level={12}
-                size="md"
-              />
-              <div className="flex-1 bg-background rounded-xl px-5 py-3 text-sm text-text-muted font-medium cursor-text border border-transparent hover:border-primary/50 transition-all">
-                Hi Marina! Share your post here...
-              </div>
-              <div className="flex items-center gap-2">
-                <button className="w-9 h-9 rounded-lg flex items-center justify-center text-text-muted hover:bg-primary/10 hover:text-primary transition-all">
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                    ></path>
-                  </svg>
-                </button>
-                <button className="w-9 h-9 rounded-lg flex items-center justify-center text-text-muted hover:bg-secondary/10 hover:text-secondary transition-all">
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
-                    ></path>
-                  </svg>
-                </button>
-                <button className="px-4 py-2 bg-primary text-white text-xs font-bold rounded-lg hover:bg-primary/80 transition-colors">
-                  Post
-                </button>
-              </div>
-            </div>
-          </div>
+          {isAuthenticated && <CreatePostForm />}
 
           {/* Filters */}
           <div className="flex items-center justify-between">
@@ -387,12 +419,28 @@ export default function Home() {
 
           {/* Posts Feed */}
           <div className="flex flex-col gap-6">
-            <VideoPost {...videoPost} />
-            <PollPost {...pollPost} />
-            <GalleryPost {...galleryPost} />
-            {textPosts.map((post) => (
-              <PostCard key={post.id} {...post} />
-            ))}
+            {showEmptyFeed && isAuthenticated ? (
+              <div className="widget-box p-8 text-center">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-primary/20 flex items-center justify-center">
+                  <svg className="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-bold text-white mb-2">No posts yet</h3>
+                <p className="text-sm text-text-muted mb-4">
+                  Be the first to share something! Create a post above to get started.
+                </p>
+              </div>
+            ) : (
+              <>
+                {videoPost && <VideoPost {...videoPost} />}
+                {pollPost && <PollPost {...pollPost} />}
+                {galleryPost && <GalleryPost {...galleryPost} />}
+                {textPosts.map((post) => (
+                  <PostCard key={post.id} {...post} />
+                ))}
+              </>
+            )}
           </div>
         </div>
 
@@ -461,7 +509,7 @@ export default function Home() {
                 </div>
               </div>
               <div className="flex items-baseline gap-2 mb-1">
-                <p className="text-4xl font-black text-white">294</p>
+                <p className="text-4xl font-black text-white">{profileStats.postsCreated}</p>
                 <div className="flex items-center gap-1">
                   <div className="w-4 h-4 rounded-full bg-[#2ecc71] flex items-center justify-center">
                     <svg

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, memo } from "react";
 import HexagonAvatar from "./HexagonAvatar";
 
 interface Friend {
@@ -53,7 +53,7 @@ const mockMessages: Message[] = [
   },
 ];
 
-export default function SidebarRight() {
+const SidebarRight = memo(function SidebarRight() {
   const [selectedFriend, setSelectedFriend] = useState<Friend | null>(null);
   const [newMessage, setNewMessage] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
@@ -352,4 +352,6 @@ export default function SidebarRight() {
       ) : null}
     </>
   );
-}
+});
+
+export default SidebarRight;

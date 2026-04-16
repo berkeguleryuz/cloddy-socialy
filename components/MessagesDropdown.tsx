@@ -1,9 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo, memo } from "react";
 import HexagonAvatar from "./HexagonAvatar";
+import { useAuth } from "./AuthContext";
+import { useData } from "./DataContext";
 
-const conversations = [
+// Demo conversations - shown when not authenticated
+const demoConversations = [
   {
     id: 1,
     user: {
@@ -109,14 +112,15 @@ interface Message {
   time: string;
 }
 
-const mockMessages: Message[] = [
+// Demo mock messages for chat view
+const demoMockMessages: Message[] = [
   {
     id: 1,
-    text: "Hi Marina! It's been a long time!",
+    text: "Hi! It's been a long time!",
     sent: false,
     time: "Yesterday at 8:36PM",
   },
-  { id: 2, text: "Hey Nick!", sent: true, time: "10:05AM" },
+  { id: 2, text: "Hey!", sent: true, time: "10:05AM" },
   {
     id: 3,
     text: "You're right, it's been a really long time! I think the last time we saw was at Neko's party",
@@ -138,13 +142,65 @@ const mockMessages: Message[] = [
   { id: 6, text: "Can you stream the new game?", sent: false, time: "10:07AM" },
 ];
 
-export default function MessagesDropdown() {
+// Helper to format time ago for messages
+function formatMessageTime(dateString: string): string {
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffMins = Math.floor(diffMs / 60000);
+
+  if (diffMins < 60) return `${diffMins}mins`;
+
+  const diffHours = Math.floor(diffMins / 60);
+  if (diffHours < 24) return `${diffHours}hrs`;
+
+  const diffDays = Math.floor(diffHours / 24);
+  return `${diffDays}d`;
+}
+
+const MessagesDropdown = memo(function MessagesDropdown() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedConversation, setSelectedConversation] = useState<
-    (typeof conversations)[0] | null
+    (typeof demoConversations)[0] | null
   >(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [newMessage, setNewMessage] = useState("");
+
+  const { isDemo, isAuthenticated } = useAuth();
+  const { social } = useData();
+
+  // Transform conversations data or use demo data
+  // Note: Real messages API can be added later with useMessages hook
+  const conversations = useMemo(() => {
+    if (isDemo || !isAuthenticated) {
+      return demoConversations;
+    }
+
+    // If we have friends data, we can show them as potential conversations
+    // Real messaging would need a dedicated messages API
+    if (social.friends && social.friends.length > 0) {
+      return social.friends.slice(0, 8).map((friend: any, index: number) => ({
+        id: friend.id || index,
+        user: {
+          name: friend.user?.display_name || "User",
+          avatar: friend.user?.avatar_url || `/images/avatars/avatar_0${(index % 8) + 1}.png`,
+          level: friend.user?.level || 1,
+          online: friend.user?.is_online || false,
+        },
+        lastMessage: "Start a conversation...",
+        time: "",
+        unread: false,
+      }));
+    }
+
+    return demoConversations;
+  }, [isDemo, isAuthenticated, social.friends]);
+
+  // Get messages for selected conversation (demo for now)
+  const mockMessages = useMemo(() => {
+    // Real messaging would fetch messages based on selectedConversation.id
+    return demoMockMessages;
+  }, []);
 
   const filteredConversations = conversations.filter((c) =>
     c.user.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -412,4 +468,6 @@ export default function MessagesDropdown() {
       ) : null}
     </div>
   );
-}
+});
+
+export default MessagesDropdown;

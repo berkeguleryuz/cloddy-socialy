@@ -1,9 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import HexagonAvatar from "@/components/HexagonAvatar";
+import CreateEventModal from "@/components/modals/CreateEventModal";
+import { useAuth } from "@/components/AuthContext";
+import { useEvents } from "@/hooks/useEvents";
 
-const events = [
+// Demo events - shown when not authenticated
+const demoEvents = [
   {
     id: 1,
     title: "Pro Gaming Tournament Finals",
@@ -117,9 +121,37 @@ const months = [
 export default function EventsPage() {
   const [currentDate, setCurrentDate] = useState(() => new Date(2026, 0, 1));
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [selectedEvent, setSelectedEvent] = useState<(typeof events)[0] | null>(
+  const [selectedEvent, setSelectedEvent] = useState<(typeof demoEvents)[0] | null>(
     null
   );
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+
+  const { isDemo, isAuthenticated } = useAuth();
+  const eventsData = useEvents();
+
+  // Transform events data or use demo data
+  const events = useMemo(() => {
+    if (isDemo || !isAuthenticated || !eventsData.data?.events || eventsData.data.events.length === 0) {
+      return demoEvents;
+    }
+
+    // Transform real events data
+    return eventsData.data.events.map((event: any, index: number) => ({
+      id: event.id,
+      title: event.title,
+      date: event.event_date ? new Date(event.event_date) : new Date(),
+      time: event.event_time || "TBD",
+      location: event.location || "Online",
+      description: event.description || "",
+      image: event.image_url || `/images/covers/cover_0${(index % 6) + 1}.png`,
+      participants: event.participants?.slice(0, 4).map((p: any) => ({
+        name: p.display_name || "User",
+        avatar: p.avatar_url || `/images/avatars/avatar_0${(index % 8) + 1}.png`,
+      })) || [],
+      totalParticipants: event.participants_count || 0,
+      category: event.category || "Event",
+    }));
+  }, [isDemo, isAuthenticated, eventsData.data]);
 
   const getDaysInMonth = (date: Date) => {
     const year = date.getFullYear();
@@ -175,14 +207,25 @@ export default function EventsPage() {
           <div className="absolute top-4 right-8 w-20 h-20 border-4 border-white/30 rounded-full"></div>
           <div className="absolute bottom-4 right-24 w-12 h-12 border-4 border-white/20 rounded-full"></div>
         </div>
-        <div className="relative z-10">
-          <h1 className="text-3xl font-black uppercase tracking-tight text-white mb-2">
-            EVENTS
-          </h1>
-          <p className="text-sm text-white/80 font-medium max-w-md">
-            Discover upcoming gaming events, tournaments, and community
-            gatherings. Never miss a moment!
-          </p>
+        <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div>
+            <h1 className="text-3xl font-black uppercase tracking-tight text-white mb-2">
+              EVENTS
+            </h1>
+            <p className="text-sm text-white/80 font-medium max-w-md">
+              Discover upcoming gaming events, tournaments, and community
+              gatherings. Never miss a moment!
+            </p>
+          </div>
+          <button
+            onClick={() => setIsCreateModalOpen(true)}
+            className="px-6 py-3 bg-white/20 backdrop-blur-sm text-white text-sm font-bold rounded-xl hover:bg-white/30 transition-all flex items-center gap-2"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+            </svg>
+            Create Event
+          </button>
         </div>
       </div>
 
@@ -359,6 +402,12 @@ export default function EventsPage() {
           </div>
         </div>
       </div>
+
+      {/* Create Event Modal */}
+      <CreateEventModal
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+      />
 
       {selectedEvent ? (
         <div
