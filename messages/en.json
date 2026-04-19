@@ -1,0 +1,229 @@
+{
+  "common": {
+    "appName": "Cloddy",
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "submit": "Submit",
+    "search": "Search",
+    "more": "More",
+    "empty": "Nothing here yet",
+    "retry": "Retry",
+    "copy": "Copy",
+    "copied": "Copied",
+    "error": "Something went wrong",
+    "success": "Success",
+    "optional": "optional",
+    "required": "required"
+  },
+  "auth": {
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "connectWallet": "Connect wallet",
+    "disconnectWallet": "Disconnect wallet",
+    "signInWithWallet": "Sign in with wallet",
+    "signInWithGoogle": "Sign in with Google",
+    "signInWithEmail": "Sign in with email",
+    "register": "Register",
+    "forgotPassword": "Forgot password",
+    "tryDemo": "Try demo",
+    "wrongNetwork": "Wrong network",
+    "switchNetwork": "Switch network",
+    "signMessage": "Sign message",
+    "signingIn": "Signing in...",
+    "signInFailed": "Sign-in failed",
+    "welcomeTitle": "Welcome to Cloddy",
+    "welcomeSubtitle": "Connect your wallet to join the community or try the demo"
+  },
+  "navbar": {
+    "newsfeed": "Newsfeed",
+    "members": "Members",
+    "groups": "Groups",
+    "forums": "Forums",
+    "events": "Events",
+    "badges": "Badges",
+    "quests": "Quests",
+    "streams": "Streams",
+    "marketplace": "Marketplace",
+    "leaderboard": "Leaderboard",
+    "profile": "Profile",
+    "settings": "Settings",
+    "notifications": "Notifications",
+    "messages": "Messages",
+    "friends": "Friends",
+    "cart": "Cart",
+    "search": "Search..."
+  },
+  "newsfeed": {
+    "title": "Newsfeed",
+    "subtitle": "Check what your friends have been up to",
+    "createPost": "Create post",
+    "placeholder": "Hi! Share your post here...",
+    "post": "Post",
+    "filters": {
+      "all": "All updates",
+      "mentions": "Mentions",
+      "friends": "Friends",
+      "groups": "Groups",
+      "blog": "Blog posts"
+    },
+    "tabs": {
+      "status": "Status",
+      "blog": "Blog post",
+      "poll": "Poll"
+    }
+  },
+  "username": {
+    "title": "Mint username",
+    "inputLabel": "Username",
+    "inputPlaceholder": "yourname",
+    "available": "Available",
+    "unavailable": "Taken",
+    "checking": "Checking...",
+    "mintFee": "Mint fee",
+    "mintButton": "Mint",
+    "minting": "Minting...",
+    "errors": {
+      "too_short": "Must be at least {min} characters",
+      "too_long": "Must be at most {max} characters",
+      "invalid_chars": "Only letters, numbers, underscore and hyphen are allowed",
+      "reserved": "This username is reserved",
+      "taken": "This username is taken"
+    }
+  },
+  "pfp": {
+    "title": "Mint profile picture",
+    "upload": "Upload image",
+    "preview": "Preview",
+    "mintFee": "Mint fee",
+    "mintButton": "Mint"
+  },
+  "locale": {
+    "switchLanguage": "Switch language"
+  },
+  "cartPanel": {
+    "title": "Cart",
+    "itemCount": "{count} items",
+    "empty": "Your cart is empty",
+    "emptyHint": "Browse the shop to add items",
+    "subtotal": "Subtotal",
+    "checkout": "Proceed to checkout",
+    "continue": "Continue shopping"
+  },
+  "postOptions": {
+    "copyLink": "Copy link",
+    "edit": "Edit",
+    "delete": "Delete",
+    "report": "Report",
+    "deleted": "Post deleted",
+    "confirmDelete": "Are you sure you want to delete this post?"
+  },
+  "widgets": {
+    "membersTitle": "Members",
+    "questsTitle": "Open Quests",
+    "eventsTitle": "Upcoming Events",
+    "groupsTitle": "Groups",
+    "activityTitle": "Friends Activity",
+    "viewAll": "View all",
+    "tabNewest": "Newest",
+    "tabPopular": "Popular",
+    "tabActive": "Active",
+    "level": "Lvl {level}",
+    "emptyTitle": "No friends yet.",
+    "emptyHint": "Connect with other members!",
+    "questsEmpty": "No active quests yet.",
+    "questsEmptyHint": "Check back soon for new challenges!",
+    "eventsEmpty": "No upcoming events.",
+    "eventsEmptyHint": "Create an event to get started!"
+  },
+  "createPost": {
+    "placeholder": "What's on your mind?",
+    "submit": "Post",
+    "success": "Post shared",
+    "emptyWarning": "Write something first",
+    "tooLong": "Post is too long (max {max} characters)",
+    "errorGeneric": "Failed to create post",
+    "signInPrompt": "Sign in to post",
+    "typeText": "Text",
+    "typeImage": "Photo",
+    "typeVideo": "Video",
+    "typePoll": "Poll",
+    "visibilityLabel": "Visibility",
+    "visibilityPublic": "Public",
+    "visibilityFriends": "Friends",
+    "visibilityPrivate": "Only me"
+  },
+  "questsPage": {
+    "progress": "PROGRESS",
+    "active": "Active",
+    "completed": "Completed"
+  },
+  "groupsPage": {
+    "private": "Private",
+    "public": "Public",
+    "more": "more",
+    "statMembers": "Members",
+    "statPosts": "Posts",
+    "joinCta": "JOIN GROUP +",
+    "leaveCta": "LEAVE GROUP",
+    "joined": "Joined group",
+    "left": "Left group",
+    "signInToJoin": "Sign in to join groups",
+    "lastActivity": "Last activity {time}"
+  },
+  "events": {
+    "interestedCta": "Interested",
+    "interested": "Interested",
+    "going": "Going",
+    "interestedSaved": "You're in",
+    "signInToRsvp": "Sign in to RSVP"
+  },
+  "messagesPanel": {
+    "title": "Messages / Chat",
+    "placeholder": "Write a message...",
+    "searchPlaceholder": "Search messages..."
+  },
+  "notificationsPanel": {
+    "title": "Notifications",
+    "markAllRead": "Mark all as read",
+    "markedAllRead": "All notifications marked as read",
+    "empty": "No notifications yet",
+    "viewAll": "View all notifications"
+  },
+  "friends": {
+    "requestsTitle": "Friend requests",
+    "pendingCount": "{count} pending",
+    "empty": "No pending friend requests",
+    "accept": "Accept",
+    "decline": "Decline",
+    "accepted": "Friend request accepted",
+    "declined": "Friend request declined",
+    "mutualFriends": "{count} mutual friends",
+    "viewAll": "View all friends",
+    "addFriend": "Add friend",
+    "requestSent": "Request sent",
+    "signInToAdd": "Sign in to add friends"
+  },
+  "members": {
+    "addFriend": "Add friend +",
+    "sendMessage": "Send message",
+    "requestSent": "Request sent",
+    "signInToAdd": "Sign in to add friends",
+    "statPosts": "posts",
+    "statFriends": "friends",
+    "statVisits": "visits"
+  },
+  "errors": {
+    "generic": "Something went wrong",
+    "notFound": "Not found",
+    "unauthorized": "Unauthorized",
+    "networkError": "Network error",
+    "tryAgain": "Please try again"
+  }
+}

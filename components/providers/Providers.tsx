@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { Toaster } from "sonner"
 import { Web3Provider } from "./Web3Provider"
 import { AuthProvider } from "../AuthContext"
+import { CartProvider } from "../CartContext"
 
 // Create a query client for React Query
 const queryClient = new QueryClient({
@@ -26,7 +27,8 @@ export function Providers({ children }: ProvidersProps) {
     <QueryClientProvider client={queryClient}>
       <Web3Provider>
         <AuthProvider>
-          {children}
+          <CartProvider>
+            {children}
           <Toaster
             position="bottom-right"
             toastOptions={{
@@ -41,6 +43,7 @@ export function Providers({ children }: ProvidersProps) {
             richColors
             closeButton
           />
+          </CartProvider>
         </AuthProvider>
       </Web3Provider>
     </QueryClientProvider>

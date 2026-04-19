@@ -1,4 +1,7 @@
+"use client";
+
 import { memo } from "react";
+import { useTranslations } from "next-intl";
 import HexagonAvatar from "./HexagonAvatar";
 
 interface QuestCardProps {
@@ -20,6 +23,7 @@ const QuestCard = memo(function QuestCard({
   reward,
   isFeatured,
 }: QuestCardProps) {
+  const t = useTranslations("questsPage");
   const percent = Math.min(100, (progress / total) * 100);
 
   return (
@@ -42,7 +46,7 @@ const QuestCard = memo(function QuestCard({
 
       <div className="flex flex-col gap-2">
         <div className="flex justify-between text-[10px] font-bold">
-          <span className="text-text-muted">PROGRESS</span>
+          <span className="text-text-muted">{t("progress")}</span>
           <span className="text-white">
             {progress}/{total}
           </span>
@@ -69,13 +73,13 @@ const QuestCard = memo(function QuestCard({
           <span className="text-xs font-black">+{reward} EXP</span>
         </div>
         {percent === 100 ? (
-          <button className="px-4 py-2 bg-secondary/10 text-secondary text-[10px] font-bold rounded-lg uppercase tracking-wider">
-            Completed
-          </button>
+          <span className="px-4 py-2 bg-secondary/10 text-secondary text-[10px] font-bold rounded-lg uppercase tracking-wider">
+            {t("completed")}
+          </span>
         ) : (
-          <button className="px-4 py-2 bg-primary text-white text-[10px] font-bold rounded-lg uppercase tracking-wider shadow-lg shadow-primary/20">
-            Active
-          </button>
+          <span className="px-4 py-2 bg-primary text-white text-[10px] font-bold rounded-lg uppercase tracking-wider shadow-lg shadow-primary/20">
+            {t("active")}
+          </span>
         )}
       </div>
     </div>

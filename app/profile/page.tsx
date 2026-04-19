@@ -12,7 +12,7 @@ import { useQuestStats } from "@/hooks/useQuests";
 // Demo data - shown when not authenticated
 const demoUserPosts = [
   {
-    id: 1,
+    id: "demo-profile-1",
     author: {
       name: "Marina Valentine",
       avatar: "/images/avatars/avatar_01.png",
@@ -27,7 +27,7 @@ const demoUserPosts = [
     shares: 15,
   },
   {
-    id: 2,
+    id: "demo-profile-2",
     author: {
       name: "Marina Valentine",
       avatar: "/images/avatars/avatar_01.png",
@@ -613,7 +613,7 @@ function AboutTab({ profileInfo, friends }: { profileInfo: ProfileInfo; friends:
 }
 
 interface UserPost {
-  id: string | number;
+  id: string;
   author: {
     name: string;
     avatar: string;

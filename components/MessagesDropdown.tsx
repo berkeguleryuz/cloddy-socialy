@@ -1,9 +1,12 @@
 "use client";
 
 import { useState, useMemo, memo } from "react";
+import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 import HexagonAvatar from "./HexagonAvatar";
 import { useAuth } from "./AuthContext";
 import { useData } from "./DataContext";
+import { useSendMessage } from "@/hooks/useMessages";
 
 // Demo conversations - shown when not authenticated
 const demoConversations = [
@@ -168,6 +171,9 @@ const MessagesDropdown = memo(function MessagesDropdown() {
 
   const { isDemo, isAuthenticated } = useAuth();
   const { social } = useData();
+  const t = useTranslations("messagesPanel");
+  const tc = useTranslations("common");
+  const sendMessage = useSendMessage();
 
   // Transform conversations data or use demo data
   // Note: Real messages API can be added later with useMessages hook
@@ -207,10 +213,20 @@ const MessagesDropdown = memo(function MessagesDropdown() {
   );
 
   const handleSendMessage = () => {
-    if (newMessage.trim()) {
-      // In a real app, this would send the message
+    const content = newMessage.trim();
+    if (!content || !selectedConversation) return;
+    if (isDemo || !isAuthenticated) {
       setNewMessage("");
+      toast.info(tc("success"));
+      return;
     }
+    sendMessage.mutate(
+      { recipientId: String(selectedConversation.id), content },
+      {
+        onSuccess: () => setNewMessage(""),
+        onError: (err) => toast.error(err.message || tc("error")),
+      }
+    );
   };
 
   const handleBackToList = () => {
@@ -291,7 +307,7 @@ const MessagesDropdown = memo(function MessagesDropdown() {
                   )}
                 </button>
                 <span className="text-white font-bold text-sm">
-                  Messages / Chat
+                  {t("title")}
                 </span>
               </div>
             </div>
@@ -373,7 +389,7 @@ const MessagesDropdown = memo(function MessagesDropdown() {
                       onKeyPress={(e) =>
                         e.key === "Enter" && handleSendMessage()
                       }
-                      placeholder="Write a message..."
+                      placeholder={t("placeholder")}
                       className="flex-1 bg-background rounded-xl px-4 py-3 text-sm text-white placeholder-text-muted outline-none focus:ring-2 focus:ring-primary/30"
                     />
                     <button
@@ -443,7 +459,7 @@ const MessagesDropdown = memo(function MessagesDropdown() {
                       type="text"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      placeholder="Search Messages..."
+                      placeholder={t("searchPlaceholder")}
                       className="w-full bg-background rounded-xl px-4 py-3 pr-10 text-sm text-white placeholder-text-muted outline-none focus:ring-2 focus:ring-primary/30"
                     />
                     <svg

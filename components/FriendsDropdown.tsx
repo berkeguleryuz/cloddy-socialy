@@ -1,9 +1,13 @@
 "use client";
 
 import { useState, useMemo, useCallback, memo } from "react";
+import Link from "next/link";
+import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 import HexagonAvatar from "./HexagonAvatar";
 import { useAuth } from "./AuthContext";
 import { useData } from "./DataContext";
+import { useFriends } from "@/hooks/useFriends";
 
 // Demo friend requests - shown when not authenticated
 const demoFriendRequests = [
@@ -42,6 +46,9 @@ const FriendsDropdown = memo(function FriendsDropdown() {
 
   const { isDemo, isAuthenticated } = useAuth();
   const { social } = useData();
+  const t = useTranslations("friends");
+  const tc = useTranslations("common");
+  const { acceptFriendRequest, declineFriendRequest } = useFriends();
 
   // Transform friend requests data or use demo data
   const allRequests = useMemo(() => {
@@ -66,49 +73,35 @@ const FriendsDropdown = memo(function FriendsDropdown() {
     return allRequests.filter((r) => !dismissedIds.includes(r.id));
   }, [allRequests, dismissedIds]);
 
-  const handleAccept = useCallback(async (id: string | number) => {
-    // In demo mode, just dismiss the request visually
-    if (isDemo || !isAuthenticated) {
+  const handleAccept = useCallback(
+    (id: string | number) => {
       setDismissedIds((prev) => [...prev, id]);
-      return;
-    }
+      if (isDemo || !isAuthenticated) return;
+      acceptFriendRequest(String(id), {
+        onSuccess: () => toast.success(t("accepted")),
+        onError: (error) => {
+          setDismissedIds((prev) => prev.filter((dId) => dId !== id));
+          toast.error(error instanceof Error ? error.message : tc("error"));
+        },
+      } as Parameters<typeof acceptFriendRequest>[1]);
+    },
+    [acceptFriendRequest, isAuthenticated, isDemo, t, tc]
+  );
 
-    // In real mode, call the API to accept the friend request
-    try {
-      const response = await fetch("/api/friends/accept", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ requestId: id }),
-      });
-      if (response.ok) {
-        setDismissedIds((prev) => [...prev, id]);
-      }
-    } catch (error) {
-      console.error("Failed to accept friend request:", error);
-    }
-  }, [isDemo, isAuthenticated]);
-
-  const handleDecline = useCallback(async (id: string | number) => {
-    // In demo mode, just dismiss the request visually
-    if (isDemo || !isAuthenticated) {
+  const handleDecline = useCallback(
+    (id: string | number) => {
       setDismissedIds((prev) => [...prev, id]);
-      return;
-    }
-
-    // In real mode, call the API to decline the friend request
-    try {
-      const response = await fetch("/api/friends/decline", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ requestId: id }),
-      });
-      if (response.ok) {
-        setDismissedIds((prev) => [...prev, id]);
-      }
-    } catch (error) {
-      console.error("Failed to decline friend request:", error);
-    }
-  }, [isDemo, isAuthenticated]);
+      if (isDemo || !isAuthenticated) return;
+      declineFriendRequest(String(id), {
+        onSuccess: () => toast.success(t("declined")),
+        onError: (error) => {
+          setDismissedIds((prev) => prev.filter((dId) => dId !== id));
+          toast.error(error instanceof Error ? error.message : tc("error"));
+        },
+      } as Parameters<typeof declineFriendRequest>[1]);
+    },
+    [declineFriendRequest, isAuthenticated, isDemo, t, tc]
+  );
 
   return (
     <div className="relative">
@@ -159,10 +152,10 @@ const FriendsDropdown = memo(function FriendsDropdown() {
                   />
                 </svg>
                 <span className="text-white font-bold text-sm">
-                  Friend Requests
+                  {t("requestsTitle")}
                 </span>
                 <span className="ml-auto text-xs bg-white/20 px-2 py-0.5 rounded-full text-white">
-                  {requests.length} pending
+                  {t("pendingCount", { count: requests.length })}
                 </span>
               </div>
             </div>
@@ -184,7 +177,7 @@ const FriendsDropdown = memo(function FriendsDropdown() {
                     />
                   </svg>
                   <p className="text-text-muted text-sm">
-                    No pending friend requests
+                    {t("empty")}
                   </p>
                 </div>
               ) : (
@@ -204,22 +197,24 @@ const FriendsDropdown = memo(function FriendsDropdown() {
                           {request.user.name}
                         </h4>
                         <p className="text-xs text-text-muted">
-                          {request.mutualFriends} mutual friends
+                          {t("mutualFriends", { count: request.mutualFriends })}
                         </p>
                       </div>
                     </div>
                     <div className="flex gap-2">
                       <button
+                        type="button"
                         onClick={() => handleAccept(request.id)}
-                        className="flex-1 py-2 bg-secondary text-white text-xs font-bold rounded-lg hover:bg-secondary/80 transition-colors"
+                        className="flex-1 py-2 bg-secondary text-white text-xs font-bold rounded-lg hover:bg-secondary/80 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                       >
-                        Accept
+                        {t("accept")}
                       </button>
                       <button
+                        type="button"
                         onClick={() => handleDecline(request.id)}
-                        className="flex-1 py-2 bg-background text-text-muted text-xs font-bold rounded-lg hover:bg-background/80 transition-colors"
+                        className="flex-1 py-2 bg-background text-text-muted text-xs font-bold rounded-lg hover:bg-background/80 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                       >
-                        Decline
+                        {t("decline")}
                       </button>
                     </div>
                   </div>
@@ -228,9 +223,12 @@ const FriendsDropdown = memo(function FriendsDropdown() {
             </div>
 
             <div className="p-4 border-t border-border bg-background/30">
-              <button className="w-full py-2.5 text-sm text-primary font-bold hover:underline">
-                View All Friends
-              </button>
+              <Link
+                href="/members"
+                className="block w-full py-2.5 text-sm text-primary font-bold hover:underline text-center"
+              >
+                {t("viewAll")}
+              </Link>
             </div>
           </div>
         </>

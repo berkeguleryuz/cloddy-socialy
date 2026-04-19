@@ -1,3 +1,6 @@
+"use client";
+
+import Link from "next/link";
 import SettingsLayout from "@/components/SettingsLayout";
 import HexagonAvatar from "@/components/HexagonAvatar";
 
@@ -59,9 +62,12 @@ export default function MessagesPage() {
           <h3 className="text-xs font-black uppercase tracking-widest text-text-muted">
             Messages
           </h3>
-          <button className="px-4 py-2 bg-primary text-white text-xs font-bold rounded-lg hover:bg-primary/90 transition-all">
+          <Link
+            href="/messages"
+            className="px-4 py-2 bg-primary text-white text-xs font-bold rounded-lg hover:bg-primary/90 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          >
             New Message
-          </button>
+          </Link>
         </div>
 
         <div className="relative mb-6">

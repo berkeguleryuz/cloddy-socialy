@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo, memo } from "react";
+import { useTranslations } from "next-intl";
 import { useAuth } from "./AuthContext";
 import { useData } from "./DataContext";
 
@@ -38,6 +39,7 @@ const GroupsWidget = memo(function GroupsWidget() {
   const [activeTab, setActiveTab] = useState<"Newest" | "Popular" | "Active">("Newest");
   const { isDemo, isAuthenticated } = useAuth();
   const { groups: groupsData } = useData();
+  const tw = useTranslations("widgets");
 
   // Transform groups data or use demo data
   const groups = useMemo(() => {
@@ -63,7 +65,7 @@ const GroupsWidget = memo(function GroupsWidget() {
   return (
     <div className="widget-box">
       <h3 className="text-xs font-black uppercase tracking-widest text-text-muted mb-4">
-        Groups
+        {tw("groupsTitle")}
       </h3>
 
       {/* Tabs */}
@@ -71,14 +73,15 @@ const GroupsWidget = memo(function GroupsWidget() {
         {(["Newest", "Popular", "Active"] as const).map((tab) => (
           <button
             key={tab}
+            type="button"
             onClick={() => setActiveTab(tab)}
-            className={`flex-1 py-2 text-[10px] font-bold uppercase rounded-lg transition-all ${
+            className={`flex-1 py-2 text-[10px] font-bold uppercase rounded-lg transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
               activeTab === tab
                 ? "bg-primary text-white"
                 : "bg-background text-text-muted hover:bg-background/80"
             }`}
           >
-            {tab}
+            {tw(`tab${tab}` as const)}
           </button>
         ))}
       </div>

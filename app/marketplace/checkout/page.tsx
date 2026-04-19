@@ -2,18 +2,13 @@
 
 import { useState } from "react";
 import Link from "next/link";
-
-const orderItems = [
-  { name: "Twitch Stream UI Pack", license: "Regular License", price: 12.0 },
-  { name: "Gaming Coin Badges Pack", license: "Regular License", price: 6.0 },
-  {
-    name: "Pixel Diamond Gaming Magazine",
-    license: "Regular License",
-    price: 26.0,
-  },
-];
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { useCart } from "@/components/CartContext";
 
 export default function CheckoutPage() {
+  const router = useRouter();
+  const { items, subtotal, count, clear } = useCart();
   const [paymentMethod, setPaymentMethod] = useState<"paypal" | "card">(
     "paypal"
   );
@@ -26,10 +21,42 @@ export default function CheckoutPage() {
     city: "",
     zipCode: "",
   });
+  const [submitting, setSubmitting] = useState(false);
 
-  const subtotal = orderItems.reduce((sum, item) => sum + item.price, 0);
-  const discount = 5.0;
-  const total = subtotal - discount;
+  const orderItems = items.map((item) => ({
+    name: item.name,
+    license: item.license ?? "Regular License",
+    price: item.price * item.quantity,
+  }));
+
+  const discount = 0;
+  const total = Math.max(0, subtotal - discount);
+
+  const handleCompleteOrder = async () => {
+    if (count === 0) {
+      toast.info("Your cart is empty");
+      return;
+    }
+    const missing = ["firstName", "lastName", "email", "address", "city"].find(
+      (k) => !(formData as unknown as Record<string, string>)[k]?.trim()
+    );
+    if (missing) {
+      toast.error(`Please fill in your ${missing}`);
+      return;
+    }
+    setSubmitting(true);
+    try {
+      // Simulated order. Replace with real checkout endpoint later.
+      await new Promise((r) => setTimeout(r, 700));
+      clear();
+      toast.success("Order placed!");
+      router.push("/marketplace");
+    } catch {
+      toast.error("Checkout failed");
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <div className="flex flex-col gap-6 animate-in slide-in-from-bottom-4 duration-700">
@@ -283,7 +310,12 @@ export default function CheckoutPage() {
             </div>
           </div>
 
-          <button className="w-full py-4 bg-primary text-white text-sm font-bold rounded-xl shadow-lg shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+          <button
+            type="button"
+            onClick={handleCompleteOrder}
+            disabled={submitting || count === 0}
+            className="w-full py-4 bg-primary text-white text-sm font-bold rounded-xl shadow-lg shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          >
             <svg
               className="w-5 h-5"
               fill="none"
@@ -297,7 +329,7 @@ export default function CheckoutPage() {
                 d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
-            Complete Order!
+            {submitting ? "Processing..." : "Complete Order!"}
           </button>
 
           <div className="widget-box p-6 text-center bg-linear-to-r from-primary/10 to-secondary/10">

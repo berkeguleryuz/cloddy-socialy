@@ -1,6 +1,7 @@
 "use client";
 
 import { ReactNode, useMemo, memo } from "react";
+import { useTranslations } from "next-intl";
 import HexagonAvatar from "./HexagonAvatar";
 import { useAuth } from "./AuthContext";
 import { useData } from "./DataContext";
@@ -102,6 +103,7 @@ const iconMap: Record<string, ReactNode> = {
 };
 
 const ActivityWidget = memo(function ActivityWidget() {
+  const tw = useTranslations("widgets");
   const { isDemo, isAuthenticated } = useAuth();
   const { notifications } = useData();
 
@@ -129,7 +131,7 @@ const ActivityWidget = memo(function ActivityWidget() {
     <div className="widget-box">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-xs font-black uppercase tracking-widest text-text-muted">
-          Friends Activity
+          {tw("activityTitle")}
         </h3>
         <div className="w-2 h-2 rounded-full bg-secondary animate-pulse" />
       </div>

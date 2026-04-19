@@ -2,6 +2,8 @@
 
 import { useState, useMemo, useCallback, memo } from "react";
 import Image from "next/image";
+import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 import HexagonAvatar from "./HexagonAvatar";
 import { useAuth } from "./AuthContext";
 import { useData } from "./DataContext";
@@ -100,6 +102,8 @@ const NotificationsDropdown = memo(function NotificationsDropdown() {
 
   const { isDemo, isAuthenticated } = useAuth();
   const { notifications: notificationsData } = useData();
+  const t = useTranslations("notificationsPanel");
+  const tc = useTranslations("common");
 
   // Transform notifications data or use demo data
   const items = useMemo(() => {
@@ -128,23 +132,21 @@ const NotificationsDropdown = memo(function NotificationsDropdown() {
   const unreadCount = items.filter((n) => !n.read).length;
 
   const markAllRead = useCallback(async () => {
-    // Mark all as read locally
     const allIds = items.map((n) => n.id);
     setLocalReadIds(new Set(allIds));
-
-    // If authenticated, call API to mark all as read
-    if (!isDemo && isAuthenticated) {
-      try {
-        await fetch("/api/notifications/mark-read", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ all: true }),
-        });
-      } catch (error) {
-        console.error("Failed to mark notifications as read:", error);
-      }
+    if (isDemo || !isAuthenticated) return;
+    try {
+      const response = await fetch("/api/notifications/mark-read", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ all: true }),
+      });
+      if (!response.ok) throw new Error("Failed");
+      toast.success(t("markedAllRead"));
+    } catch {
+      toast.error(tc("error"));
     }
-  }, [items, isDemo, isAuthenticated]);
+  }, [items, isDemo, isAuthenticated, t, tc]);
 
   const getTypeIcon = (type: string) => {
     switch (type) {
@@ -276,15 +278,16 @@ const NotificationsDropdown = memo(function NotificationsDropdown() {
                   />
                 </svg>
                 <span className="text-white font-bold text-sm">
-                  Notifications
+                  {t("title")}
                 </span>
               </div>
               {unreadCount > 0 ? (
                 <button
+                  type="button"
                   onClick={markAllRead}
                   className="text-xs text-white/80 hover:text-white transition-colors"
                 >
-                  Mark all as read
+                  {t("markAllRead")}
                 </button>
               ) : null}
             </div>
@@ -305,9 +308,7 @@ const NotificationsDropdown = memo(function NotificationsDropdown() {
                       d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
                     />
                   </svg>
-                  <p className="text-text-muted text-sm">
-                    No notifications yet
-                  </p>
+                  <p className="text-text-muted text-sm">{t("empty")}</p>
                 </div>
               ) : (
                 items.map((notification) => (
@@ -360,8 +361,11 @@ const NotificationsDropdown = memo(function NotificationsDropdown() {
             </div>
 
             <div className="p-4 border-t border-border bg-background/30">
-              <button className="w-full py-2.5 text-sm text-accent-orange font-bold hover:underline">
-                View All Notifications
+              <button
+                type="button"
+                className="w-full py-2.5 text-sm text-accent-orange font-bold hover:underline"
+              >
+                {t("viewAll")}
               </button>
             </div>
           </div>

@@ -1,0 +1,92 @@
+export const CloddyUsernameAbi = [
+  {
+    name: "mint",
+    type: "function",
+    stateMutability: "payable",
+    inputs: [
+      { name: "tld", type: "string" },
+      { name: "label", type: "string" },
+      { name: "metadataURI", type: "string" },
+    ],
+    outputs: [{ name: "", type: "uint256" }],
+  },
+  {
+    name: "available",
+    type: "function",
+    stateMutability: "view",
+    inputs: [
+      { name: "tld", type: "string" },
+      { name: "label", type: "string" },
+    ],
+    outputs: [{ name: "", type: "bool" }],
+  },
+  {
+    name: "tokenIdOf",
+    type: "function",
+    stateMutability: "view",
+    inputs: [
+      { name: "tld", type: "string" },
+      { name: "label", type: "string" },
+    ],
+    outputs: [{ name: "", type: "uint256" }],
+  },
+  {
+    name: "mintFee",
+    type: "function",
+    stateMutability: "view",
+    inputs: [],
+    outputs: [{ name: "", type: "uint256" }],
+  },
+  {
+    name: "primaryOf",
+    type: "function",
+    stateMutability: "view",
+    inputs: [{ name: "", type: "address" }],
+    outputs: [{ name: "", type: "uint256" }],
+  },
+  {
+    name: "setPrimary",
+    type: "function",
+    stateMutability: "nonpayable",
+    inputs: [{ name: "tokenId", type: "uint256" }],
+    outputs: [],
+  },
+  {
+    name: "usernames",
+    type: "function",
+    stateMutability: "view",
+    inputs: [{ name: "tokenId", type: "uint256" }],
+    outputs: [
+      { name: "tld", type: "string" },
+      { name: "label", type: "string" },
+      { name: "display", type: "string" },
+      { name: "mintedAt", type: "uint256" },
+    ],
+  },
+  {
+    name: "balanceOf",
+    type: "function",
+    stateMutability: "view",
+    inputs: [{ name: "owner", type: "address" }],
+    outputs: [{ name: "", type: "uint256" }],
+  },
+  {
+    name: "ownerOf",
+    type: "function",
+    stateMutability: "view",
+    inputs: [{ name: "tokenId", type: "uint256" }],
+    outputs: [{ name: "", type: "address" }],
+  },
+  {
+    name: "UsernameMinted",
+    type: "event",
+    anonymous: false,
+    inputs: [
+      { name: "owner", type: "address", indexed: true },
+      { name: "tokenId", type: "uint256", indexed: true },
+      { name: "tld", type: "string", indexed: false },
+      { name: "label", type: "string", indexed: false },
+      { name: "display", type: "string", indexed: false },
+    ],
+  },
+] as const;

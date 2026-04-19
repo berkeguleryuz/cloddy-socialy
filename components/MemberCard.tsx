@@ -1,9 +1,17 @@
-import { memo } from "react";
+"use client";
+
+import { memo, useCallback } from "react";
 import Image from "next/image";
-import HexagonAvatar from "./HexagonAvatar";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { useTranslations } from "next-intl";
+import HexagonAvatar from "./HexagonAvatar";
+import { useFriends } from "@/hooks/useFriends";
+import { useAuth } from "./AuthContext";
 
 interface MemberCardProps {
+  id?: string | number;
   name: string;
   avatar: string;
   cover: string;
@@ -19,6 +27,7 @@ interface MemberCardProps {
 }
 
 const MemberCard = memo(function MemberCard({
+  id,
   name,
   avatar,
   cover,
@@ -28,6 +37,33 @@ const MemberCard = memo(function MemberCard({
   bio = "Hello! I'm a passionate gamer who loves streaming and connecting with my community. Come check out my profile!",
   badges = 9,
 }: MemberCardProps) {
+  const t = useTranslations("members");
+  const tc = useTranslations("common");
+  const router = useRouter();
+  const { isAuthenticated } = useAuth();
+  const { sendFriendRequest, isSendingRequest } = useFriends();
+
+  const handleSendMessage = useCallback(() => {
+    if (!isAuthenticated) {
+      toast.info(t("signInToAdd"));
+      return;
+    }
+    if (!id) return;
+    router.push(`/messages?to=${encodeURIComponent(String(id))}`);
+  }, [id, isAuthenticated, router, t]);
+
+  const handleAddFriend = useCallback(() => {
+    if (!isAuthenticated) {
+      toast.info(t("signInToAdd"));
+      return;
+    }
+    if (!id) return;
+    sendFriendRequest(String(id), {
+      onSuccess: () => toast.success(t("requestSent")),
+      onError: (error) => toast.error(error instanceof Error ? error.message : tc("error")),
+    } as Parameters<typeof sendFriendRequest>[1]);
+  }, [id, isAuthenticated, sendFriendRequest, t, tc]);
+
   return (
     <div className="widget-box overflow-hidden group transition-all duration-300 hover:translate-y-[-2px]">
       <div className="h-20 overflow-hidden relative">
@@ -57,7 +93,7 @@ const MemberCard = memo(function MemberCard({
         </div>
 
         <div className="flex-1 pt-6 flex flex-col min-w-0">
-          <Link href="/profile">
+          <Link href={id ? `/members/${id}` : "/profile"}>
             <h3 className="text-sm font-bold hover:text-primary cursor-pointer transition-colors truncate">
               {name}
             </h3>
@@ -70,19 +106,19 @@ const MemberCard = memo(function MemberCard({
             <div className="flex flex-col">
               <span className="text-xs font-black">{stats.posts}</span>
               <span className="text-[9px] text-text-muted font-bold uppercase">
-                posts
+                {t("statPosts")}
               </span>
             </div>
             <div className="flex flex-col">
               <span className="text-xs font-black">{stats.friends}</span>
               <span className="text-[9px] text-text-muted font-bold uppercase">
-                friends
+                {t("statFriends")}
               </span>
             </div>
             <div className="flex flex-col">
               <span className="text-xs font-black">{stats.visits}</span>
               <span className="text-[9px] text-text-muted font-bold uppercase">
-                visits
+                {t("statVisits")}
               </span>
             </div>
           </div>
@@ -92,11 +128,21 @@ const MemberCard = memo(function MemberCard({
           </p>
 
           <div className="flex gap-3">
-            <button className="flex-1 py-2.5 bg-primary text-white text-[10px] font-bold rounded-lg shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all uppercase tracking-wide">
-              Add Friend +
+            <button
+              type="button"
+              onClick={handleAddFriend}
+              disabled={isSendingRequest || !id}
+              className="flex-1 py-2.5 bg-primary text-white text-[10px] font-bold rounded-lg shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all uppercase tracking-wide disabled:opacity-60 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+            >
+              {t("addFriend")}
             </button>
-            <button className="flex-1 py-2.5 bg-surface border border-border text-white text-[10px] font-bold rounded-lg hover:bg-background transition-all uppercase tracking-wide">
-              Send Message
+            <button
+              type="button"
+              onClick={handleSendMessage}
+              disabled={!id}
+              className="flex-1 py-2.5 bg-surface border border-border text-white text-[10px] font-bold rounded-lg hover:bg-background transition-all uppercase tracking-wide focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:opacity-60"
+            >
+              {t("sendMessage")}
             </button>
           </div>
         </div>

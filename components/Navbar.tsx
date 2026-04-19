@@ -4,6 +4,7 @@ import { memo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useSidebar } from "./SidebarContext";
 import { useAuth } from "./AuthContext";
 import SettingsDropdown from "./SettingsDropdown";
@@ -11,11 +12,13 @@ import MessagesDropdown from "./MessagesDropdown";
 import CartDropdown from "./CartDropdown";
 import FriendsDropdown from "./FriendsDropdown";
 import NotificationsDropdown from "./NotificationsDropdown";
+import { LocaleSwitcher } from "./LocaleSwitcher";
 
 const Navbar = memo(function Navbar() {
   const { toggleSidebar } = useSidebar();
   const { user } = useAuth();
   const router = useRouter();
+  const t = useTranslations("navbar");
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleSearch = (e: React.FormEvent) => {
@@ -59,8 +62,8 @@ const Navbar = memo(function Navbar() {
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search here for people or groups"
-            aria-label="Search for people or groups"
+            placeholder={t("search")}
+            aria-label={t("search")}
             className="w-full bg-background border-none rounded-xl py-3 px-6 text-sm text-white placeholder-text-muted focus:ring-1 focus:ring-primary outline-none"
           />
           <button
@@ -107,6 +110,10 @@ const Navbar = memo(function Navbar() {
           <NotificationsDropdown />
 
           <div className="hidden md:block w-px h-8 bg-border mx-2"></div>
+
+          <div className="hidden md:block">
+            <LocaleSwitcher />
+          </div>
 
           <div className="hidden md:block">
             <SettingsDropdown />

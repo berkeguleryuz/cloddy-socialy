@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { toast } from "sonner";
 import HexagonAvatar from "@/components/HexagonAvatar";
+import { useCart } from "@/components/CartContext";
 
 // Mock product data - in real app this would come from API
 const product = {
@@ -151,6 +153,23 @@ export default function ProductPage() {
     "regular" | "extended"
   >("regular");
   const [selectedImage, setSelectedImage] = useState(0);
+  const { addItem } = useCart();
+
+  const handleAddToCart = () => {
+    const unitPrice =
+      selectedLicense === "regular" ? product.price : product.extendedPrice;
+    addItem({
+      id: `${product.id}-${selectedLicense}`,
+      name: product.name,
+      price: unitPrice,
+      image: product.image,
+      category: product.category,
+      license:
+        selectedLicense === "regular" ? "Regular License" : "Extended License",
+      author: product.author,
+    });
+    toast.success("Added to cart");
+  };
 
   return (
     <div className="flex flex-col gap-6 animate-in slide-in-from-bottom-4 duration-700">
@@ -433,9 +452,10 @@ export default function ProductPage() {
               </label>
             </div>
 
-            <Link
-              href="/marketplace/cart"
-              className="w-full py-3 bg-primary text-white text-sm font-bold rounded-xl shadow-lg shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+            <button
+              type="button"
+              onClick={handleAddToCart}
+              className="w-full py-3 bg-primary text-white text-sm font-bold rounded-xl shadow-lg shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
             >
               <svg
                 className="w-5 h-5"
@@ -451,7 +471,7 @@ export default function ProductPage() {
                 />
               </svg>
               Add to Your Cart!
-            </Link>
+            </button>
 
             <div className="flex justify-center gap-8 mt-6 pt-6 border-t border-border">
               <div className="text-center">

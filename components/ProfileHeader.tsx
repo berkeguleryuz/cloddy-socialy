@@ -1,7 +1,11 @@
 "use client";
 
-import { memo } from "react";
+import { memo, useCallback } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import HexagonAvatar from "@/components/HexagonAvatar";
+import { useFriends } from "@/hooks/useFriends";
 
 export interface ProfileUser {
   id: string;
@@ -72,6 +76,27 @@ const ProfileHeader = memo(function ProfileHeader({
   isOwnProfile = false,
   isDemo = false,
 }: ProfileHeaderProps) {
+  const router = useRouter();
+  const { sendFriendRequest, isSendingRequest } = useFriends();
+
+  const handleAddFriend = useCallback(() => {
+    if (!user?.id) return;
+    sendFriendRequest(String(user.id), {
+      onSuccess: () => toast.success("Friend request sent"),
+      onError: (err) =>
+        toast.error(err instanceof Error ? err.message : "Failed"),
+    } as Parameters<typeof sendFriendRequest>[1]);
+  }, [sendFriendRequest, user?.id]);
+
+  const handleMessage = useCallback(() => {
+    if (!user?.id) return;
+    router.push(`/messages?to=${encodeURIComponent(String(user.id))}`);
+  }, [router, user?.id]);
+
+  const handleSocialClick = useCallback((name: string) => {
+    toast.info(`${name} link coming soon`);
+  }, []);
+
   // Use provided user or fall back to demo data
   const displayUser = user || demoUser;
   const stats = displayUser.stats ?? demoUser.stats ?? { posts: 0, friends: 0, visits: 0 };
@@ -146,7 +171,10 @@ const ProfileHeader = memo(function ProfileHeader({
             {socialLinks.map((social) => (
               <button
                 key={social.icon}
-                className="w-8 h-8 rounded-lg bg-surface-light hover:opacity-80 transition-opacity flex items-center justify-center"
+                type="button"
+                onClick={() => handleSocialClick(social.icon)}
+                aria-label={social.icon}
+                className="w-8 h-8 rounded-lg bg-surface-light hover:opacity-80 transition-opacity flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                 style={{
                   backgroundColor: `${social.color}20`,
                   color: social.color,
@@ -161,15 +189,27 @@ const ProfileHeader = memo(function ProfileHeader({
 
           <div className="flex items-center gap-3">
             {isOwnProfile || isDemo ? (
-              <button className="px-6 py-2 bg-linear-to-r from-primary to-primary/80 text-white text-xs font-black rounded-lg shadow-lg shadow-primary/30 uppercase hover:opacity-90 transition-all">
+              <Link
+                href="/settings/profile"
+                className="px-6 py-2 bg-linear-to-r from-primary to-primary/80 text-white text-xs font-black rounded-lg shadow-lg shadow-primary/30 uppercase hover:opacity-90 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              >
                 Edit Profile
-              </button>
+              </Link>
             ) : (
               <>
-                <button className="px-6 py-2 bg-linear-to-r from-primary to-primary/80 text-white text-xs font-black rounded-lg shadow-lg shadow-primary/30 uppercase hover:opacity-90 transition-all">
+                <button
+                  type="button"
+                  onClick={handleAddFriend}
+                  disabled={isSendingRequest}
+                  className="px-6 py-2 bg-linear-to-r from-primary to-primary/80 text-white text-xs font-black rounded-lg shadow-lg shadow-primary/30 uppercase hover:opacity-90 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:opacity-60"
+                >
                   Add Friend +
                 </button>
-                <button className="px-6 py-2 bg-linear-to-r from-secondary to-secondary/80 text-white text-xs font-black rounded-lg shadow-lg shadow-secondary/30 uppercase hover:opacity-90 transition-all">
+                <button
+                  type="button"
+                  onClick={handleMessage}
+                  className="px-6 py-2 bg-linear-to-r from-secondary to-secondary/80 text-white text-xs font-black rounded-lg shadow-lg shadow-secondary/30 uppercase hover:opacity-90 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                >
                   Send Message
                 </button>
               </>

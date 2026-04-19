@@ -1,3 +1,6 @@
+"use client";
+
+import { toast } from "sonner";
 import SettingsLayout from "@/components/SettingsLayout";
 
 const items = [
@@ -46,7 +49,11 @@ export default function ManageItemsPage() {
           <h3 className="text-xs font-black uppercase tracking-widest text-text-muted">
             My Items
           </h3>
-          <button className="px-4 py-2 bg-primary text-white text-xs font-bold rounded-lg hover:bg-primary/90 transition-all">
+          <button
+            type="button"
+            onClick={() => toast.info("New item flow coming soon")}
+            className="px-4 py-2 bg-primary text-white text-xs font-bold rounded-lg hover:bg-primary/90 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          >
             Add New Item
           </button>
         </div>
@@ -85,7 +92,12 @@ export default function ManageItemsPage() {
                 <p className="text-text-muted text-xs">{item.sales} sales</p>
               </div>
               <div className="flex flex-col gap-2">
-                <button className="w-8 h-8 bg-surface rounded-lg flex items-center justify-center text-text-muted hover:text-primary transition-all border border-border">
+                <button
+                  type="button"
+                  onClick={() => toast.info(`Editing ${item.name}`)}
+                  aria-label={`Edit ${item.name}`}
+                  className="w-8 h-8 bg-surface rounded-lg flex items-center justify-center text-text-muted hover:text-primary transition-all border border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                >
                   <svg
                     className="w-4 h-4"
                     fill="none"
@@ -100,7 +112,16 @@ export default function ManageItemsPage() {
                     ></path>
                   </svg>
                 </button>
-                <button className="w-8 h-8 bg-surface rounded-lg flex items-center justify-center text-text-muted hover:text-red-500 transition-all border border-border">
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (confirm(`Delete ${item.name}?`)) {
+                      toast.success(`${item.name} deleted`);
+                    }
+                  }}
+                  aria-label={`Delete ${item.name}`}
+                  className="w-8 h-8 bg-surface rounded-lg flex items-center justify-center text-text-muted hover:text-red-500 transition-all border border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                >
                   <svg
                     className="w-4 h-4"
                     fill="none"

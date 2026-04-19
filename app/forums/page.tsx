@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { toast } from "sonner";
 import HexagonAvatar from "@/components/HexagonAvatar";
 
 const categories = [
@@ -323,12 +324,20 @@ export default function ForumsPage() {
 
               <div className="flex items-center justify-end gap-3 pt-2">
                 <button
+                  type="button"
                   onClick={() => setShowCreateModal(false)}
-                  className="px-4 py-2 text-xs font-black uppercase text-text-muted hover:text-white transition-colors"
+                  className="px-4 py-2 text-xs font-black uppercase text-text-muted hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
                 >
                   Cancel
                 </button>
-                <button className="px-6 py-2 bg-linear-to-r from-primary to-secondary text-white text-xs font-black rounded-lg hover:opacity-90 transition-opacity uppercase tracking-wider">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowCreateModal(false);
+                    toast.success("Discussion posted");
+                  }}
+                  className="px-6 py-2 bg-linear-to-r from-primary to-secondary text-white text-xs font-black rounded-lg hover:opacity-90 transition-opacity uppercase tracking-wider focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                >
                   Post Discussion
                 </button>
               </div>

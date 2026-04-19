@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { toast } from "sonner";
 import StreamCard from "@/components/StreamCard";
 
 const streams = [
@@ -274,7 +275,11 @@ export default function StreamsPage() {
             </p>
           </div>
         </div>
-        <button className="px-6 py-3 bg-[#9146FF] text-white text-sm font-bold rounded-xl shadow-lg shadow-[#9146FF]/30 hover:scale-105 transition-all">
+        <button
+          type="button"
+          onClick={() => toast.info("Streaming integration coming soon")}
+          className="px-6 py-3 bg-[#9146FF] text-white text-sm font-bold rounded-xl shadow-lg shadow-[#9146FF]/30 hover:scale-105 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9146FF]"
+        >
           Connect Account
         </button>
       </div>
