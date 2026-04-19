@@ -1,6 +1,12 @@
+"use client";
+
+import { toast } from "sonner";
 import SettingsLayout from "@/components/SettingsLayout";
 
 export default function StorePage() {
+  const handleWithdraw = () => toast.info("Withdrawal requested");
+  const handleSetDefault = () => toast.success("Set as default payment");
+  const handleAddPayment = () => toast.info("Add payment method");
   return (
     <SettingsLayout
       title="Account Settings"
@@ -12,7 +18,11 @@ export default function StorePage() {
             Available Balance
           </h3>
           <p className="text-4xl font-black text-white mb-4">$250.32</p>
-          <button className="px-6 py-2 bg-white text-secondary font-bold text-sm rounded-lg hover:bg-white/90 transition-all">
+          <button
+            type="button"
+            onClick={handleWithdraw}
+            className="px-6 py-2 bg-white text-secondary font-bold text-sm rounded-lg hover:bg-white/90 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+          >
             Withdraw
           </button>
         </div>
@@ -63,13 +73,21 @@ export default function StorePage() {
               </p>
               <p className="text-text-muted text-xs">PayPal Account</p>
             </div>
-            <button className="text-text-muted text-xs hover:text-white transition-all">
+            <button
+              type="button"
+              onClick={handleSetDefault}
+              className="text-text-muted text-xs hover:text-white transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
+            >
               Set as Default
             </button>
           </div>
         </div>
 
-        <button className="mt-6 w-full py-3 border border-dashed border-border rounded-xl text-text-muted font-bold text-sm hover:border-primary hover:text-primary transition-all">
+        <button
+          type="button"
+          onClick={handleAddPayment}
+          className="mt-6 w-full py-3 border border-dashed border-border rounded-xl text-text-muted font-bold text-sm hover:border-primary hover:text-primary transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        >
           + Add Payment Method
         </button>
       </div>

@@ -1,0 +1,229 @@
+{
+  "common": {
+    "appName": "Cloddy",
+    "loading": "Yükleniyor...",
+    "save": "Kaydet",
+    "cancel": "İptal",
+    "confirm": "Onayla",
+    "delete": "Sil",
+    "edit": "Düzenle",
+    "close": "Kapat",
+    "back": "Geri",
+    "next": "İleri",
+    "submit": "Gönder",
+    "search": "Ara",
+    "more": "Daha fazla",
+    "empty": "Burada henüz bir şey yok",
+    "retry": "Tekrar dene",
+    "copy": "Kopyala",
+    "copied": "Kopyalandı",
+    "error": "Bir hata oluştu",
+    "success": "Başarılı",
+    "optional": "isteğe bağlı",
+    "required": "gerekli"
+  },
+  "auth": {
+    "signIn": "Giriş yap",
+    "signOut": "Çıkış yap",
+    "connectWallet": "Cüzdan bağla",
+    "disconnectWallet": "Cüzdanı ayır",
+    "signInWithWallet": "Cüzdan ile giriş yap",
+    "signInWithGoogle": "Google ile giriş yap",
+    "signInWithEmail": "E-posta ile giriş yap",
+    "register": "Kayıt ol",
+    "forgotPassword": "Şifremi unuttum",
+    "tryDemo": "Demo'yu dene",
+    "wrongNetwork": "Yanlış ağ",
+    "switchNetwork": "Ağı değiştir",
+    "signMessage": "Mesajı imzala",
+    "signingIn": "Giriş yapılıyor...",
+    "signInFailed": "Giriş başarısız oldu",
+    "welcomeTitle": "Cloddy'ye hoş geldin",
+    "welcomeSubtitle": "Topluluğa katılmak için cüzdanını bağla veya demo ile dene"
+  },
+  "navbar": {
+    "newsfeed": "Akış",
+    "members": "Üyeler",
+    "groups": "Gruplar",
+    "forums": "Forumlar",
+    "events": "Etkinlikler",
+    "badges": "Rozetler",
+    "quests": "Görevler",
+    "streams": "Yayınlar",
+    "marketplace": "Pazar",
+    "leaderboard": "Liderlik",
+    "profile": "Profil",
+    "settings": "Ayarlar",
+    "notifications": "Bildirimler",
+    "messages": "Mesajlar",
+    "friends": "Arkadaşlar",
+    "cart": "Sepet",
+    "search": "Ara..."
+  },
+  "newsfeed": {
+    "title": "Akış",
+    "subtitle": "Arkadaşlarının neler yaptığını keşfet",
+    "createPost": "Gönderi oluştur",
+    "placeholder": "Merhaba! Bir şeyler paylaş...",
+    "post": "Paylaş",
+    "filters": {
+      "all": "Tüm güncellemeler",
+      "mentions": "Bahsetmeler",
+      "friends": "Arkadaşlar",
+      "groups": "Gruplar",
+      "blog": "Blog yazıları"
+    },
+    "tabs": {
+      "status": "Durum",
+      "blog": "Blog yazısı",
+      "poll": "Anket"
+    }
+  },
+  "username": {
+    "title": "Kullanıcı adı mint et",
+    "inputLabel": "Kullanıcı adı",
+    "inputPlaceholder": "kullaniciadin",
+    "available": "Müsait",
+    "unavailable": "Kullanılıyor",
+    "checking": "Kontrol ediliyor...",
+    "mintFee": "Mint ücreti",
+    "mintButton": "Mint et",
+    "minting": "Mint ediliyor...",
+    "errors": {
+      "too_short": "En az {min} karakter olmalı",
+      "too_long": "En fazla {max} karakter olabilir",
+      "invalid_chars": "Sadece harf, rakam, alt çizgi ve tire kullanılabilir",
+      "reserved": "Bu kullanıcı adı rezerve edilmiş",
+      "taken": "Bu kullanıcı adı alınmış"
+    }
+  },
+  "pfp": {
+    "title": "Profil resmi mint et",
+    "upload": "Resim yükle",
+    "preview": "Önizleme",
+    "mintFee": "Mint ücreti",
+    "mintButton": "Mint et"
+  },
+  "locale": {
+    "switchLanguage": "Dili değiştir"
+  },
+  "cartPanel": {
+    "title": "Sepet",
+    "itemCount": "{count} ürün",
+    "empty": "Sepetin boş",
+    "emptyHint": "Eklemek için pazarı gez",
+    "subtotal": "Ara toplam",
+    "checkout": "Ödemeye geç",
+    "continue": "Alışverişe devam et"
+  },
+  "postOptions": {
+    "copyLink": "Bağlantıyı kopyala",
+    "edit": "Düzenle",
+    "delete": "Sil",
+    "report": "Bildir",
+    "deleted": "Gönderi silindi",
+    "confirmDelete": "Bu gönderiyi silmek istediğine emin misin?"
+  },
+  "widgets": {
+    "membersTitle": "Üyeler",
+    "questsTitle": "Açık Görevler",
+    "eventsTitle": "Yaklaşan Etkinlikler",
+    "groupsTitle": "Gruplar",
+    "activityTitle": "Arkadaş Aktivitesi",
+    "viewAll": "Tümünü gör",
+    "tabNewest": "En yeni",
+    "tabPopular": "Popüler",
+    "tabActive": "Aktif",
+    "level": "Sv {level}",
+    "emptyTitle": "Henüz arkadaş yok.",
+    "emptyHint": "Diğer üyelerle bağlantı kur!",
+    "questsEmpty": "Henüz aktif görev yok.",
+    "questsEmptyHint": "Yeni meydan okumalar için yakında tekrar kontrol et!",
+    "eventsEmpty": "Yaklaşan etkinlik yok.",
+    "eventsEmptyHint": "Başlamak için bir etkinlik oluştur!"
+  },
+  "createPost": {
+    "placeholder": "Aklından ne geçiyor?",
+    "submit": "Paylaş",
+    "success": "Gönderi paylaşıldı",
+    "emptyWarning": "Önce bir şeyler yaz",
+    "tooLong": "Gönderi çok uzun (maks. {max} karakter)",
+    "errorGeneric": "Gönderi paylaşılamadı",
+    "signInPrompt": "Paylaşmak için giriş yap",
+    "typeText": "Metin",
+    "typeImage": "Fotoğraf",
+    "typeVideo": "Video",
+    "typePoll": "Anket",
+    "visibilityLabel": "Görünürlük",
+    "visibilityPublic": "Herkes",
+    "visibilityFriends": "Arkadaşlar",
+    "visibilityPrivate": "Sadece ben"
+  },
+  "questsPage": {
+    "progress": "İLERLEME",
+    "active": "Aktif",
+    "completed": "Tamamlandı"
+  },
+  "groupsPage": {
+    "private": "Gizli",
+    "public": "Herkese açık",
+    "more": "daha",
+    "statMembers": "üye",
+    "statPosts": "gönderi",
+    "joinCta": "GRUBA KATIL +",
+    "leaveCta": "GRUPTAN AYRIL",
+    "joined": "Gruba katıldın",
+    "left": "Gruptan ayrıldın",
+    "signInToJoin": "Gruba katılmak için giriş yap",
+    "lastActivity": "Son etkinlik {time}"
+  },
+  "events": {
+    "interestedCta": "İlgileniyorum",
+    "interested": "İlgileniyor",
+    "going": "Katılıyor",
+    "interestedSaved": "Etkinliğe kaydoldun",
+    "signInToRsvp": "RSVP için giriş yap"
+  },
+  "messagesPanel": {
+    "title": "Mesajlar / Sohbet",
+    "placeholder": "Mesaj yaz...",
+    "searchPlaceholder": "Mesajlarda ara..."
+  },
+  "notificationsPanel": {
+    "title": "Bildirimler",
+    "markAllRead": "Hepsini okundu işaretle",
+    "markedAllRead": "Tüm bildirimler okundu işaretlendi",
+    "empty": "Henüz bildirim yok",
+    "viewAll": "Tüm bildirimleri gör"
+  },
+  "friends": {
+    "requestsTitle": "Arkadaşlık istekleri",
+    "pendingCount": "{count} bekliyor",
+    "empty": "Bekleyen arkadaşlık isteği yok",
+    "accept": "Kabul",
+    "decline": "Reddet",
+    "accepted": "Arkadaşlık isteği kabul edildi",
+    "declined": "Arkadaşlık isteği reddedildi",
+    "mutualFriends": "{count} ortak arkadaş",
+    "viewAll": "Tüm arkadaşları gör",
+    "addFriend": "Arkadaş ekle",
+    "requestSent": "İstek gönderildi",
+    "signInToAdd": "Arkadaş eklemek için giriş yap"
+  },
+  "members": {
+    "addFriend": "Arkadaş ekle +",
+    "sendMessage": "Mesaj gönder",
+    "requestSent": "İstek gönderildi",
+    "signInToAdd": "Arkadaş eklemek için giriş yap",
+    "statPosts": "gönderi",
+    "statFriends": "arkadaş",
+    "statVisits": "ziyaret"
+  },
+  "errors": {
+    "generic": "Bir şeyler ters gitti",
+    "notFound": "Bulunamadı",
+    "unauthorized": "Yetkisiz erişim",
+    "networkError": "Ağ hatası",
+    "tryAgain": "Lütfen tekrar dene"
+  }
+}

@@ -40,10 +40,22 @@ export const PasswordSchema = z.string()
   .min(8, 'Password must be at least 8 characters')
   .max(128, 'Password too long')
 
+import {
+  USERNAME_MAX_LENGTH,
+  USERNAME_MIN_LENGTH,
+  USERNAME_PATTERN,
+  RESERVED_USERNAMES,
+} from '@/lib/username'
+
 export const UsernameSchema = z.string()
-  .min(3, 'Username must be at least 3 characters')
-  .max(30, 'Username too long')
-  .regex(/^[a-zA-Z0-9_-]+$/, 'Username can only contain letters, numbers, underscores, and hyphens')
+  .trim()
+  .min(USERNAME_MIN_LENGTH, `Username must be at least ${USERNAME_MIN_LENGTH} characters`)
+  .max(USERNAME_MAX_LENGTH, `Username must be at most ${USERNAME_MAX_LENGTH} characters`)
+  .regex(USERNAME_PATTERN, 'Username can only contain letters, numbers, underscores, and hyphens')
+  .refine(
+    (val) => !RESERVED_USERNAMES.has(val.toLowerCase()),
+    'This username is reserved'
+  )
   .transform(val => val.toLowerCase())
 
 export const EmailRegisterSchema = z.object({

@@ -1,9 +1,16 @@
-import { memo } from "react";
+"use client";
+
+import { memo, useCallback } from "react";
 import Image from "next/image";
-import HexagonAvatar from "./HexagonAvatar";
 import Link from "next/link";
+import { toast } from "sonner";
+import { useTranslations } from "next-intl";
+import HexagonAvatar from "./HexagonAvatar";
+import { useJoinGroup, useLeaveGroup } from "@/hooks/useGroups";
+import { useAuth } from "./AuthContext";
 
 interface GroupCardProps {
+  id?: string | number;
   name: string;
   avatar: string;
   cover: string;
@@ -13,9 +20,11 @@ interface GroupCardProps {
   category?: string;
   memberAvatars?: string[];
   lastActivity?: string;
+  isMember?: boolean;
 }
 
 const GroupCard = memo(function GroupCard({
+  id,
   name,
   avatar,
   cover,
@@ -25,7 +34,33 @@ const GroupCard = memo(function GroupCard({
   category = "Gaming",
   memberAvatars = [],
   lastActivity = "2 hours ago",
+  isMember = false,
 }: GroupCardProps) {
+  const t = useTranslations("groupsPage");
+  const tc = useTranslations("common");
+  const { isAuthenticated } = useAuth();
+  const join = useJoinGroup();
+  const leave = useLeaveGroup();
+
+  const handleToggle = useCallback(() => {
+    if (!isAuthenticated) {
+      toast.info(t("signInToJoin"));
+      return;
+    }
+    if (!id) return;
+    const groupId = String(id);
+    if (isMember) {
+      leave.mutate(groupId, {
+        onSuccess: () => toast.success(t("left")),
+        onError: (err) => toast.error(err.message || tc("error")),
+      });
+    } else {
+      join.mutate(groupId, {
+        onSuccess: () => toast.success(t("joined")),
+        onError: (err) => toast.error(err.message || tc("error")),
+      });
+    }
+  }, [id, isAuthenticated, isMember, join, leave, t, tc]);
   return (
     <div className="widget-box overflow-hidden group transition-all duration-300 hover:translate-y-[-4px]">
       <div className="h-32 overflow-hidden relative">
@@ -54,7 +89,7 @@ const GroupCard = memo(function GroupCard({
                   clipRule="evenodd"
                 />
               </svg>
-              Private
+              {t("private")}
             </>
           ) : (
             <>
@@ -65,7 +100,7 @@ const GroupCard = memo(function GroupCard({
                   clipRule="evenodd"
                 />
               </svg>
-              Public
+              {t("public")}
             </>
           )}
         </div>
@@ -87,7 +122,7 @@ const GroupCard = memo(function GroupCard({
         </Link>
 
         <p className="text-[10px] text-text-muted font-medium mb-4">
-          Last activity {lastActivity}
+          {t("lastActivity", { time: lastActivity })}
         </p>
 
         {memberAvatars.length > 0 ? (
@@ -110,7 +145,7 @@ const GroupCard = memo(function GroupCard({
             </div>
             {memberAvatars.length > 4 ? (
               <span className="text-[10px] text-text-muted font-bold">
-                +{memberAvatars.length - 4} more
+                +{memberAvatars.length - 4} {t("more")}
               </span>
             ) : null}
           </div>
@@ -120,19 +155,28 @@ const GroupCard = memo(function GroupCard({
           <div className="flex flex-col items-center">
             <span className="text-xs font-black">{members}</span>
             <span className="text-[10px] text-text-muted font-bold uppercase">
-              Members
+              {t("statMembers")}
             </span>
           </div>
           <div className="flex flex-col items-center">
             <span className="text-xs font-black">{posts}</span>
             <span className="text-[10px] text-text-muted font-bold uppercase">
-              Posts
+              {t("statPosts")}
             </span>
           </div>
         </div>
 
-        <button className="w-full py-3 bg-secondary text-white text-xs font-bold rounded-xl shadow-[0_6px_20px_rgba(35,210,226,0.3)] hover:scale-[1.02] active:scale-[0.98] transition-all">
-          JOIN GROUP +
+        <button
+          type="button"
+          onClick={handleToggle}
+          disabled={join.isPending || leave.isPending}
+          className={`w-full py-3 text-white text-xs font-bold rounded-xl transition-all hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:opacity-60 ${
+            isMember
+              ? "bg-background border border-border text-text-muted"
+              : "bg-secondary shadow-[0_6px_20px_rgba(35,210,226,0.3)]"
+          }`}
+        >
+          {isMember ? t("leaveCta") : t("joinCta")}
         </button>
       </div>
     </div>

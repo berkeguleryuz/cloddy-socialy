@@ -1,3 +1,6 @@
+"use client";
+
+import { toast } from "sonner";
 import SettingsLayout from "@/components/SettingsLayout";
 
 const salesData = [
@@ -144,7 +147,24 @@ export default function SalesStatementPage() {
         </div>
 
         <div className="flex justify-end mt-6">
-          <button className="px-6 py-2 bg-primary text-white font-bold text-sm rounded-lg hover:bg-primary/90 transition-all">
+          <button
+            type="button"
+            onClick={() => {
+              const header = "date,item,buyer,amount\n";
+              const rows = salesData
+                .map((s) => `${s.date},${s.item},${s.buyer},${s.amount}`)
+                .join("\n");
+              const blob = new Blob([header + rows], { type: "text/csv" });
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement("a");
+              a.href = url;
+              a.download = "sales.csv";
+              a.click();
+              URL.revokeObjectURL(url);
+              toast.success("CSV exported");
+            }}
+            className="px-6 py-2 bg-primary text-white font-bold text-sm rounded-lg hover:bg-primary/90 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          >
             Download CSV
           </button>
         </div>

@@ -1,10 +1,11 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { toast } from "sonner";
 import HexagonAvatar from "@/components/HexagonAvatar";
 import CreateEventModal from "@/components/modals/CreateEventModal";
 import { useAuth } from "@/components/AuthContext";
-import { useEvents } from "@/hooks/useEvents";
+import { useEvents, useRespondToEvent } from "@/hooks/useEvents";
 
 // Demo events - shown when not authenticated
 const demoEvents = [
@@ -128,6 +129,24 @@ export default function EventsPage() {
 
   const { isDemo, isAuthenticated } = useAuth();
   const eventsData = useEvents();
+  const respond = useRespondToEvent();
+
+  const rsvp = (status: "going" | "interested") => {
+    if (!selectedEvent) return;
+    const id = String(selectedEvent.id);
+    if (!isAuthenticated || isDemo) {
+      toast.success(status === "going" ? "You're going!" : "Marked as interested");
+      return;
+    }
+    respond.mutate(
+      { eventId: id, status },
+      {
+        onSuccess: () =>
+          toast.success(status === "going" ? "You're going!" : "Marked as interested"),
+        onError: (err) => toast.error(err instanceof Error ? err.message : "Failed"),
+      }
+    );
+  };
 
   // Transform events data or use demo data
   const events = useMemo(() => {
@@ -563,10 +582,20 @@ export default function EventsPage() {
               </div>
 
               <div className="flex gap-3">
-                <button className="flex-1 py-3 bg-linear-to-r from-primary to-secondary text-white text-xs font-black rounded-lg hover:opacity-90 transition-opacity uppercase tracking-wider">
+                <button
+                  type="button"
+                  onClick={() => rsvp("going")}
+                  disabled={respond.isPending}
+                  className="flex-1 py-3 bg-linear-to-r from-primary to-secondary text-white text-xs font-black rounded-lg hover:opacity-90 transition-opacity uppercase tracking-wider focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:opacity-60"
+                >
                   I&apos;m Going!
                 </button>
-                <button className="px-4 py-3 bg-surface-light text-text-muted text-xs font-black rounded-lg hover:text-white transition-colors uppercase tracking-wider">
+                <button
+                  type="button"
+                  onClick={() => rsvp("interested")}
+                  disabled={respond.isPending}
+                  className="px-4 py-3 bg-surface-light text-text-muted text-xs font-black rounded-lg hover:text-white transition-colors uppercase tracking-wider focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:opacity-60"
+                >
                   Interested
                 </button>
               </div>

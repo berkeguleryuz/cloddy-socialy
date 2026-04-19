@@ -36,6 +36,28 @@ body {
   overflow-x: hidden;
 }
 
+.form-input {
+  width: 100%;
+  background-color: var(--color-background);
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  color: #fff;
+  border: 1px solid var(--color-border);
+  transition: border-color 150ms ease;
+  outline: none;
+}
+.form-input:focus {
+  border-color: var(--color-primary);
+}
+.form-input::placeholder {
+  color: var(--color-text-muted);
+}
+.form-input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 6px;

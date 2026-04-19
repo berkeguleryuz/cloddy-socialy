@@ -1,3 +1,7 @@
+"use client";
+
+import Link from "next/link";
+import { toast } from "sonner";
 import SettingsLayout from "@/components/SettingsLayout";
 
 const groups = [
@@ -35,9 +39,12 @@ export default function ManageGroupsPage() {
           <h3 className="text-xs font-black uppercase tracking-widest text-text-muted">
             Manage Groups
           </h3>
-          <button className="px-4 py-2 bg-primary text-white text-xs font-bold rounded-lg hover:bg-primary/90 transition-all">
+          <Link
+            href="/groups"
+            className="px-4 py-2 bg-primary text-white text-xs font-bold rounded-lg hover:bg-primary/90 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          >
             Create Group
-          </button>
+          </Link>
         </div>
 
         <div className="space-y-4">
@@ -71,7 +78,12 @@ export default function ManageGroupsPage() {
                 >
                   {group.role}
                 </span>
-                <button className="w-9 h-9 bg-surface rounded-lg flex items-center justify-center text-text-muted hover:text-white transition-all border border-border">
+                <button
+                  type="button"
+                  onClick={() => toast.info(`${group.name} settings coming soon`)}
+                  aria-label={`${group.name} settings`}
+                  className="w-9 h-9 bg-surface rounded-lg flex items-center justify-center text-text-muted hover:text-white transition-all border border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                >
                   <svg
                     className="w-4 h-4"
                     fill="none"

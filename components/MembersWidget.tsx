@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo, memo } from "react";
+import { useTranslations } from "next-intl";
 import HexagonAvatar from "./HexagonAvatar";
 import { useAuth } from "./AuthContext";
 import { useData } from "./DataContext";
@@ -13,6 +14,7 @@ const MembersWidget = memo(function MembersWidget() {
 
   const { isDemo, isAuthenticated } = useAuth();
   const { social } = useData();
+  const tw = useTranslations("widgets");
 
   // Transform friends data to member format or use demo data
   const { membersData, showEmpty } = useMemo(() => {
@@ -50,7 +52,7 @@ const MembersWidget = memo(function MembersWidget() {
   return (
     <div className="widget-box">
       <h3 className="text-xs font-black uppercase tracking-widest text-text-muted mb-4">
-        Members
+        {tw("membersTitle")}
       </h3>
 
       {/* Tabs */}
@@ -58,14 +60,15 @@ const MembersWidget = memo(function MembersWidget() {
         {(["Newest", "Popular", "Active"] as const).map((tab) => (
           <button
             key={tab}
+            type="button"
             onClick={() => setActiveTab(tab)}
-            className={`flex-1 py-2 text-[10px] font-bold uppercase rounded-lg transition-all ${
+            className={`flex-1 py-2 text-[10px] font-bold uppercase rounded-lg transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
               activeTab === tab
                 ? "bg-primary text-white"
                 : "bg-background text-text-muted hover:bg-background/80"
             }`}
           >
-            {tab}
+            {tw(`tab${tab}` as const)}
           </button>
         ))}
       </div>
@@ -74,8 +77,8 @@ const MembersWidget = memo(function MembersWidget() {
       <div className="flex flex-col gap-3">
         {showEmpty ? (
           <div className="p-4 text-center">
-            <p className="text-xs text-text-muted">No friends yet.</p>
-            <p className="text-[10px] text-text-muted mt-1">Connect with other members!</p>
+            <p className="text-xs text-text-muted">{tw("emptyTitle")}</p>
+            <p className="text-[10px] text-text-muted mt-1">{tw("emptyHint")}</p>
           </div>
         ) : (
           membersData[activeTab].map((member, index) => (
@@ -89,7 +92,7 @@ const MembersWidget = memo(function MembersWidget() {
                   {member.name}
                 </h4>
                 <span className="text-[10px] text-text-muted">
-                  Lvl {member.level}
+                  {tw("level", { level: member.level })}
                 </span>
               </div>
               <button className="w-7 h-7 rounded-lg bg-background flex items-center justify-center text-text-muted hover:bg-primary hover:text-white transition-all opacity-0 group-hover:opacity-100">

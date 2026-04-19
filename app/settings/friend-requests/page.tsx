@@ -1,3 +1,7 @@
+"use client";
+
+import { useState } from "react";
+import { toast } from "sonner";
 import SettingsLayout from "@/components/SettingsLayout";
 import HexagonAvatar from "@/components/HexagonAvatar";
 
@@ -35,6 +39,16 @@ const friendRequests = [
 ];
 
 export default function FriendRequestsPage() {
+  const [dismissed, setDismissed] = useState<number[]>([]);
+  const visible = friendRequests.filter((r) => !dismissed.includes(r.id));
+  const accept = (id: number, name: string) => {
+    setDismissed((prev) => [...prev, id]);
+    toast.success(`Accepted ${name}`);
+  };
+  const decline = (id: number, name: string) => {
+    setDismissed((prev) => [...prev, id]);
+    toast.info(`Declined ${name}`);
+  };
   return (
     <SettingsLayout
       title="Account Settings"
@@ -51,7 +65,7 @@ export default function FriendRequestsPage() {
         </div>
 
         <div className="space-y-4">
-          {friendRequests.map((request) => (
+          {visible.map((request) => (
             <div
               key={request.id}
               className="flex items-center gap-4 p-4 bg-background rounded-xl border border-border"
@@ -70,10 +84,18 @@ export default function FriendRequestsPage() {
                 </p>
               </div>
               <div className="flex gap-2">
-                <button className="px-4 py-2 bg-primary text-white text-xs font-bold rounded-lg hover:bg-primary/90 transition-all">
+                <button
+                  type="button"
+                  onClick={() => accept(request.id, request.user.name)}
+                  className="px-4 py-2 bg-primary text-white text-xs font-bold rounded-lg hover:bg-primary/90 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                >
                   Accept
                 </button>
-                <button className="px-4 py-2 bg-background text-text-muted text-xs font-bold rounded-lg hover:text-white transition-all border border-border">
+                <button
+                  type="button"
+                  onClick={() => decline(request.id, request.user.name)}
+                  className="px-4 py-2 bg-background text-text-muted text-xs font-bold rounded-lg hover:text-white transition-all border border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                >
                   Decline
                 </button>
               </div>

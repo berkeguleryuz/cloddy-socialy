@@ -1,6 +1,14 @@
+"use client";
+
+import { toast } from "sonner";
 import SettingsLayout from "@/components/SettingsLayout";
 
 export default function AccountInfoPage() {
+  const handleUpgrade = () => toast.info("Upgrade flow coming soon");
+  const handleDelete = () => {
+    if (!confirm("Permanently delete your account? This can't be undone.")) return;
+    toast.error("Account deletion is a sensitive action — please contact support to proceed.");
+  };
   return (
     <SettingsLayout
       title="Account Settings"
@@ -58,7 +66,11 @@ export default function AccountInfoPage() {
               <div className="flex-1 bg-background rounded-xl px-4 py-3 text-sm text-white border border-border">
                 Pro Member
               </div>
-              <button className="px-4 py-3 bg-primary text-white text-xs font-bold rounded-xl hover:bg-primary/90 transition-all">
+              <button
+                type="button"
+                onClick={handleUpgrade}
+                className="px-4 py-3 bg-primary text-white text-xs font-bold rounded-xl hover:bg-primary/90 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              >
                 Upgrade
               </button>
             </div>
@@ -85,7 +97,11 @@ export default function AccountInfoPage() {
                 Permanently delete your account and all data
               </p>
             </div>
-            <button className="px-4 py-2 bg-red-500 text-white text-xs font-bold rounded-lg hover:bg-red-600 transition-all">
+            <button
+              type="button"
+              onClick={handleDelete}
+              className="px-4 py-2 bg-red-500 text-white text-xs font-bold rounded-lg hover:bg-red-600 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400"
+            >
               Delete Account
             </button>
           </div>

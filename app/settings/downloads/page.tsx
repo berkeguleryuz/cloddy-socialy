@@ -1,3 +1,7 @@
+"use client";
+
+import Link from "next/link";
+import { toast } from "sonner";
 import SettingsLayout from "@/components/SettingsLayout";
 
 const downloads = [
@@ -72,7 +76,11 @@ export default function DownloadsPage() {
                   {item.type} • {item.size} • Purchased {item.date}
                 </p>
               </div>
-              <button className="px-4 py-2 bg-primary text-white text-xs font-bold rounded-lg hover:bg-primary/90 transition-all flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => toast.success(`Downloading ${item.name}...`)}
+                className="px-4 py-2 bg-primary text-white text-xs font-bold rounded-lg hover:bg-primary/90 transition-all flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              >
                 <svg
                   className="w-4 h-4"
                   fill="none"
@@ -108,9 +116,12 @@ export default function DownloadsPage() {
               ></path>
             </svg>
             <p className="text-text-muted">No downloads yet</p>
-            <button className="mt-4 px-6 py-2 bg-primary text-white font-bold text-sm rounded-lg hover:bg-primary/90 transition-all">
+            <Link
+              href="/marketplace"
+              className="inline-block mt-4 px-6 py-2 bg-primary text-white font-bold text-sm rounded-lg hover:bg-primary/90 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+            >
               Browse Marketplace
-            </button>
+            </Link>
           </div>
         ) : null}
       </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { useTranslations } from "next-intl";
 import PostCard from "@/components/PostCard";
 import VideoPost from "@/components/VideoPost";
 import PollPost from "@/components/PollPost";
@@ -19,7 +20,7 @@ import { useQuestStats } from "@/hooks/useQuests";
 // Demo data - shown when not authenticated
 const demoTextPosts = [
   {
-    id: 1,
+    id: "demo-text-1",
     author: {
       name: "Marina Valentine",
       avatar: "/images/avatars/avatar_01.png",
@@ -36,6 +37,7 @@ const demoTextPosts = [
 ];
 
 const demoVideoPost = {
+  id: "demo-video-1",
   author: {
     name: "Neko Bebop",
     avatar: "/images/avatars/avatar_03.png",
@@ -54,6 +56,7 @@ const demoVideoPost = {
 };
 
 const demoPollPost = {
+  id: "demo-poll-1",
   author: {
     name: "Sarah Diamond",
     avatar: "/images/avatars/avatar_08.png",
@@ -74,6 +77,7 @@ const demoPollPost = {
 };
 
 const demoGalleryPost = {
+  id: "demo-gallery-1",
   author: {
     name: "Destroy Dex",
     avatar: "/images/avatars/avatar_07.png",
@@ -121,7 +125,8 @@ function formatTimeAgo(dateString: string): string {
 }
 
 export default function Home() {
-  const [activeFilter, setActiveFilter] = useState("All Updates");
+  const t = useTranslations("newsfeed");
+  const [activeFilter, setActiveFilter] = useState("all");
 
   // Get auth and data context
   const { user: authUser, isDemo, isAuthenticated } = useAuth();
@@ -170,6 +175,7 @@ export default function Home() {
     return {
       textPosts: transformedTextPosts,
       videoPost: videoPosts.length > 0 ? {
+        id: videoPosts[0].id,
         author: {
           name: videoPosts[0].author?.display_name || "User",
           avatar: videoPosts[0].author?.avatar_url || "/images/avatars/avatar_03.png",
@@ -186,6 +192,7 @@ export default function Home() {
         shares: videoPosts[0].shares_count || 0,
       } : null,
       pollPost: pollPosts.length > 0 ? {
+        id: pollPosts[0].id,
         author: {
           name: pollPosts[0].author?.display_name || "User",
           avatar: pollPosts[0].author?.avatar_url || "/images/avatars/avatar_08.png",
@@ -200,6 +207,7 @@ export default function Home() {
         shares: pollPosts[0].shares_count || 0,
       } : null,
       galleryPost: galleryPosts.length > 0 ? {
+        id: galleryPosts[0].id,
         author: {
           name: galleryPosts[0].author?.display_name || "User",
           avatar: galleryPosts[0].author?.avatar_url || "/images/avatars/avatar_07.png",
@@ -224,11 +232,11 @@ export default function Home() {
   }, [isDemo, isAuthenticated, feed.posts, authUser, gamification, demoPosts]);
 
   const filters = [
-    "All Updates",
-    "Mentions",
-    "Friends",
-    "Groups",
-    "Blog Posts",
+    { id: "all", label: t("filters.all") },
+    { id: "mentions", label: t("filters.mentions") },
+    { id: "friends", label: t("filters.friends") },
+    { id: "groups", label: t("filters.groups") },
+    { id: "blog", label: t("filters.blog") },
   ];
 
 
@@ -274,11 +282,9 @@ export default function Home() {
           </div>
           <div>
             <h1 className="text-2xl font-black text-white tracking-wide">
-              Newsfeed
+              {t("title")}
             </h1>
-            <p className="text-white/80 text-xs font-medium">
-              Check what your friends have been up to!
-            </p>
+            <p className="text-white/80 text-xs font-medium">{t("subtitle")}</p>
           </div>
         </div>
       </div>
@@ -402,17 +408,18 @@ export default function Home() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-6 text-[11px] font-black uppercase tracking-wider overflow-x-auto no-scrollbar pb-1">
               {filters.map((filter) => (
-                <div
-                  key={filter}
-                  onClick={() => setActiveFilter(filter)}
+                <button
+                  key={filter.id}
+                  type="button"
+                  onClick={() => setActiveFilter(filter.id)}
                   className={`${
-                    activeFilter === filter
+                    activeFilter === filter.id
                       ? "text-white border-b-2 border-primary pb-1"
                       : "text-text-muted hover:text-white pb-1"
-                  } cursor-pointer shrink-0 transition-all`}
+                  } cursor-pointer shrink-0 transition-all bg-transparent border-0 font-[inherit] tracking-[inherit] uppercase`}
                 >
-                  {filter}
-                </div>
+                  {filter.label}
+                </button>
               ))}
             </div>
           </div>

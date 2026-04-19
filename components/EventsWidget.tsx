@@ -1,6 +1,8 @@
 "use client";
 
 import { useMemo, memo } from "react";
+import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { useAuth } from "./AuthContext";
 import { useData } from "./DataContext";
 import { demoEvents, eventColors } from "@/constants/demoData";
@@ -41,6 +43,7 @@ function formatEventTime(timeString: string | null): string {
 
 const EventsWidget = memo(function EventsWidget() {
   const { isDemo, isAuthenticated } = useAuth();
+  const tw = useTranslations("widgets");
   const { events: eventsData } = useData();
 
   // Transform events data or use demo data
@@ -72,18 +75,23 @@ const EventsWidget = memo(function EventsWidget() {
     <div className="widget-box">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-xs font-black uppercase tracking-widest text-text-muted">
-          Upcoming Events
+          {tw("eventsTitle")}
         </h3>
-        <button className="text-[10px] text-primary font-bold hover:underline">
-          View All
-        </button>
+        <Link
+          href="/events"
+          className="text-[10px] text-primary font-bold hover:underline"
+        >
+          {tw("viewAll")}
+        </Link>
       </div>
 
       <div className="flex flex-col gap-3">
         {showEmpty ? (
           <div className="p-4 text-center">
-            <p className="text-xs text-text-muted">No upcoming events.</p>
-            <p className="text-[10px] text-text-muted mt-1">Create an event to get started!</p>
+            <p className="text-xs text-text-muted">{tw("eventsEmpty")}</p>
+            <p className="text-[10px] text-text-muted mt-1">
+              {tw("eventsEmptyHint")}
+            </p>
           </div>
         ) : (
           events.map((event) => (

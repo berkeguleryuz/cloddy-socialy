@@ -1,0 +1,229 @@
+{
+  "common": {
+    "appName": "Cloddy",
+    "loading": "Lädt...",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "confirm": "Bestätigen",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "close": "Schließen",
+    "back": "Zurück",
+    "next": "Weiter",
+    "submit": "Absenden",
+    "search": "Suchen",
+    "more": "Mehr",
+    "empty": "Hier gibt es noch nichts",
+    "retry": "Erneut versuchen",
+    "copy": "Kopieren",
+    "copied": "Kopiert",
+    "error": "Etwas ist schiefgelaufen",
+    "success": "Erfolg",
+    "optional": "optional",
+    "required": "erforderlich"
+  },
+  "auth": {
+    "signIn": "Anmelden",
+    "signOut": "Abmelden",
+    "connectWallet": "Wallet verbinden",
+    "disconnectWallet": "Wallet trennen",
+    "signInWithWallet": "Mit Wallet anmelden",
+    "signInWithGoogle": "Mit Google anmelden",
+    "signInWithEmail": "Mit E-Mail anmelden",
+    "register": "Registrieren",
+    "forgotPassword": "Passwort vergessen",
+    "tryDemo": "Demo ausprobieren",
+    "wrongNetwork": "Falsches Netzwerk",
+    "switchNetwork": "Netzwerk wechseln",
+    "signMessage": "Nachricht signieren",
+    "signingIn": "Anmeldung läuft...",
+    "signInFailed": "Anmeldung fehlgeschlagen",
+    "welcomeTitle": "Willkommen bei Cloddy",
+    "welcomeSubtitle": "Verbinde deine Wallet, um der Community beizutreten, oder probiere die Demo"
+  },
+  "navbar": {
+    "newsfeed": "Feed",
+    "members": "Mitglieder",
+    "groups": "Gruppen",
+    "forums": "Foren",
+    "events": "Veranstaltungen",
+    "badges": "Abzeichen",
+    "quests": "Aufgaben",
+    "streams": "Streams",
+    "marketplace": "Marktplatz",
+    "leaderboard": "Rangliste",
+    "profile": "Profil",
+    "settings": "Einstellungen",
+    "notifications": "Benachrichtigungen",
+    "messages": "Nachrichten",
+    "friends": "Freunde",
+    "cart": "Warenkorb",
+    "search": "Suchen..."
+  },
+  "newsfeed": {
+    "title": "Feed",
+    "subtitle": "Schau, was deine Freunde gemacht haben",
+    "createPost": "Beitrag erstellen",
+    "placeholder": "Hallo! Teile deinen Beitrag hier...",
+    "post": "Posten",
+    "filters": {
+      "all": "Alle Updates",
+      "mentions": "Erwähnungen",
+      "friends": "Freunde",
+      "groups": "Gruppen",
+      "blog": "Blog-Beiträge"
+    },
+    "tabs": {
+      "status": "Status",
+      "blog": "Blog-Beitrag",
+      "poll": "Umfrage"
+    }
+  },
+  "username": {
+    "title": "Benutzername minten",
+    "inputLabel": "Benutzername",
+    "inputPlaceholder": "deinname",
+    "available": "Verfügbar",
+    "unavailable": "Vergeben",
+    "checking": "Prüfung läuft...",
+    "mintFee": "Mint-Gebühr",
+    "mintButton": "Minten",
+    "minting": "Wird gemintet...",
+    "errors": {
+      "too_short": "Muss mindestens {min} Zeichen lang sein",
+      "too_long": "Darf höchstens {max} Zeichen lang sein",
+      "invalid_chars": "Nur Buchstaben, Zahlen, Unterstriche und Bindestriche sind erlaubt",
+      "reserved": "Dieser Benutzername ist reserviert",
+      "taken": "Dieser Benutzername ist vergeben"
+    }
+  },
+  "pfp": {
+    "title": "Profilbild minten",
+    "upload": "Bild hochladen",
+    "preview": "Vorschau",
+    "mintFee": "Mint-Gebühr",
+    "mintButton": "Minten"
+  },
+  "locale": {
+    "switchLanguage": "Sprache wechseln"
+  },
+  "cartPanel": {
+    "title": "Warenkorb",
+    "itemCount": "{count} Artikel",
+    "empty": "Dein Warenkorb ist leer",
+    "emptyHint": "Durchstöbere den Shop, um Artikel hinzuzufügen",
+    "subtotal": "Zwischensumme",
+    "checkout": "Zur Kasse",
+    "continue": "Weiter einkaufen"
+  },
+  "postOptions": {
+    "copyLink": "Link kopieren",
+    "edit": "Bearbeiten",
+    "delete": "Löschen",
+    "report": "Melden",
+    "deleted": "Beitrag gelöscht",
+    "confirmDelete": "Möchtest du diesen Beitrag wirklich löschen?"
+  },
+  "widgets": {
+    "membersTitle": "Mitglieder",
+    "questsTitle": "Offene Aufgaben",
+    "eventsTitle": "Kommende Veranstaltungen",
+    "groupsTitle": "Gruppen",
+    "activityTitle": "Freundesaktivität",
+    "viewAll": "Alle anzeigen",
+    "tabNewest": "Neueste",
+    "tabPopular": "Beliebt",
+    "tabActive": "Aktiv",
+    "level": "St {level}",
+    "emptyTitle": "Noch keine Freunde.",
+    "emptyHint": "Verbinde dich mit anderen Mitgliedern!",
+    "questsEmpty": "Keine aktiven Aufgaben.",
+    "questsEmptyHint": "Schau bald nach neuen Herausforderungen!",
+    "eventsEmpty": "Keine anstehenden Veranstaltungen.",
+    "eventsEmptyHint": "Erstelle eine Veranstaltung zum Starten!"
+  },
+  "createPost": {
+    "placeholder": "Was hast du auf dem Herzen?",
+    "submit": "Posten",
+    "success": "Beitrag geteilt",
+    "emptyWarning": "Schreib zuerst etwas",
+    "tooLong": "Beitrag ist zu lang (max. {max} Zeichen)",
+    "errorGeneric": "Beitrag konnte nicht erstellt werden",
+    "signInPrompt": "Melde dich zum Posten an",
+    "typeText": "Text",
+    "typeImage": "Foto",
+    "typeVideo": "Video",
+    "typePoll": "Umfrage",
+    "visibilityLabel": "Sichtbarkeit",
+    "visibilityPublic": "Öffentlich",
+    "visibilityFriends": "Freunde",
+    "visibilityPrivate": "Nur ich"
+  },
+  "questsPage": {
+    "progress": "FORTSCHRITT",
+    "active": "Aktiv",
+    "completed": "Abgeschlossen"
+  },
+  "groupsPage": {
+    "private": "Privat",
+    "public": "Öffentlich",
+    "more": "weitere",
+    "statMembers": "Mitglieder",
+    "statPosts": "Beiträge",
+    "joinCta": "GRUPPE BEITRETEN +",
+    "leaveCta": "GRUPPE VERLASSEN",
+    "joined": "Gruppe beigetreten",
+    "left": "Gruppe verlassen",
+    "signInToJoin": "Zum Beitreten anmelden",
+    "lastActivity": "Letzte Aktivität {time}"
+  },
+  "events": {
+    "interestedCta": "Interessiert",
+    "interested": "Interessiert",
+    "going": "Teilnehmend",
+    "interestedSaved": "Du bist dabei",
+    "signInToRsvp": "Melde dich zum RSVP an"
+  },
+  "messagesPanel": {
+    "title": "Nachrichten / Chat",
+    "placeholder": "Nachricht schreiben...",
+    "searchPlaceholder": "Nachrichten durchsuchen..."
+  },
+  "notificationsPanel": {
+    "title": "Benachrichtigungen",
+    "markAllRead": "Alle als gelesen markieren",
+    "markedAllRead": "Alle Benachrichtigungen als gelesen markiert",
+    "empty": "Noch keine Benachrichtigungen",
+    "viewAll": "Alle Benachrichtigungen anzeigen"
+  },
+  "friends": {
+    "requestsTitle": "Freundschaftsanfragen",
+    "pendingCount": "{count} ausstehend",
+    "empty": "Keine ausstehenden Freundschaftsanfragen",
+    "accept": "Annehmen",
+    "decline": "Ablehnen",
+    "accepted": "Freundschaftsanfrage angenommen",
+    "declined": "Freundschaftsanfrage abgelehnt",
+    "mutualFriends": "{count} gemeinsame Freunde",
+    "viewAll": "Alle Freunde anzeigen",
+    "addFriend": "Freund hinzufügen",
+    "requestSent": "Anfrage gesendet",
+    "signInToAdd": "Melde dich an, um Freunde hinzuzufügen"
+  },
+  "members": {
+    "addFriend": "Freund hinzufügen +",
+    "sendMessage": "Nachricht senden",
+    "requestSent": "Anfrage gesendet",
+    "signInToAdd": "Melde dich an, um Freunde hinzuzufügen",
+    "statPosts": "Beiträge",
+    "statFriends": "Freunde",
+    "statVisits": "Besuche"
+  },
+  "errors": {
+    "generic": "Etwas ist schiefgelaufen",
+    "notFound": "Nicht gefunden",
+    "unauthorized": "Nicht autorisiert",
+    "networkError": "Netzwerkfehler",
+    "tryAgain": "Bitte versuche es erneut"
+  }
+}

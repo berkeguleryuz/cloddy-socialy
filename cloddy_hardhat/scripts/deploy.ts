@@ -66,6 +66,58 @@ async function main() {
   console.log("CloddyMarketplace deployed to:", await cloddyMarketplace.getAddress());
   await delay(5000);
 
+  // Mint fee / royalty config for user-minted NFTs
+  const treasury = process.env.TREASURY_ADDRESS || deployer.address;
+  const mintFee = ethers.parseEther("0.0077");
+  const royaltyBps = 500; // 5%
+
+  // 8. Deploy CloddyPfp
+  console.log("\n8. Deploying CloddyPfp...");
+  const CloddyPfp = await ethers.getContractFactory("CloddyPfp");
+  const cloddyPfp = await CloddyPfp.deploy(
+    treasury,
+    mintFee,
+    treasury,
+    royaltyBps,
+    "ipfs://placeholder/pfp-collection.json"
+  );
+  await cloddyPfp.waitForDeployment();
+  console.log("CloddyPfp deployed to:", await cloddyPfp.getAddress());
+  await delay(5000);
+
+  // 9. Deploy CloddyUsername
+  console.log("\n9. Deploying CloddyUsername...");
+  const reservedLabels = [
+    "admin",
+    "administrator",
+    "support",
+    "help",
+    "cloddy",
+    "berke",
+    "omegayon",
+    "root",
+    "moderator",
+    "mod",
+    "system",
+    "api",
+    "www",
+    "null",
+    "undefined",
+  ];
+  const CloddyUsername = await ethers.getContractFactory("CloddyUsername");
+  const cloddyUsername = await CloddyUsername.deploy(
+    treasury,
+    mintFee,
+    treasury,
+    royaltyBps,
+    "ipfs://placeholder/username-collection.json",
+    "cloddy",
+    reservedLabels
+  );
+  await cloddyUsername.waitForDeployment();
+  console.log("CloddyUsername deployed to:", await cloddyUsername.getAddress());
+  await delay(5000);
+
   // Grant roles for integration
   console.log("\n8. Setting up roles...");
 
@@ -102,6 +154,8 @@ async function main() {
   console.log("CloddyTokenGate:", await cloddyTokenGate.getAddress());
   console.log("CloddyEquippable:", await cloddyEquippable.getAddress());
   console.log("CloddyMarketplace:", await cloddyMarketplace.getAddress());
+  console.log("CloddyPfp:", await cloddyPfp.getAddress());
+  console.log("CloddyUsername:", await cloddyUsername.getAddress());
   console.log("==========================================");
 
   console.log("\n📋 Add these to your .env.local file:");
@@ -112,6 +166,8 @@ async function main() {
   console.log(`NEXT_PUBLIC_CLODDY_MARKETPLACE_ADDRESS=${await cloddyMarketplace.getAddress()}`);
   console.log(`NEXT_PUBLIC_CLODDY_TOKEN_GATE_ADDRESS=${await cloddyTokenGate.getAddress()}`);
   console.log(`NEXT_PUBLIC_CLODDY_EQUIPPABLE_ADDRESS=${await cloddyEquippable.getAddress()}`);
+  console.log(`NEXT_PUBLIC_CLODDY_PFP_ADDRESS=${await cloddyPfp.getAddress()}`);
+  console.log(`NEXT_PUBLIC_CLODDY_USERNAME_ADDRESS=${await cloddyUsername.getAddress()}`);
 
   // Return addresses for verification
   return {
@@ -122,6 +178,8 @@ async function main() {
     cloddyTokenGate: await cloddyTokenGate.getAddress(),
     cloddyEquippable: await cloddyEquippable.getAddress(),
     cloddyMarketplace: await cloddyMarketplace.getAddress(),
+    cloddyPfp: await cloddyPfp.getAddress(),
+    cloddyUsername: await cloddyUsername.getAddress(),
   };
 }
 

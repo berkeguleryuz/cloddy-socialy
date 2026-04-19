@@ -1,26 +1,62 @@
-import { memo } from "react";
+"use client";
+
+import { memo, useCallback } from "react";
 import Image from "next/image";
+import { toast } from "sonner";
+import { useTranslations } from "next-intl";
+import { useRespondToEvent } from "@/hooks/useEvents";
+import { useAuth } from "./AuthContext";
 
 interface EventCardProps {
+  id?: string;
   title: string;
   date: string;
   time: string;
   location: string;
   participants: number;
   image?: string | null;
+  userStatus?: "going" | "interested" | null;
 }
 
 const DEFAULT_EVENT_IMAGE = "/images/covers/cover_01.png";
 
 const EventCard = memo(function EventCard({
+  id,
   title,
   date,
   time,
   location,
   participants,
   image,
+  userStatus,
 }: EventCardProps) {
+  const t = useTranslations("events");
+  const tc = useTranslations("common");
+  const { isAuthenticated } = useAuth();
+  const respond = useRespondToEvent();
   const imageSrc = image && image.trim() !== "" ? image : DEFAULT_EVENT_IMAGE;
+
+  const handleInterested = useCallback(() => {
+    if (!isAuthenticated) {
+      toast.info(t("signInToRsvp"));
+      return;
+    }
+    if (!id) return;
+    respond.mutate(
+      { eventId: id, status: "interested" },
+      {
+        onSuccess: () => toast.success(t("interestedSaved")),
+        onError: (err) => toast.error(err.message || tc("error")),
+      }
+    );
+  }, [id, isAuthenticated, respond, t, tc]);
+
+  const buttonLabel =
+    userStatus === "going"
+      ? t("going")
+      : userStatus === "interested"
+      ? t("interested")
+      : t("interestedCta");
 
   return (
     <div className="card overflow-hidden flex flex-col md:flex-row border border-transparent hover:border-secondary/30 transition-all duration-300">
@@ -95,12 +131,19 @@ const EventCard = memo(function EventCard({
                 />
               </div>
             ))}
-            <div className="h-6 w-6 rounded-full ring-2 ring-surface bg-border text-[8px] font-bold flex items-center justify-center text-text-muted">
-              +{participants - 4}
-            </div>
+            {participants > 4 && (
+              <div className="h-6 w-6 rounded-full ring-2 ring-surface bg-border text-[8px] font-bold flex items-center justify-center text-text-muted">
+                +{participants - 4}
+              </div>
+            )}
           </div>
-          <button className="px-4 py-2 bg-background text-secondary text-[10px] font-black rounded-lg border border-secondary/20 hover:bg-secondary hover:text-white transition-all uppercase tracking-wider">
-            Interested
+          <button
+            type="button"
+            onClick={handleInterested}
+            disabled={respond.isPending}
+            className="px-4 py-2 bg-background text-secondary text-[10px] font-black rounded-lg border border-secondary/20 hover:bg-secondary hover:text-white transition-all uppercase tracking-wider disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          >
+            {buttonLabel}
           </button>
         </div>
       </div>

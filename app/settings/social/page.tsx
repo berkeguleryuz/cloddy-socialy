@@ -1,6 +1,10 @@
+"use client";
+
+import { toast } from "sonner";
 import SettingsLayout from "@/components/SettingsLayout";
 
 export default function SocialStreamPage() {
+  const handleSave = () => toast.success("Social links saved");
   return (
     <SettingsLayout
       title="Account Settings"
@@ -122,7 +126,11 @@ export default function SocialStreamPage() {
         </div>
 
         <div className="flex justify-end mt-8">
-          <button className="px-8 py-3 bg-primary text-white font-bold text-sm rounded-xl hover:bg-primary/90 transition-all">
+          <button
+            type="button"
+            onClick={handleSave}
+            className="px-8 py-3 bg-primary text-white font-bold text-sm rounded-xl hover:bg-primary/90 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          >
             Save Changes
           </button>
         </div>

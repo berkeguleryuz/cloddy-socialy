@@ -1,6 +1,8 @@
 "use client";
 
 import { useMemo, memo, ReactNode } from "react";
+import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { useAuth } from "./AuthContext";
 import { useQuests } from "@/hooks/useQuests";
 import { demoQuests } from "@/constants/demoData";
@@ -32,6 +34,7 @@ const questIconMap: Record<string, ReactNode> = {
 const QuestsWidget = memo(function QuestsWidget() {
   const { isDemo, isAuthenticated } = useAuth();
   const questsData = useQuests();
+  const tw = useTranslations("widgets");
 
   // Transform quests data or use demo data
   const { quests, showEmpty } = useMemo(() => {
@@ -62,16 +65,23 @@ const QuestsWidget = memo(function QuestsWidget() {
     <div className="widget-box">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-xs font-black uppercase tracking-widest text-text-muted">
-          Open Quests
+          {tw("questsTitle")}
         </h3>
-        <span className="text-[10px] text-primary font-bold">View All</span>
+        <Link
+          href="/quests"
+          className="text-[10px] text-primary font-bold hover:underline"
+        >
+          {tw("viewAll")}
+        </Link>
       </div>
 
       <div className="flex flex-col gap-4">
         {showEmpty ? (
           <div className="p-4 text-center">
-            <p className="text-xs text-text-muted">No active quests yet.</p>
-            <p className="text-[10px] text-text-muted mt-1">Check back soon for new challenges!</p>
+            <p className="text-xs text-text-muted">{tw("questsEmpty")}</p>
+            <p className="text-[10px] text-text-muted mt-1">
+              {tw("questsEmptyHint")}
+            </p>
           </div>
         ) : (
           quests.map((quest) => (
